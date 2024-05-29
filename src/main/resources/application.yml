@@ -1,3 +1,7 @@
 spring:
   application:
     name: my_letter
+    mvc:
+        static-path-pattern: /**
+    resources:
+        static-locations: classpath:/static/
