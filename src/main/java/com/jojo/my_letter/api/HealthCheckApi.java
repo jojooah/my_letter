@@ -30,6 +30,11 @@ public class HealthCheckApi {
     @GetMapping("/newsletter/item")
     public String newsletterItem() {
 
-        return "home";
+        return "shop";
+    }
+    @GetMapping("/newsletter/item/1")
+    public String newsletterItem1() {
+
+        return "shop-detail";
     }
 }
