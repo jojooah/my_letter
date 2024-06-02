@@ -1,6 +1,8 @@
 package com.jojo.my_letter.api;
 
+import com.jojo.my_letter.model.result.RestError;
 import com.jojo.my_letter.model.result.RestResult;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,11 +24,16 @@ public class HealthCheckApi {
 
     // 누가 쓸까요? AWS ELB에서 헬스체크 api 로 활용합니다.
     @GetMapping("/health")
-    public RestResult healthCheck() {
+    public ResponseEntity<RestResult> healthCheck() {
+        RestResult result = new RestResult();
         Map<String, Object> data = new LinkedHashMap<>();
         data.put("status", "UP");
         data.put("version", "0.0.1");
         data.put("timestamp", LocalDateTime.now());
-        return new RestResult(data);
+
+        result.setData(data);
+        result.setRestError(RestError.SUCCESS);
+        return ResponseEntity.status(result.getRestError().getHttpStatus()).body(result);
     }
+
 }
