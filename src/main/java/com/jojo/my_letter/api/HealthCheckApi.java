@@ -3,8 +3,10 @@ package com.jojo.my_letter.api;
 import com.jojo.my_letter.model.result.RestErrorCode;
 import com.jojo.my_letter.model.result.RestResult;
 import com.jojo.my_letter.model.result.RestResultV2;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
