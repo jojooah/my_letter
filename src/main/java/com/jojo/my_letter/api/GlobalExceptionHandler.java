@@ -1,11 +1,14 @@
 package com.jojo.my_letter.api;
 
 import com.jojo.my_letter.model.result.RestError;
+import com.jojo.my_letter.model.result.RestErrorCode;
 import com.jojo.my_letter.model.result.RestErrorException;
 import com.jojo.my_letter.model.result.RestResult;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -24,6 +27,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.error(re.getRestError().getMessage());
 
         return ResponseEntity.status(re.getRestError().getHttpStatus()).body(result);
+    }
+
+    @ExceptionHandler({RestErrorException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected RestError handleResultCodeException2(RestErrorException re) {
+        log.error(re.getRestError().getMessage());
+        return new RestError(re.getRestError().getCode(), re.getMessage());
     }
 
     @ExceptionHandler({SQLException.class})
@@ -53,7 +63,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         RestResult result = new RestResult();
 
         result.setMessage("의도하지 못한 에러");
-        result.setRestError(RestError.ERROR_ETC);
+        result.setRestError(RestErrorCode.ERROR_ETC);
         log.error(ex.getMessage());
         return ResponseEntity.status(result.getRestError().getHttpStatus()).body(result);
     }
