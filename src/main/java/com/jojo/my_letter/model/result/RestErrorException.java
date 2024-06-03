@@ -6,10 +6,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RestErrorException extends RuntimeException {
-    private RestError restError;
+    private RestErrorCode restError;
 
     private Object response;
 
-    public RestErrorException(RestError restError) { this.restError = restError; }
+    public RestErrorException(RestErrorCode restError) { this.restError = restError; }
 
 }
