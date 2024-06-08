@@ -1,10 +1,12 @@
 package com.jojo.my_letter.api;
 
-import com.jojo.my_letter.model.result.RestError;
+import com.jojo.my_letter.model.result.RestErrorCode;
 import com.jojo.my_letter.model.result.RestResult;
+import com.jojo.my_letter.model.result.RestResultV2;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -32,8 +34,18 @@ public class HealthCheckApi {
         data.put("timestamp", LocalDateTime.now());
 
         result.setData(data);
-        result.setRestError(RestError.SUCCESS);
+        result.setRestError(RestErrorCode.SUCCESS);
         return ResponseEntity.status(result.getRestError().getHttpStatus()).body(result);
     }
 
+    @GetMapping("/health2")
+    public RestResultV2 healthCheck2() {
+
+        Map<String, Object> data = new LinkedHashMap<>();
+        data.put("status", "UP");
+        data.put("version", "0.0.1");
+        data.put("timestamp", LocalDateTime.now());
+
+        return new RestResultV2(data);
+    }
 }
