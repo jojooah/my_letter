@@ -1,4 +1,4 @@
-package com.jojo.my_letter.api;
+package com.jojo.my_letter.controller.api;
 
 import com.jojo.my_letter.model.result.RestResult;
 import org.springframework.http.HttpStatus;

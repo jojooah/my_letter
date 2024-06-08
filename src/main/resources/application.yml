@@ -8,3 +8,23 @@ spring:
   security:
     user:
       name: user
+  thymeleaf:
+    prefix: classpath:/templates/
+    check-template-location: true
+    suffix: .html
+    mode: HTML
+    cache: false
+  datasource:
+    url: jdbc:mysql://mbslaw-db.cszatmtp17tv.ap-northeast-2.rds.amazonaws.com:3306/joo?useSSL=false&useUnicode=yes&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true
+    username: joo
+    password: joo@!
+  session:
+    jdbc:
+      initialize-schema: always
+mybatis:
+  config-location: classpath:mybatis-config.xml
+  mapper-locations: mappers/**/*.xml
+telegram:
+  secret : 7408238798:AAGazdkPCrHq_HehUWWgNvk3-3q-JWiJQJw
+  url: https://api.telegram.org/bot${telegram.secret}/sendmessage
+  chat-id: -4274369516
