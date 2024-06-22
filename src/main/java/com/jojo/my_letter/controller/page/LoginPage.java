@@ -3,6 +3,7 @@ package com.jojo.my_letter.controller.page;
 import com.jojo.my_letter.controller.service.impl.LoginService;
 import com.jojo.my_letter.model.entity.Member;
 import com.jojo.my_letter.model.result.RestErrorException;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -20,13 +21,13 @@ public class LoginPage {
     private final LoginService loginService;
 
     @GetMapping("/login")
-    public String login(Model model, @RequestParam(required = false) String error) {
+    public String login(Model model, @RequestParam(required = false) String error, HttpSession session) {
         if (error != null) {
-            model.addAttribute("errorMessage", error);
+            String errorMessage = (String) session.getAttribute("errorMessage");
+            model.addAttribute("errorMessage", errorMessage);
         }
         return "login";
     }
-
 
     @GetMapping("/join")
     public String showJoinForm(Model model, @RequestParam(required = false) String error) {
@@ -36,18 +37,20 @@ public class LoginPage {
         if (error != null) {
             model.addAttribute("errorMessage", error);
         }
-        return "join"; // 뷰 이름
+        return "join";
     }
-
 
     @PostMapping("/join")
     public String join(Member member, RedirectAttributes redirectAttributes) {
         try {
             if (loginService.join(member)) {
                 return "redirect:/login";
+            }else{
+                redirectAttributes.addFlashAttribute("errorMessage","회원가입에 실패했습니다.");
+                redirectAttributes.addFlashAttribute("member", member);
             }
         } catch (RestErrorException e) {
-            log.error(e.getMessage());
+            log.error(e.getRestError().getMessage());
             redirectAttributes.addFlashAttribute("errorMessage", e.getRestError().getMessage());
             redirectAttributes.addFlashAttribute("member", member);
             return "redirect:/join";
