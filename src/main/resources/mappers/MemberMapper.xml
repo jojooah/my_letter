@@ -6,13 +6,17 @@
     <select id="findMember" parameterType="String" resultType="Member">
         select *
         from Member
-        where name = #{name}
+        where id = #{id}
     </select>
-
 
     <update id="updatePassword">
         update Member
         set password = #{password}
         where name = #{name}
     </update>
+
+    <insert id="insertMember" parameterType="Member">
+        INSERT INTO Member (id, password, email, username, status, created_at)
+        VALUES (#{id}, #{password}, #{email}, #{username}, 'active', NOW());
+    </insert>
 </mapper>

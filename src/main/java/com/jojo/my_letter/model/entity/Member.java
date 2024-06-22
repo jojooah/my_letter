@@ -8,24 +8,32 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Member implements UserDetails {
-    private int id;
-    private String name;
-    private String username;
+    private int memberSeq;
+    private String id;
     private String password;
-    private String type;
+    private String passwordCheck;
+    private String name;
+    private Date birthDate;
+    private String username; //닉네임
+    private String email;
+    private String gender;
+    private String type; //ROLE_USER, ROLE_ADMIN, ROLE_AUTH
     private String status;
     private String grade;
     private String otpSecret;
     private String profileImageUrl;
 
+    //해당 유저의 권한을 리턴한다
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        //작가일때에는 작가권한
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 

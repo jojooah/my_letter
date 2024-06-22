@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity //스프링 시큐리티필터가 스프링 필터체인에 등록된다
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
@@ -27,11 +27,11 @@ public class WebSecurityConfig {
         http
             .authorizeHttpRequests(request -> request
                 .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                .requestMatchers("/login", "/favicon.ico", "/error").permitAll()
+                .requestMatchers("/login", "/favicon.ico", "/error","/join").permitAll()
                 .requestMatchers("/public-api/**", "/health/**").permitAll()
                 .anyRequest().authenticated()
             )
-            .formLogin(formLogin -> formLogin
+            .formLogin(formLogin -> formLogin //로그인페이지로 보낸다
                 .loginPage("/login")
                 .usernameParameter("username")
                 .passwordParameter("password")
@@ -50,6 +50,7 @@ public class WebSecurityConfig {
         return http.build();
     }
 
+    //해당 메서드의 리턴되는 오브젝트를 IoC로 등록해준다
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
