@@ -22,7 +22,7 @@
 
         <form action="/join" method="post">
           <div class="input-group mb-3">
-            <input type="text" name="name" class="form-control" placeholder="이름을 입력해주세요">
+            <input type="text" name="name" class="form-control" placeholder="이름을 입력해주세요" th:value="${member.name}">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-lock"></span>
@@ -30,7 +30,7 @@
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="text" name="email" class="form-control" placeholder="이메일을 입력해주세요">
+            <input type="text" name="email" class="form-control" placeholder="이메일을 입력해주세요" th:value="${member.email}">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-lock"></span>
@@ -38,7 +38,7 @@
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="text" name="id" class="form-control" placeholder="아이디를 입력해주세요">
+            <input type="text" name="id" class="form-control" placeholder="아이디를 입력해주세요" th:value="${member.id}">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-envelope"></span>
@@ -62,7 +62,7 @@
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="text" name="username" class="form-control" placeholder="닉네임을 입력해주세요">
+            <input type="text" name="username" class="form-control" placeholder="닉네임을 입력해주세요" th:value="${member.username}">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-lock"></span>
@@ -80,7 +80,7 @@
         <div class="col-8">
           <div class="icheck-primary">
             <div class=" details">
-              <h4 th:if="${errorMessage}">{{errorMessage}}</h4>
+              <h4 th:text="${errorMessage}"></h4>
             </div>
           </div>
         </div>
