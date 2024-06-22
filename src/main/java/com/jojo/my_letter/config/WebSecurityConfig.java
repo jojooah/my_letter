@@ -30,7 +30,7 @@ public class WebSecurityConfig {
             .authorizeHttpRequests(request -> request
                 .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
                 .requestMatchers("/login", "/favicon.ico", "/error","/join").permitAll()
-                .requestMatchers("/public-api/**", "/health/**").permitAll()
+                .requestMatchers("/public-api/**").permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(formLogin -> formLogin //로그인페이지로 보낸다

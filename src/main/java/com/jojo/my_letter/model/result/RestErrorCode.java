@@ -31,7 +31,9 @@ public enum RestErrorCode {
     NOT_WITTER("1021","게시물 작성자가 아닙니다."),
     NOT_EXIST_NICKNAME("1022","닉네임을 입력하세요."),
 
-    ERROR_ETC("9999", "기타 오류");
+    ERROR_ETC("9999", "기타 오류"),
+
+    UNKNOWN_ERROR("1000", "알수 없는 오류");
 
     private String code;    // 에러 코드
     private String message;
