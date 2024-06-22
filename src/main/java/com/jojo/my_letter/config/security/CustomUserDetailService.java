@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Slf4j
-@Service
+//@Service
 @RequiredArgsConstructor
 //login요청이 오면 자동으로 UserDetailService타입으로 IoC되어있는 loadUserByUsername함수가 실행
 public class CustomUserDetailService implements UserDetailsService {

@@ -34,9 +34,7 @@ public class LoginService {
         String encPwd = bCryptPasswordEncoder.encode(rawPwd);
         member.setPassword(encPwd);
 
-        memberMapper.insertMember(member);
-
-        return true;
+        return memberMapper.insertMember(member) > 0;
 
     }
 }
