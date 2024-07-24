@@ -1,5 +1,8 @@
 package com.jojo.my_letter.model.entity;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,15 +19,35 @@ import java.util.List;
 @AllArgsConstructor
 public class Member implements UserDetails {
     private int memberSeq;
+    @NotBlank(message = "아이디를 입력하세요.")
     private String id;
+
+    @NotBlank(message = "비밀번호를 입력하세요.")
+    @Size(min=8, message = "비밀번호는 8글자 이상이어야 합니다.")
     private String password;
+
+    @NotBlank(message = "비밀번호 체크를 위해 한 번 더 입력하세요.")
+    @Size(min=8, message = "비밀번호는 8글자 이상이어야 합니다.")
     private String passwordCheck;
+
+    @NotBlank(message = "이름을 입력하세요.")
     private String name;
-    private Date birthDate;
+
+    //@NotNull(message = "생년월일을 선택하세요.")
+    //private Date birthDate;
+
+    @NotBlank(message = "닉네임을 입력하세요.")
     private String username; //닉네임
+
+    @NotBlank(message = "이메일을 입력하세요.")
     private String email;
-    private String gender;
-    private String type; //ROLE_USER, ROLE_ADMIN, ROLE_AUTH
+
+    //@NotBlank(message = "성별을 입력하세요.")
+    //private String gender;
+
+    //@NotBlank(message = "작가/독자 여부를 선택하세요.")
+    //private String type; //ROLE_USER, ROLE_ADMIN, ROLE_AUTH
+
     private String status;
     private String grade;
     private String otpSecret;

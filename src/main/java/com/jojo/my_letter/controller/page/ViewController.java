@@ -6,14 +6,18 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.Objects;
 
 
 @Controller
 public class ViewController {
 
     @GetMapping("/index")
-    public String healthCheck1(Model model) {
+    public String healthCheck1(@RequestBody Model model) {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(Objects.isNull(authentication.getPrincipal())) return "index";
         Member member = (Member) authentication.getPrincipal();
         member.getName();
         model.addAttribute("isLogin", true);

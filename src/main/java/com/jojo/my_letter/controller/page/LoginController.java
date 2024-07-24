@@ -4,14 +4,19 @@ import com.jojo.my_letter.controller.service.impl.LoginService;
 import com.jojo.my_letter.model.entity.Member;
 import com.jojo.my_letter.model.result.RestErrorException;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.stream.Collectors;
 
 import static com.jojo.my_letter.utils.Utils.toJson;
 
@@ -52,6 +57,7 @@ public class LoginPage {
         if (error != null) {
             model.addAttribute("errorMessage", error);
         }
+
         return "join";
     }
 
@@ -64,16 +70,21 @@ public class LoginPage {
      * @return
      */
     @PostMapping("/join")
-    public String join(Member member, RedirectAttributes redirectAttributes) {
+    public String join(@Validated @ModelAttribute Member member, BindingResult bindingResult,RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            return "/join";
+        }
         try {
             final Member joined = loginService.join(member);
             log.info("회원가입 성공 : {}, redirect:/login", toJson(joined));
             return "redirect:/login";
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             redirectAttributes.addFlashAttribute("member", member);
             log.error("회원가입 실패 : {}, member: {}, redirect:/join", e.getMessage(), toJson(member));
             return "redirect:/join";
         }
     }
+
 }

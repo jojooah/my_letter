@@ -1,10 +1,7 @@
 package com.jojo.my_letter.model.result;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-
-import java.util.Map;
 
 @Data
 @RequiredArgsConstructor

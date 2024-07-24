@@ -4,11 +4,15 @@ import com.jojo.my_letter.mapper.MemberMapper;
 import com.jojo.my_letter.model.entity.Member;
 import com.jojo.my_letter.model.result.RestErrorException;
 import io.micrometer.common.util.StringUtils;
+import jakarta.validation.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
+
+import java.util.Set;
 
 import static com.jojo.my_letter.model.result.RestErrorCode.*;
 import static io.micrometer.common.util.StringUtils.isBlank;
@@ -21,8 +25,8 @@ public class LoginService {
     private final PasswordEncoder bCryptPasswordEncoder;
 
     @Transactional
-    public Member join(Member member) {
-        if (isBlank(member.getName())) throw  new RestErrorException(UNKNOWN_ERROR);
+    public Member join(@Valid Member member) {
+     /*   if (isBlank(member.getName())) throw  new RestErrorException(UNKNOWN_ERROR);
         if (isBlank(member.getEmail())) throw  new RestErrorException(NEED_EMAIL);
         if (isBlank(member.getId())) throw new RestErrorException(NEED_USER_ID);
         if (isBlank(member.getPassword())) throw new RestErrorException(NEED_PWD);
@@ -31,6 +35,11 @@ public class LoginService {
         if (isBlank(member.getUsername())) throw new RestErrorException(NEED_NICK_NAME);
         if (member.getPassword().length() < 4) throw new RestErrorException(UNKNOWN_ERROR);
         if (memberMapper.findMember(member.getId())!=null)  throw new RestErrorException(USER_ID_ALREADY_EXIST);
+*/
+
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<Member>> violations = validator.validate(member);
 
         String rawPwd = member.getPassword();
         String encPwd = bCryptPasswordEncoder.encode(rawPwd);
@@ -42,4 +51,6 @@ public class LoginService {
 
         return memberMapper.findMember(member.getId());
     }
+
+
 }
