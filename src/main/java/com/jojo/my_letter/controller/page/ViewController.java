@@ -14,14 +14,19 @@ import java.util.Objects;
 @Controller
 public class ViewController {
 
+//    @GetMapping("/index")
+//    public String healthCheck1(@RequestBody Model model) {
+//        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        if(Objects.isNull(authentication.getPrincipal())) return "index";
+//        Member member = (Member) authentication.getPrincipal();
+//        member.getName();
+//        model.addAttribute("isLogin", true);
+//        model.addAttribute("member", member);
+//        return "index";
+//    }
+
     @GetMapping("/index")
-    public String healthCheck1(@RequestBody Model model) {
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(Objects.isNull(authentication.getPrincipal())) return "index";
-        Member member = (Member) authentication.getPrincipal();
-        member.getName();
-        model.addAttribute("isLogin", true);
-        model.addAttribute("member", member);
+    public String index() {
         return "index";
     }
 

@@ -19,7 +19,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
         log.info("LoginSuccessHandler !! ");
-        log.error(httpServletRequest.getSession().getAttribute("FROM_JOIN_PAGE").toString());
+//        log.error(httpServletRequest.getSession().getAttribute("FROM_JOIN_PAGE").toString());
         //회원가입시 바로 로그인 후, 메인페이지로
         if (httpServletRequest.getSession().getAttribute("FROM_JOIN_PAGE") != null) {
             httpServletRequest.getSession().removeAttribute("FROM_JOIN_PAGE");

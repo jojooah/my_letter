@@ -40,6 +40,7 @@ public class WebSecurityConfig {
                 .usernameParameter("id")
                 .passwordParameter("password")
                 .successHandler(loginSuccessHandler)
+                .defaultSuccessUrl("/newsletter/item")
                 .failureHandler(loginFailHandler)
             )
             .logout(logout -> logout
