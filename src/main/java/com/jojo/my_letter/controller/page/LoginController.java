@@ -1,6 +1,5 @@
 package com.jojo.my_letter.controller.page;
 
-import com.jojo.my_letter.config.security.LoginSuccessHandler;
 import com.jojo.my_letter.controller.service.impl.LoginService;
 import com.jojo.my_letter.model.entity.Member;
 import com.jojo.my_letter.model.result.RestErrorException;
