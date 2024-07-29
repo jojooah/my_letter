@@ -19,4 +19,15 @@
         INSERT INTO Member (id, password, email, username, status, created_at)
         VALUES (#{id}, #{password}, #{email}, #{username}, 'active', NOW());
     </insert>
+
+    <insert id="insertLoginHistory" parameterType="Member">
+        INSERT INTO member_activity_log(member_seq, login_time, ip_address,activity_type)
+        VALUES (
+                    #{memberSeq}
+                  , NOW()
+                  , #{ipAddress}
+                  , #{activityType}
+               );
+    </insert>
+
 </mapper>
