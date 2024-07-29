@@ -1,6 +1,7 @@
 package com.jojo.my_letter.config;
 
 import com.jojo.my_letter.config.security.CustomAuthenticationProvider;
+import com.jojo.my_letter.config.security.CustomLogoutSuccessHandler;
 import com.jojo.my_letter.config.security.LoginFailHandler;
 import com.jojo.my_letter.config.security.LoginSuccessHandler;
 import jakarta.servlet.DispatcherType;
@@ -23,33 +24,36 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
 
     private final LoginSuccessHandler loginSuccessHandler;
+    private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
     private final LoginFailHandler loginFailHandler;
-   // private final CustomAuthenticationProvider customAuthenticationProvider; // 여기다가 넣으니까 순환참조남...ㅜㅜ
+    // private final CustomAuthenticationProvider customAuthenticationProvider; // 여기다가 넣으니까 순환참조남...ㅜㅜ
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, CustomAuthenticationProvider customAuthenticationProvider) throws Exception {
         http
-            .authorizeHttpRequests(request -> request
-                .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                .requestMatchers("/login", "/favicon.ico", "/error","/join","/index").permitAll()
-                .requestMatchers("/public-api/**").permitAll()
-                .anyRequest().authenticated()
-            )
-            .formLogin(formLogin -> formLogin //로그인페이지로 보낸다
-                .loginPage("/login")
-                .usernameParameter("id")
-                .passwordParameter("password")
-                .successHandler(loginSuccessHandler)
-                .defaultSuccessUrl("/newsletter/item")
-                .failureHandler(loginFailHandler)
-            )
-            .logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login")
-                .invalidateHttpSession(true)
-            )
-            .csrf(AbstractHttpConfigurer::disable)
-            .cors(cors -> cors.configure(http));
+                .authorizeHttpRequests(request -> request
+                        .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
+                        .requestMatchers("/login", "/error", "/join", "/index").permitAll()
+                        .requestMatchers("/public-api/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .formLogin(formLogin -> formLogin //로그인페이지로 보낸다
+                        .loginPage("/login")
+                        .usernameParameter("id")
+                        .passwordParameter("password")
+                        .successHandler(loginSuccessHandler)
+                        .defaultSuccessUrl("/newsletter/item")
+                        .failureHandler(loginFailHandler)
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessHandler(customLogoutSuccessHandler) // 커스텀 로그아웃 성공 핸들러 설정
+                        .invalidateHttpSession(true)
+                        .deleteCookies("SESSION") //todo. 이걸 하는데도 쿠키가 안지워진다.
+                        .logoutSuccessUrl("/login")
+                )
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configure(http));
 
         http.authenticationProvider(customAuthenticationProvider);
         return http.build();
@@ -64,7 +68,7 @@ public class WebSecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers(
-            "/assets/**"
+                "/assets/**"
         );
     }
 

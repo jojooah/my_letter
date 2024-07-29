@@ -9,4 +9,5 @@ public interface MemberMapper {
     Member findMember(String id);
     void updatePassword(String name, String encodedPassword);
     int insertMember(Member member);
+    int insertLoginHistory(Member member);
 }

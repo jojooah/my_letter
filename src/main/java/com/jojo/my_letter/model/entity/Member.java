@@ -4,17 +4,20 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class Member implements UserDetails {
     private int memberSeq;
     @NotBlank(message = "아이디를 입력하세요.")
@@ -50,7 +53,9 @@ public class Member implements UserDetails {
     private String grade;
     private String otpSecret;
     private String profileImageUrl;
-
+    private LocalDateTime lastLoginTime;
+    private String ipAddress;
+    private ActivityType activityType;
     //해당 유저의 권한을 리턴한다
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -77,4 +82,5 @@ public class Member implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }
