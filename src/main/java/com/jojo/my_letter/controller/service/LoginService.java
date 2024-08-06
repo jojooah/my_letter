@@ -1,10 +1,13 @@
-package com.jojo.my_letter.controller.service.impl;
+package com.jojo.my_letter.controller.service;
 
 import com.jojo.my_letter.mapper.MemberMapper;
 import com.jojo.my_letter.model.entity.Member;
 import com.jojo.my_letter.model.result.RestErrorException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,4 +44,18 @@ public class LoginService {
 
         return memberMapper.findMember(member.getId());
     }
+
+    public String getCurrentUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof UserDetails) {
+                return ((UserDetails) principal).getUsername();
+            } else {
+                return principal.toString();
+            }
+        }
+        return null;
+    }
+
 }

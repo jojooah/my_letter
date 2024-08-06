@@ -1,14 +1,7 @@
 package com.jojo.my_letter.controller.page;
 
-import com.jojo.my_letter.model.entity.Member;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.Objects;
 
 
 @Controller
@@ -64,4 +57,10 @@ public class ViewController {
 
         return "scrap";
     }
+
+    @GetMapping("/write")
+    public String write() {
+        return "write";
+    }
+
 }

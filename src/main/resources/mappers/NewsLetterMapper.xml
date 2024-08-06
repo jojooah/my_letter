@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jojo.my_letter.mapper.NewsLetterMapper">
+
+    <insert id="insertNewsLetter" parameterType="NewsLetter">
+        INSERT INTO  /*insertNewsLetter*/
+            joo.news_letter (
+                title,
+                content,
+                subscribers,
+                cost,
+                freeYn,
+                view,
+                author_id
+            )
+        VALUES (
+            #{param.title},
+            #{param.content},
+            0,
+            0,
+            'Y',
+            0,
+            #{param.authorId}
+        )
+    </insert>
+
+</mapper>
