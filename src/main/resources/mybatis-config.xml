@@ -9,6 +9,7 @@
     <!-- 별칭 작성 부분 -->
     <typeAliases>
         <typeAlias type="com.jojo.my_letter.model.entity.Member" alias="Member"/>
+        <typeAlias type="com.jojo.my_letter.model.entity.NewsLetter" alias="NewsLetter"/>
     </typeAliases>
 
 </configuration>
