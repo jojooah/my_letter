@@ -2,17 +2,11 @@
 <html lang="en">
 <head th:replace="/fragment/head.html::fragment-header"></head>
 <body>
-    <!-- Navbar start -->
     <div th:replace="/fragment/user_navbar.html::fragment-navbar"></div>
-    <!-- Navbar End -->
-
-    <!-- Single Page Header start -->
     <div class="container-fluid page-header py-5">
         <h1 class="text-center text-white display-6">뉴스레터 작성</h1>
     </div>
-    <!-- Single Page Header End -->
 
-    <!-- Checkout Page Start -->
     <div class="container-fluid py-5">
         <div class="container py-5">
             <form id="newsLetterForm" action="/write" method="post">

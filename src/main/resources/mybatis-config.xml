@@ -10,6 +10,7 @@
     <typeAliases>
         <typeAlias type="com.jojo.my_letter.model.entity.Member" alias="Member"/>
         <typeAlias type="com.jojo.my_letter.model.entity.NewsLetter" alias="NewsLetter"/>
+        <typeAlias type="com.jojo.my_letter.model.entity.NewsLetterHeader" alias="NewsLetterHeader"/>
     </typeAliases>
 
 </configuration>

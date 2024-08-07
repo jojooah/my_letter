@@ -1,4 +1,4 @@
-package com.jojo.my_letter.controller.page;
+package com.jojo.my_letter.controller.api;
 
 import com.jojo.my_letter.model.entity.NewsLetter;
 import com.jojo.my_letter.model.result.RestResult;
@@ -16,7 +16,7 @@ import java.util.Map;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-public class newLetterController {
+public class NewLetterController {
     private final NewsLetterService newsLetterService;
 
     @PostMapping("/write")
