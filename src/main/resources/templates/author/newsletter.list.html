@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="/fragment/head.html::fragment-header"></head>
+<body>
+    <!-- Navbar start -->
+    <div th:replace="/fragment/user_navbar.html::fragment-navbar"></div>
+    <!-- Navbar End -->
+
+    <!-- Single Page Header start -->
+    <div class="container-fluid page-header py-5">
+        <h1 class="text-center text-white display-6">내 뉴스레터</h1>
+    </div>
+    <!-- Single Page Header End -->
+
+    <!-- Checkout Page Start -->
+    <div class="container-fluid py-5">
+        <button type="button" data-progress="createNewsLetterHeader">뉴스레터 생성</button>
+        <div class="container py-5">
+            </div>
+                <form id="newsLetterForm" action="/write" method="post">
+                <div class="row g-4">
+                    <div class="col-12">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>날짜</th>
+                                <th>카테고리</th>
+                                <th>제목</th>
+                                <th>구독자 수</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                           <tr th:each="newsletter : ${newsletterHeaderList}">
+                                <td th:text="${#dates.format(newsletter.regDate, 'yyyy-MM-dd')}">2023-01-01</td>
+                                <td th:text="${newsletter.categorySeq}">Category</td>
+                                <td th:text="${newsletter.headerTitle}">Title</td>
+                                <td th:text="${newsletter.subscribers}">100</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <span th:replace="/fragment/footer.html :: fragment-footer"></span>
+    <span th:replace="/fragment/commonJs.html :: fragment-commonJs"></span>
+
+    <script type="text/javascript">
+        $(function() {
+            Newsletter.start();
+        });
+    </script>
+</body>
+</html>

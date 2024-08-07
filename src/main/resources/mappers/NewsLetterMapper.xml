@@ -8,21 +8,29 @@
             joo.news_letter (
                 title,
                 content,
-                subscribers,
                 cost,
                 freeYn,
-                view,
-                author_id
+                view
             )
         VALUES (
             #{param.title},
             #{param.content},
             0,
-            0,
             'Y',
-            0,
-            #{param.authorId}
+            0
         )
     </insert>
+
+    <select id="selectNewsLetterListByAuthorId" parameterType="String" resultType="NewsLetterHeader">
+        SELECT
+            author_id AS authorId, -- 명시적으로 카멜케이스로 가져와야만 동작..왜?
+            header_title AS headerTitle,
+            subscribers,
+            reg_date AS regDate,
+            category_seq AS categorySeq
+        FROM joo.news_letter_header
+        WHERE author_id = #{param}
+        AND db_status = 'OK'
+    </select>
 
 </mapper>
