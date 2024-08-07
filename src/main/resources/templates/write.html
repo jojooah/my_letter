@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head th:replace="/fragment/head.html::fragment-header"></head>
-
-<script type="text/javascript">
-    $(function() {
-        Newsletter.start();
-    });
-</script>
 <body>
     <!-- Navbar start -->
     <div th:replace="/fragment/user_navbar.html::fragment-navbar"></div>
@@ -71,13 +65,13 @@
             </form>
         </div>
     </div>
-    <!-- Checkout Page End -->
-
     <span th:replace="/fragment/footer.html :: fragment-footer"></span>
-    <!-- Copyright End -->
+    <span th:replace="/fragment/commonJs.html :: fragment-commonJs"></span>
 
-    <!-- JavaScript Libraries -->
-
+    <script type="text/javascript">
+        $(function() {
+            Newsletter.start();
+        });
+    </script>
 </body>
-
 </html>
