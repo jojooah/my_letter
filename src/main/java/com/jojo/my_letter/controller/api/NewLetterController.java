@@ -1,6 +1,7 @@
 package com.jojo.my_letter.controller.api;
 
 import com.jojo.my_letter.model.entity.NewsLetter;
+import com.jojo.my_letter.model.entity.NewsLetterHeader;
 import com.jojo.my_letter.model.result.RestResult;
 import com.jojo.my_letter.service.NewsLetterService;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +20,10 @@ import java.util.Map;
 public class NewLetterController {
     private final NewsLetterService newsLetterService;
 
-    @PostMapping("/write")
+    @PostMapping("/saveNewsLetter")
     public @ResponseBody RestResult write(@RequestBody NewsLetter newsLetter) {
         Map<String, Object> data = new LinkedHashMap<>();
-        log.info(newsLetter.toString());
+
         try {
             newsLetterService.saveNewsLetter(newsLetter);
             data.put("status", "SUCCESS");
@@ -38,4 +39,25 @@ public class NewLetterController {
             return new RestResult(data);
         }
     }
+
+    @PostMapping("/saveNewsLetterHeader")
+    public @ResponseBody RestResult saveNewsLetterHeader(@RequestBody NewsLetterHeader newsLetterHeader) {
+        Map<String, Object> data = new LinkedHashMap<>();
+
+        try {
+            newsLetterService.saveNewsLetterHeader(newsLetterHeader);
+            data.put("status", "SUCCESS");
+            data.put("message", "저장되었습니다");
+
+            return new RestResult(data);
+
+        } catch (Exception e) {
+            data.put("status", "FAIL");
+            data.put("message", "오류가 발생했습니다");
+            log.error(e.getMessage());
+
+            return new RestResult(data);
+        }
+    }
+
 }

@@ -33,4 +33,19 @@
         AND db_status = 'OK'
     </select>
 
+    <insert id="insertNewsLetterHeader" parameterType="NewsLetterHeader">
+        INSERT INTO  /*insertNewsLetterHeader*/
+            joo.news_letter_header (
+                header_title,
+                author_id,
+                reg_date,
+                db_status
+            )
+        VALUES (
+            #{param.headerTitle},
+            #{param.authorId},
+            NOW(),
+            'OK'
+            )
+    </insert>
 </mapper>
