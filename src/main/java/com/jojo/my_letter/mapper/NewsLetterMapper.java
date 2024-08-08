@@ -18,9 +18,15 @@ public interface NewsLetterMapper {
     int insertNewsLetter(@Param("param") NewsLetter newsLetter);
 
     /**
-     * 뉴스레터 헤더 생성
+     * 뉴스레터 헤더 조회
      * @param authorId
      * @return
      */
     List<NewsLetterHeader> selectNewsLetterListByAuthorId(@Param("param") String authorId);
+
+    /**
+     * 뉴스레터 헤더 생성
+     * @param newsLetterHeader
+     */
+    void insertNewsLetterHeader(@Param("param") NewsLetterHeader newsLetterHeader);
 }

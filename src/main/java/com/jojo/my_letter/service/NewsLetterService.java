@@ -25,4 +25,11 @@ public class NewsLetterService {
 
         return newsLetterMapper.selectNewsLetterListByAuthorId(username);
     }
+
+    public void saveNewsLetterHeader(NewsLetterHeader newsLetterHeader){
+        String username=loginService.getCurrentUsername();//
+        newsLetterHeader.setAuthorId(username);
+        newsLetterMapper.insertNewsLetterHeader(newsLetterHeader);
+    }
+
 }
