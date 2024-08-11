@@ -21,19 +21,34 @@ public class AccessLogFilter implements Filter {
         long startTime = System.currentTimeMillis(); // 시작시간
         LocalDateTime requestDate = LocalDateTime.now();
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        String userAgentStr = httpRequest.getHeader("User-Agent");
 
         AccessLog accessLog = new AccessLog();
         accessLog.setHost(httpRequest.getRemoteHost());
         accessLog.setClientIp(httpRequest.getRemoteAddr());
-        accessLog.setUserAgent(userAgentStr);
+        accessLog.setUserAgent(httpRequest.getHeader("User-Agent"));
         accessLog.setUri(httpRequest.getRequestURI());
         accessLog.setMethod(httpRequest.getMethod());
         accessLog.setRequestAt(requestDate);
         accessLog.setReferer(httpRequest.getHeader("Referer"));
-
+/**
+ * 사용자 request
+ * 1 accessLogFilter
+ * 2
+ * 3
+ *  -- controller return (json, html)
+ */
+        // 실행전
         // 다음 필터 실행
         chain.doFilter(request, response);
+
+        // 실행후
+/**
+ *  -- controller return (json, html)
+ * 3
+ * 2
+ * 1 accessLogFilter
+ * 사용자 response
+ */
 
         long timeGap = System.currentTimeMillis() - startTime;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
