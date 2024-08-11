@@ -8,9 +8,9 @@
     </appender>
 
     <appender name="dailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>/apps/scrap-batch/logs/admin.log</File>
+        <File>./logs/admin.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>/apps/scrap-batch/logs/logs/admin_%d{yyyyMMdd}.log.gz</FileNamePattern>
+            <FileNamePattern>./logs/archive/admin_%d{yyyyMMdd}.log.gz</FileNamePattern>
             <maxHistory>90</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -19,9 +19,9 @@
     </appender>
 
     <appender name="dailyRollingAccessLogFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>/apps/scrap-batch/logs/access.log</File>
+        <File>./logs/access.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>/apps/scrap-batch/logs/logs/access_%d{yyyyMMdd}.log.gz</FileNamePattern>
+            <FileNamePattern>./logs/archive/access_%d{yyyyMMdd}.log.gz</FileNamePattern>
             <maxHistory>90</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -29,12 +29,12 @@
         </encoder>
     </appender>
 
-    <logger name="com.tbm.admin" additivity="false" level="INFO">
+    <logger name="com.jojo" additivity="false" level="INFO">
         <appender-ref ref="dailyRollingFileAppender"/>
     </logger>
 
-    <logger name="com.tbm.admin.service.scrap" additivity="false" level="INFO">
-        <appender-ref ref="dailyRollingFileAppender"/>
+    <logger name="com.jojo.my_letter.filter.AccessLogFilter" additivity="false" level="INFO">
+        <appender-ref ref="dailyRollingAccessLogFileAppender"/>
     </logger>
 
     <root level="INFO">
