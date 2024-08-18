@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jojo.my_letter.mapper.CategoryMapper">
+
+    <select id="selectCategory" resultType="Category">
+        select <!--selectCategory-->
+            category_seq as categorySeq,
+               cat_code as catCode,
+               cat_name as catName,
+               cat_level as catLevel,
+               upper_code as upperCode,
+               under_code as underCode
+        from category
+        where db_status = 'OK'
+    </select>
+
+</mapper>

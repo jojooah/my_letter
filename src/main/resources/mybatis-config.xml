@@ -11,6 +11,7 @@
         <typeAlias type="com.jojo.my_letter.model.entity.Member" alias="Member"/>
         <typeAlias type="com.jojo.my_letter.model.entity.NewsLetter" alias="NewsLetter"/>
         <typeAlias type="com.jojo.my_letter.model.entity.NewsLetterHeader" alias="NewsLetterHeader"/>
+        <typeAlias type="com.jojo.my_letter.model.entity.Category" alias="Category"/>
     </typeAliases>
 
 </configuration>

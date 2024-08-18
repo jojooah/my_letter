@@ -50,7 +50,7 @@ public class LoginService {
         if (authentication != null && authentication.isAuthenticated()) {
             Object principal = authentication.getPrincipal();
             if (principal instanceof UserDetails) {
-                return ((UserDetails) principal).getUsername();
+                return ((UserDetails) principal).getUsername(); //인터페이스이기때문에 저기서 USERNAME에 해당하는걸 가져오면 진짜 username을 가져온다.
             } else {
                 return principal.toString();
             }
