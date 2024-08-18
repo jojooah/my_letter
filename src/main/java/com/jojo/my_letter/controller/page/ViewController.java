@@ -1,5 +1,6 @@
 package com.jojo.my_letter.controller.page;
 
+import com.jojo.my_letter.service.CategoryService;
 import com.jojo.my_letter.service.NewsLetterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ViewController {
 
     private final NewsLetterService newsLetterService;
+    private final CategoryService categoryService;
 
     @GetMapping("/index")
     public String index() {
@@ -31,7 +33,6 @@ public class ViewController {
 
     @GetMapping("/weeks/monday")
     public String monday() {
-
         return "weeks";
     }
 
@@ -58,6 +59,7 @@ public class ViewController {
     @GetMapping("/author/newsletter/list")
     public String newsLetterList(Model model){
         model.addAttribute("newsletterHeaderList", newsLetterService.selectNewsLetterList());
+        model.addAttribute("categoryList", categoryService.selectCategory());
         return "author/newsletter.list";
     }
 

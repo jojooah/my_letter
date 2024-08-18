@@ -62,8 +62,40 @@
                             <input type="text" class="form-control" id="headerTitle" name="headerTitle" required>
                         </div>
                         <div class="form-group">
-                            <label for="categorySeq">카테고리</label>
-                            <input type="text" class="form-control" id="categorySeq" name="categorySeq" required>
+                            <label></label>
+                            <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
+                                <label for="catCode1">대분류</label>
+                                <select id="catCode1" name="catCode1" class="border-0 form-select-sm bg-light me-3" style="width:360px;" data-progress="filter">
+                                    <option value="">전체</option>
+                                    <option th:each="category : ${categoryList}"
+                                            th:if="${category.catLevel} == 1"
+                                            th:value="${category.catCode}"
+                                            th:text="${category.catName}">대분류</option>
+                                </select>
+                            </div>
+
+                            <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
+                                <label for="catCode2">중분류</label>
+                                <select id="catCode2" name="catCode2" class="border-0 form-select-sm bg-light me-3" style="width:360px;" data-progress="filter">
+                                    <option value="">전체</option>
+                                    <option th:each="category : ${categoryList}"
+                                            th:if="${category.catLevel} == 2"
+                                            th:value="${category.catCode}"
+                                            th:text="${category.catName}" th:data-progress="${category.upperCode}">중분류</option>
+                                </select>
+                            </div>
+
+                            <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
+                                <label for="catCode3">소분류</label>
+                                <select id="catCode3" name="catCode3" class="border-0 form-select-sm bg-light me-3" style="width:360px;" data-progress="filter">
+                                    <option value="">전체</option>
+                                    <option th:each="category : ${categoryList}"
+                                            th:if="${category.catLevel} == 3"
+                                            th:value="${category.catCode}"
+                                            th:text="${category.catName}" th:data-progress="${category.upperCode}">소분류</option>
+                                </select>
+                            </div>
+
                         </div>
                         <button type="button" data-progress="saveNewsLetterHeader" class="btn btn-primary">저장</button>
                     </form>
