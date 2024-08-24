@@ -31,6 +31,8 @@ const Newsletter = (function () {
 
         $("button[data-progress=saveNewsLetterHeader]").click(function() {
             let objParams = $("#newsLetterForm").serializeObject();
+            if(!validationCheck()) return;
+
             $.ajax({
                 url: "/saveNewsLetterHeader",
                 type: "POST",
@@ -51,14 +53,12 @@ const Newsletter = (function () {
             });
         });
 
-
         $("select[data-progress=filter]").on("change", function() {
             let selectedValue = $(this).val();
             let $nextSelect = $(this).closest("div").next("div").find("select[data-progress=filter]");
 
             // 다음 셀렉트박스의 모든 옵션을 비활성화 및 숨김 처리
             $nextSelect.find("option").hide().prop("disabled", true);
-
             // upperCode와 일치하는 옵션만 활성화 및 표시
             if (selectedValue !== "") {
                 let matchingOptions = $nextSelect.find("option").filter(function() {
@@ -69,13 +69,33 @@ const Newsletter = (function () {
                 if (matchingOptions.length === 1) {
                     $nextSelect.val(matchingOptions.val());
                     return;
-                }
+                }else{}
+
             }
-
-
+            $nextSelect.prepend('<option value="">전체</option>');
             $nextSelect.val("");
+
         });
 
+    }
+
+    function validationCheck(){
+        let isValid = true;
+        $("[data-validation]").each(function() {
+            let validationType = $(this).data("validation");
+            console.log($(this).val());
+            console.log($(this).data("name"));
+            let value = $(this).val().trim();
+
+            if (validationType === "required") {
+                if (value === "") {
+                   alert($(this).data("name")+"은(는) 필수값입니다.");
+                   isValid = false;
+                   return false;
+                }
+            }
+        });
+        return isValid;
     }
 
     return {
