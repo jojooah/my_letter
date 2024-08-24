@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jojo.my_letter.mapper.AccessLogMapper">
+
+    <insert id="insertAccessLog" parameterType="AccessLog">
+        INSERT INTO  /*insertAccessLog*/
+            joo.access_log (
+                member_id,
+                host,
+                method,
+                uri,
+                client_ip,
+                elapsed,
+                referer,
+                reg_date
+            )
+        VALUES (
+            #{param.memberId},
+            #{param.host},
+            #{param.method},
+            #{param.uri},
+            #{param.clientIp},
+            #{param.elapsed},
+            #{param.referer},
+            #{param.regDate}
+        )
+    </insert>
+
+
+</mapper>
