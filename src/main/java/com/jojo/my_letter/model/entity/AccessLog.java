@@ -1,13 +1,14 @@
 package com.jojo.my_letter.model.entity;
 
+import com.jojo.my_letter.model.CommonDTO;
 import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Data
-public class AccessLog {
+public class AccessLog extends CommonDTO {
     private Long seq;
-    private Long memberId;
+    private String memberId;
     private String email;
     private String threadId;
     private String host;
