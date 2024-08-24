@@ -20,15 +20,13 @@ public class NewsLetterService {
     }
 
     public List<NewsLetterHeader> selectNewsLetterList(){
-        String username=loginService.getCurrentUsername(); //todo. 아이디로 바꾸어서 넣어야 합니다
-        List<NewsLetterHeader> list = newsLetterMapper.selectNewsLetterListByAuthorId(username);
-
-        return newsLetterMapper.selectNewsLetterListByAuthorId(username);
+        String userId = loginService.getCurrentUserId();
+        return newsLetterMapper.selectNewsLetterListByAuthorId(userId);
     }
 
     public void saveNewsLetterHeader(NewsLetterHeader newsLetterHeader){
-        String username=loginService.getCurrentUsername();//
-        newsLetterHeader.setAuthorId(username);
+        String userId = loginService.getCurrentUserId();
+        newsLetterHeader.setAuthorId(userId);
         newsLetterMapper.insertNewsLetterHeader(newsLetterHeader);
     }
 

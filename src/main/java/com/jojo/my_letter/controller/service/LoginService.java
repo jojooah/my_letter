@@ -45,17 +45,10 @@ public class LoginService {
         return memberMapper.findMember(member.getId());
     }
 
-    public String getCurrentUsername() {
+    public String getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            Object principal = authentication.getPrincipal();
-            if (principal instanceof UserDetails) {
-                return ((UserDetails) principal).getUsername(); //인터페이스이기때문에 저기서 USERNAME에 해당하는걸 가져오면 진짜 username을 가져온다.
-            } else {
-                return principal.toString();
-            }
-        }
-        return null;
+        Member member = (Member)authentication.getPrincipal();
+        return  member.getId();
     }
 
 }

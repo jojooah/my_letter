@@ -10,14 +10,16 @@
                 content,
                 cost,
                 freeYn,
-                view
+                view,
+                author_id
             )
         VALUES (
             #{param.title},
             #{param.content},
             0,
             'Y',
-            0
+            0,
+            #{param.authorId}
         )
     </insert>
 
