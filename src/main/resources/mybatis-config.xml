@@ -12,6 +12,7 @@
         <typeAlias type="com.jojo.my_letter.model.entity.NewsLetter" alias="NewsLetter"/>
         <typeAlias type="com.jojo.my_letter.model.entity.NewsLetterHeader" alias="NewsLetterHeader"/>
         <typeAlias type="com.jojo.my_letter.model.entity.Category" alias="Category"/>
+        <typeAlias type="com.jojo.my_letter.model.entity.CategoryCombi" alias="CategoryCombi"/>
         <typeAlias type="com.jojo.my_letter.model.entity.AccessLog" alias="AccessLog"/>
     </typeAliases>
 

@@ -28,7 +28,7 @@ public class AccessLogFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
 
         AccessLog accessLog = new AccessLog();
-        accessLog.setMemberId(loginService.getCurrentUserId());
+     //   accessLog.setMemberId(loginService.getCurrentUserId()); // 여기서넣지말고, 아래부분에서 쓰레드로컬에서 꺼내와서 넣기.
         accessLog.setHost(httpRequest.getRemoteHost());
         accessLog.setClientIp(httpRequest.getRemoteAddr());
         accessLog.setUserAgent(httpRequest.getHeader("User-Agent"));
