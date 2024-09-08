@@ -29,7 +29,7 @@
             header_title AS headerTitle,
             subscribers,
             reg_date AS regDate,
-            category_seq AS categorySeq
+            category_combi_seq AS categoryCombiSeq
         FROM joo.news_letter_header
         WHERE author_id = #{param}
         AND db_status = 'OK'
@@ -38,16 +38,18 @@
     <insert id="insertNewsLetterHeader" parameterType="NewsLetterHeader">
         INSERT INTO  /*insertNewsLetterHeader*/
             joo.news_letter_header (
-                header_title,
-                author_id,
-                reg_date,
-                db_status
+                header_title
+              , category_combi_seq
+              , author_id
+              , reg_date
+              , db_status
             )
         VALUES (
-            #{param.headerTitle},
-            #{param.authorId},
-            NOW(),
-            'OK'
+            #{param.headerTitle}
+          , #{param.categoryCombiSeq}
+          , #{param.authorId}
+          , NOW()
+          , 'OK'
             )
     </insert>
 </mapper>
