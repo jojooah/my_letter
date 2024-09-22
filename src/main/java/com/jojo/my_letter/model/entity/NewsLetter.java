@@ -1,9 +1,10 @@
 package com.jojo.my_letter.model.entity;
+import com.jojo.my_letter.model.CommonDTO;
 import lombok.Data;
 import java.util.Date;
 
 @Data
-public class NewsLetter {
+public class NewsLetter extends CommonDTO {
     private Integer newsLetterSeq;
     private Integer newsLetterHeaderSeq;
     private String title;         //제목

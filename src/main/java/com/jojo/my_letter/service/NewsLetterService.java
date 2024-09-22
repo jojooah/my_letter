@@ -20,31 +20,58 @@ public class NewsLetterService {
     private final LoginService loginService;
 
     public void saveNewsLetter(NewsLetter newsLetter){
+        NewsLetter n = newsLetter;
         newsLetterMapper.insertNewsLetter(newsLetter);
     }
 
-    public List<NewsLetterHeader> selectNewsLetterList(){
+    /**
+     * 뉴스레터 헤더 리스트 조회
+     * @return
+     */
+    public List<NewsLetterHeader> selectNewsLetterHeaderList(){
         String userId = loginService.getCurrentUserId();
         return newsLetterMapper.selectNewsLetterListByAuthorId(userId);
     }
 
+    /**
+     * 뉴스레터 헤더 조회
+     * @param seq
+     * @return
+     */
+    public NewsLetterHeader selectNewsLetterHeader(Integer seq){
+        return newsLetterMapper.selectNewsLetterHeaderBySeq(seq);
+    }
+
+    /**
+     * 뉴스레터 헤더 저장
+     * @param newsLetterHeader
+     */
     public void saveNewsLetterHeader(NewsLetterHeader newsLetterHeader){
         String userId = loginService.getCurrentUserId();
         newsLetterHeader.setAuthorId(userId);
 
         CategoryCombi categoryCombi = new CategoryCombi();
-        categoryCombi.setCat1Code(newsLetterHeader.getCatCode1());
-        categoryCombi.setCat2Code(newsLetterHeader.getCatCode2());
-        categoryCombi.setCat3Code(newsLetterHeader.getCatCode3());
+        categoryCombi.setCat1Code(newsLetterHeader.getCat1Code());
+        categoryCombi.setCat2Code(newsLetterHeader.getCat2Code());
+        categoryCombi.setCat3Code(newsLetterHeader.getCat3Code());
 
         Integer categoryCombiSeq = categoryCombiMapper.selectCategoryCombiSeq(categoryCombi);
         if(ObjectUtils.isEmpty(categoryCombiSeq)) {
             categoryCombiMapper.insertCategory(categoryCombi);
-            newsLetterHeader.setCategoryCombiSeq(categoryCombi.getCategoryCombiSeq());
+            categoryCombiSeq=categoryCombi.getCategoryCombiSeq();
+
         }
 
         newsLetterHeader.setCategoryCombiSeq(categoryCombiSeq);
         newsLetterMapper.insertNewsLetterHeader(newsLetterHeader);
+    }
+
+    /**
+     * 뉴스레터 조회
+     * @return
+     */
+    public List<NewsLetter> selectNewsLetterList(Integer newsletterHeaderSeq){
+        return newsLetterMapper.selectNewsLetterListByHeaderSeq(newsletterHeaderSeq);
     }
 
 }

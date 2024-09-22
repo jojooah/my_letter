@@ -3,6 +3,7 @@ package com.jojo.my_letter.filter;
 import com.jojo.my_letter.controller.service.AccessLogService;
 import com.jojo.my_letter.controller.service.LoginService;
 import com.jojo.my_letter.model.entity.AccessLog;
+import com.jojo.my_letter.model.entity.UserContext;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,15 +28,25 @@ public class AccessLogFilter implements Filter {
         LocalDateTime requestDate = LocalDateTime.now();
         HttpServletRequest httpRequest = (HttpServletRequest) request;
 
+        String uri = httpRequest.getRequestURI();
+        // 정적 파일 요청 제외
+        if (uri.endsWith(".css") || uri.endsWith(".js") || uri.endsWith(".png") ||
+                uri.endsWith(".jpg") || uri.endsWith(".jpeg") || uri.endsWith(".gif") || uri.endsWith(".ico")) {
+
+            // 정적 파일 요청은 필터링만 하고 다음 필터로 넘김
+            chain.doFilter(request, response);
+            return;
+        }
+
         AccessLog accessLog = new AccessLog();
-     //   accessLog.setMemberId(loginService.getCurrentUserId()); // 여기서넣지말고, 아래부분에서 쓰레드로컬에서 꺼내와서 넣기.
         accessLog.setHost(httpRequest.getRemoteHost());
         accessLog.setClientIp(httpRequest.getRemoteAddr());
         accessLog.setUserAgent(httpRequest.getHeader("User-Agent"));
-        accessLog.setUri(httpRequest.getRequestURI());
+        accessLog.setUri(uri);
         accessLog.setMethod(httpRequest.getMethod());
         accessLog.setRequestAt(requestDate);
         accessLog.setReferer(httpRequest.getHeader("Referer"));
+
         /**
          * 사용자 request
          * 1 accessLogFilter
@@ -58,7 +69,11 @@ public class AccessLogFilter implements Filter {
 
         long timeGap = System.currentTimeMillis() - startTime;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+        String memberId = (String)UserContext.getUserContext().get("memberId");
+        Integer errorStatus = (Integer) UserContext.getUserContext().getOrDefault("errorStatus",0);
 
+        accessLog.setMemberId(memberId);
+        accessLog.setErrorStatus(errorStatus);
         accessLog.setElapsed(timeGap);
         accessLog.setResponseAt(LocalDateTime.now());
         accessLog.setStatus(String.valueOf(httpServletResponse.getStatus()));

@@ -26,7 +26,7 @@ public class TelegramService {
     public void sendTelegram(String message) {
         message = getActiveFirstProfile() + message;
         try {
-            send(message);
+            //send(message);
             log.info("[TODO: 실제전송시켜야함 ! ] message: {}", message);
         }catch (Exception e) {
             log.error("텔레그램 장애 상황.", e);

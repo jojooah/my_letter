@@ -1,71 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-<head th:replace="/fragment/head.html::fragment-header"></head>
-<body>
-    <div th:replace="/fragment/user_navbar.html::fragment-navbar"></div>
-    <div class="container-fluid page-header py-5">
-        <h1 class="text-center text-white display-6">뉴스레터 작성</h1>
-    </div>
 
-    <div class="container-fluid py-5">
-        <div class="container py-5">
-            <form id="newsLetterForm" method="post">
-                <h4 class="mb-5 fw-bold">카테고리 셀렉트박스로 선택</h4>
-                <div class="col-xl-3">
-                    <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-                        <label>카테고리1</label>
-                        <select id="category1" name="" class="border-0 form-select-sm bg-light me-3">
-                            <option value="volvo">cate1</option>
-                            <option value="saab">인기순</option>
-                            <option value="opel">1화부터</option>
-                        </select>
+<head th:replace="/fragment/head.html::fragment-header"></head>
+
+<body>
+<!-- Navbar start -->
+<div th:replace="/fragment/navbar.html::fragment-navbar"></div>
+<!-- Navbar End -->
+
+<!-- Single Page Header start -->
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6" th:text="${newsletterHeader.headerTitle}">뉴스레터 제목</h1>
+    <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item" th:text="${newsletterHeader.authorId}">작가이름</li>
+    </ol>
+</div>
+<!-- Single Page Header End -->
+
+<!-- 뉴스레터 작성 시작 -->
+<div class="container-fluid fruite py-5">
+    <div class="container py-5">
+        <div class="row g-4">
+            <div class="col-lg-12 d-flex justify-content-center">
+                <input type="hidden" name="newsLetterHeaderSeq" th:value="${newsletterHeader.newsLetterHeaderSeq}">
+                <div class="col-lg-9">
+                    <h3 class="mb-4">뉴스레터 작성</h3>
+
+                    <!-- 제목 입력 -->
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="title" placeholder="뉴스레터 제목을 입력하세요.">
                     </div>
-                    <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-                        <label>카테고리2</label>
-                        <select id="category2" name="" class="border-0 form-select-sm bg-light me-3">
-                            <option value="volvo">cate2</option>
-                            <option value="saab">인기순</option>
-                            <option value="opel">1화부터</option>
-                        </select>
+
+                    <!-- 내용 입력 -->
+                    <div id="summernote"></div><br/>
+
+                    <div class="d-flex justify-content-between">
+                        <!-- 무료연재 여부 -->
+                        <div class="mb-3 me-3" style="flex: 1;">
+                            <label for="freeYn" class="form-label">무료연재 여부</label>
+                            <select class="form-select" id="freeYn" name="freeYn">
+                                <option value="Y">무료</option>
+                                <option value="N">유료</option>
+                            </select>
+                        </div>
+
+                        <!-- 가격  -->
+                        <div id="costDiv" class="mb-3" style="flex: 1; visibility: hidden;">
+                            <label for="cost" class="form-label">가격</label>
+                            <input type="text" class="form-control" id="cost" name="cost" placeholder="가격을 입력하세요." value="0">
+                        </div>
                     </div>
-                    <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-                        <label>카테고리3</label>
-                        <select id="category3" name="" class="border-0 form-select-sm bg-light me-3">
-                            <option value="volvo">cate2</option>
-                            <option value="saab">인기순</option>
-                            <option value="opel">1화부터</option>
-                        </select>
+
+                    <div class="d-flex justify-content-end">
+                        <button name="saveNewsLetter" class="btn btn-primary me-2">저장</button>
+                        <button name="cancel" class="btn btn-secondary">취소</button>
                     </div>
                 </div>
-                <div class="row g-4">
-                    <div class="col-lg-6">
-                        <div class="border-bottom rounded">
-                            <input type="text" name="title" id="title" class="form-control border-0 me-4" placeholder="뉴스레터 제목">
-                        </div>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="border-bottom rounded my-4">
-                            <textarea name="content" id="content" class="form-control border-0" cols="30" rows="8" placeholder="내용" spellcheck="false"></textarea>
-                        </div>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="d-flex justify-content-between py-3 mb-5">
-                            <div class="d-flex align-items-center">
-                            </div>
-                            <input type="button" name="saveNewsLetter" value="저장" class="btn border border-secondary text-primary rounded-pill px-4 py-3">
-                        </div>
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
-    <span th:replace="/fragment/footer.html :: fragment-footer"></span>
-    <span th:replace="/fragment/commonJs.html :: fragment-commonJs"></span>
+</div>
+<!-- 뉴스레터 작성 끝 -->
 
-    <script type="text/javascript">
-        $(function() {
-            Newsletter.start();
-        });
-    </script>
+<!-- Copyright Start -->
+<span th:replace="/fragment/footer.html :: fragment-footer"></span>
+<!-- Copyright End -->
+
+<!-- JavaScript Libraries -->
+<span th:replace="/fragment/commonJs.html :: fragment-commonJs"></span>
+<script type="text/javascript">
+    $(function () {
+        Write.start();
+    });
+</script>
 </body>
 </html>

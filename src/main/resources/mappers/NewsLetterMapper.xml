@@ -6,33 +6,51 @@
     <insert id="insertNewsLetter" parameterType="NewsLetter">
         INSERT INTO  /*insertNewsLetter*/
             joo.news_letter (
+                news_letter_header_seq,
                 title,
                 content,
                 cost,
                 freeYn,
-                view,
-                author_id
+                view
             )
         VALUES (
+            #{param.newsLetterHeaderSeq},
             #{param.title},
             #{param.content},
-            0,
-            'Y',
-            0,
-            #{param.authorId}
+            #{param.cost},
+            #{param.freeYn},
+            0
         )
     </insert>
 
     <select id="selectNewsLetterListByAuthorId" parameterType="String" resultType="NewsLetterHeader">
         SELECT
-            author_id AS authorId, -- 명시적으로 카멜케이스로 가져와야만 동작..왜?
-            header_title AS headerTitle,
-            subscribers,
-            reg_date AS regDate,
-            category_combi_seq AS categoryCombiSeq
-        FROM joo.news_letter_header
-        WHERE author_id = #{param}
-        AND db_status = 'OK'
+            DISTINCT
+                a.author_id AS authorId
+              , a.news_letter_header_seq AS newsLetterHeaderSeq
+              , a.header_title AS headerTitle
+              , a.subscribers
+              , a.reg_date AS regDate
+              , b.cat1_code AS cat1Code
+              , b.cat2_code AS cat2Code
+              , b.cat3_code AS cat3Code
+              , MAX(CASE WHEN b.cat1_code = c.cat_code THEN c.cat_name END) AS cat1Name
+              , MAX(CASE WHEN b.cat2_code = c.cat_code THEN c.cat_name END) AS cat2Name
+              , MAX(CASE WHEN b.cat3_code = c.cat_code THEN c.cat_name END) AS cat3Name
+        FROM
+            joo.news_letter_header a
+                INNER JOIN joo.category_combi b ON a.category_combi_seq = b.category_combi_seq
+                INNER JOIN joo.category c ON c.cat_code IN (b.cat1_code, b.cat2_code, b.cat3_code)
+        WHERE
+            a.author_id = #{param}
+        GROUP BY
+            a.author_id,
+            a.header_title,
+            a.subscribers,
+            a.reg_date,
+            b.cat1_code,
+            b.cat2_code,
+            b.cat3_code;
     </select>
 
     <insert id="insertNewsLetterHeader" parameterType="NewsLetterHeader">
@@ -52,4 +70,28 @@
           , 'OK'
             )
     </insert>
+
+    <select id="selectNewsLetterListByHeaderSeq" parameterType="Integer" resultType="NewsLetter">
+        SELECT *
+        FROM
+            joo.news_letter
+        WHERE
+            news_letter_header_seq = #{param}
+    </select>
+
+    <select id="selectNewsLetterHeaderBySeq" parameterType="Integer" resultType="NewsLetterHeader">
+        SELECT
+            news_letter_header_seq AS newsLetterHeaderSeq
+          , category_combi_seq AS categoryCombiSeq
+          , header_title AS headerTitle
+          , subscribers
+          , author_id AS authorId
+        FROM
+            joo.news_letter_header
+        WHERE
+            news_letter_header_seq = #{param}
+        AND db_status = 'OK'
+    </select>
+
+
 </mapper>
