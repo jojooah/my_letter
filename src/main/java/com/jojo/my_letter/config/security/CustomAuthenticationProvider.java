@@ -3,6 +3,7 @@ package com.jojo.my_letter.config.security;
 import com.jojo.my_letter.mapper.MemberMapper;
 import com.jojo.my_letter.model.entity.ActivityType;
 import com.jojo.my_letter.model.entity.Member;
+import com.jojo.my_letter.model.entity.UserContext;
 import com.jojo.my_letter.service.thirdparty.TelegramService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -55,6 +56,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         // 로그인 기록
         memberMapper.insertLoginHistory(findMember);
         telegramService.sendTelegram("로그인 완료 : " + id);
+        UserContext.getUserContext().put("memberId", member.getId()); // 쓰레드로컬에 로그인유저 정보 넣기 - 액세스 로그
         return new UsernamePasswordAuthenticationToken(member, password, member.getAuthorities());
     }
 

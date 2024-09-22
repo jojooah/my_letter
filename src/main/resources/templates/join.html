@@ -88,10 +88,19 @@
                         <h4 th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></h4>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-4">
-                        <button type="submit" class="btn btn-primary btn-block">회원가입하기</button>
+                <div class="input-group mb-3">
+                    <label for="type">사용자구분</label>
+                    <select id="type" name="type" class="border-0 form-select-sm bg-light me-3">
+                        <option value="ROLE_USER">독자</option>
+                        <option value="ROLE_AUTHOR">작가</option>
+                    </select>
+                    <div class="details">
+                        <h4 th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></h4>
                     </div>
+                </div>
+                <div class="col-4">
+                        <button type="submit" class="btn btn-primary btn-block">회원가입하기</button>
+                </div>
             </form>
             <div class="col-8">
                 <div class="icheck-primary">

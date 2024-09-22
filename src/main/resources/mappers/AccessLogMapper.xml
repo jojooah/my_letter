@@ -23,7 +23,7 @@
             #{param.clientIp},
             #{param.elapsed},
             #{param.referer},
-            #{param.regDate}
+            NOW()
         )
     </insert>
 

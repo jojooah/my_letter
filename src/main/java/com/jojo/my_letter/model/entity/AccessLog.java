@@ -34,4 +34,5 @@ public class AccessLog extends CommonDTO {
     private LocalDateTime requestAt;
     private LocalDateTime responseAt;
     private String requestId;
+    private int errorStatus;
 }

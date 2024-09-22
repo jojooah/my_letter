@@ -46,8 +46,8 @@ public class Member implements UserDetails {
     //@NotBlank(message = "성별을 입력하세요.")
     //private String gender;
 
-    //@NotBlank(message = "작가/독자 여부를 선택하세요.")
-    //private String type; //ROLE_USER, ROLE_ADMIN, ROLE_AUTH
+    @NotBlank(message = "작가/독자 여부를 선택하세요.")
+    private String type; //ROLE_USER, ROLE_ADMIN, ROLE_AUTH
 
     private String status;
     private String grade;
@@ -56,11 +56,12 @@ public class Member implements UserDetails {
     private LocalDateTime lastLoginTime;
     private String ipAddress;
     private ActivityType activityType;
+
     //해당 유저의 권한을 리턴한다
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         //작가일때에는 작가권한
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return List.of(new SimpleGrantedAuthority(type));
     }
 
     @Override

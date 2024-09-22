@@ -16,8 +16,25 @@
     </update>
 
     <insert id="insertMember" parameterType="Member">
-        INSERT INTO Member (id, password, email, username, status, created_at)
-        VALUES (#{id}, #{password}, #{email}, #{username}, 'active', NOW());
+        INSERT INTO
+            Member (
+                id
+              , password
+              , type
+              , email
+              , username
+              , status
+              , created_at
+              )
+        VALUES (
+            #{id}
+          , #{password}
+          , #{type}
+          , #{email}
+          , #{username}
+          , 'active'
+          , NOW()
+        );
     </insert>
 
     <insert id="insertLoginHistory" parameterType="Member">
