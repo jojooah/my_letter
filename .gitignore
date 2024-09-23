@@ -33,5 +33,4 @@ build/
 .vscode/
 
 *.yml
-*.log.gz
-*.log
+logs

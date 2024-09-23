@@ -4,7 +4,14 @@ const Write = (function () {
         $('#summernote').summernote({
             placeholder: '뉴스레터를 작성하세요.',
             tabsize: 2,
-            height: 600
+            height: 600,
+            callbacks: {
+                onImageUpload: function (files) {
+                    for (let i = 0; i < files.length; i++) {
+                        imageUploader(files[i], this);
+                    }
+                }
+            }
         });
 
         $("select[name=freeYn]").on('change', function () {
@@ -26,22 +33,22 @@ const Write = (function () {
             }
         });
 
-        $("button[name=saveNewsLetter]").click(function(){
+        $("button[name=saveNewsLetter]").click(function () {
 
             let objParams = {
-                content : $("#summernote").summernote("code") === '<p><br></p>' ? '' : $("#summernote").summernote("code"),
-                title :  $("input[name=title]").val(),
-                newsLetterHeaderSeq :  $("input[name=newsLetterHeaderSeq]").val(),
-                freeYn :  $("select[name=freeYn]").val(),
-                cost :  $("input[name=cost]").val(),
+                content: $("#summernote").summernote("code") === '<p><br></p>' ? '' : $("#summernote").summernote("code"),
+                title: $("input[name=title]").val(),
+                newsLetterHeaderSeq: $("input[name=newsLetterHeaderSeq]").val(),
+                freeYn: $("select[name=freeYn]").val(),
+                cost: $("input[name=cost]").val(),
             }
 
-            if(objParams.title === null || objParams.title.trim() === "") {
+            if (objParams.title === null || objParams.title.trim() === "") {
                 alert("뉴스레터 제목을 입력하세요.");
                 return;
             }
 
-            if(objParams.content === null || objParams.content.trim() === "") {
+            if (objParams.content === null || objParams.content.trim() === "") {
                 alert("뉴스레터 내용을 입력하세요.");
                 return;
             }
@@ -52,7 +59,7 @@ const Write = (function () {
                     type: "POST",
                     contentType: "application/json",
                     data: JSON.stringify(objParams),
-                    success: function(response) {
+                    success: function (response) {
                         if (response.data.status === "SUCCESS") {
                             alert(response.data.message);
                             location.reload();
@@ -61,86 +68,43 @@ const Write = (function () {
                             location.reload();
                         }
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         alert(error);
                     }
                 });
+
             }
         })
-
-        $("button[data-progress=createNewsLetterHeader]").click(function() {
-            $("#newsletterModal").modal('show');
-        });
-
-        $("button[data-progress=saveNewsLetterHeader]").click(function() {
-            let objParams = $("#newsLetterForm").serializeObject();
-            if(!validationCheck()) return;
-
-            $.ajax({
-                url: "/saveNewsLetterHeader",
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify(objParams),
-                success: function(response) {
-                    if (response.data.status === "SUCCESS") {
-                        alert(response.data.message);
-                        window.location.href = "/author/newsletter/list";
-                    } else {
-                        alert(response.data.message);
-                        window.location.href = "/author/newsletter/list";
-                    }
-                },
-                error: function(xhr, status, error) {
-                    alert(error);
-                }
-            });
-        });
-
-        $("select[data-progress=filter]").on("change", function() {
-            let selectedValue = $(this).val();
-            let $nextSelect = $(this).closest("div").next("div").find("select[data-progress=filter]");
-
-            // 다음 셀렉트박스의 모든 옵션을 비활성화 및 숨김 처리
-            $nextSelect.find("option").hide().prop("disabled", true);
-            // upperCode와 일치하는 옵션만 활성화 및 표시
-            if (selectedValue !== "") {
-                let matchingOptions = $nextSelect.find("option").filter(function() {
-                    return $(this).data("progress") === selectedValue;
-                }).show().prop("disabled", false);
-
-                // 일치하는 옵션이 1개인 경우 자동으로 선택
-                if (matchingOptions.length === 1) {
-                    $nextSelect.val(matchingOptions.val());
-                    return;
-                }else{}
-
-            }
-            $nextSelect.prepend('<option value="">전체</option>');
-            $nextSelect.val("");
-
-        });
-
     }
 
-    function validationCheck(){
-        let isValid = true;
-        $("[data-validation]").each(function() {
-            let validationType = $(this).data("validation");
-            let value = $(this).val().trim();
+    function imageUploader(file, el) {
+        var formData = new FormData();
+        formData.append('file', file);
 
-            if (validationType === "required") {
-                if (value === "") {
-                   alert($(this).data("name")+"은(는) 필수값입니다.");
-                   isValid = false;
-                   return false;
-                }
+        $.ajax({
+            data : formData,
+            type : "POST",
+            url : '/newsletter/image-upload',
+            contentType : false,
+            processData : false,
+            enctype : 'multipart/form-data',
+            success : function(data) {
+                $(el).summernote('insertImage', "/resources/images/upload/"
+                +data.data.data, function($image) {
+                    $image.css('width', "100%");
+                });
+
+                console.log(data.data);
+                console.log(data.data.data);
             }
         });
-        return isValid;
     }
 
     return {
         start: start
     }
 
-})();
+})()
+
+
+
