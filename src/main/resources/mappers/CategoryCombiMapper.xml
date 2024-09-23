@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jojo.my_letter.mapper.CategoryCombiMapper">
+
+    <select id="selectCategoryCombiSeq" resultType="Integer">
+        select  /*selectCategoryCombiSeq*/
+            category_combi_seq as categoryCombiSeq
+        from joo.category_combi
+        where cat1_code = #{param.cat1Code}
+        and cat2_code = #{param.cat2Code}
+        and cat3_code = #{param.cat3Code}
+        and db_status = 'OK'
+    </select>
+
+    <insert id="insertCategory" parameterType="CategoryCombi" useGeneratedKeys="true" keyProperty="categoryCombiSeq">
+        INSERT INTO  /*insertCategory*/
+        joo.category_combi (
+            cat1_code
+          , cat2_code
+          , cat3_code
+          , reg_date
+          , db_status
+        )
+        VALUES (
+            #{param.cat1Code}
+          , #{param.cat2Code}
+          , #{param.cat3Code}
+          , NOW()
+          , 'OK'
+        )
+    </insert>
+</mapper>

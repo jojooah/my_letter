@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+    <!-- SqlSessionTemplate 관련 설정 -->
+    <settings>
+        <setting name="jdbcTypeForNull" value="NULL"/>
+    </settings>
+
+    <!-- 별칭 작성 부분 -->
+    <typeAliases>
+        <typeAlias type="com.jojo.my_letter.model.entity.Member" alias="Member"/>
+        <typeAlias type="com.jojo.my_letter.model.entity.NewsLetter" alias="NewsLetter"/>
+        <typeAlias type="com.jojo.my_letter.model.entity.NewsLetterHeader" alias="NewsLetterHeader"/>
+        <typeAlias type="com.jojo.my_letter.model.entity.Category" alias="Category"/>
+        <typeAlias type="com.jojo.my_letter.model.entity.CategoryCombi" alias="CategoryCombi"/>
+        <typeAlias type="com.jojo.my_letter.model.entity.AccessLog" alias="AccessLog"/>
+    </typeAliases>
+
+</configuration>
