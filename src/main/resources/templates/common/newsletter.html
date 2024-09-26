@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head th:replace="/fragment/head.html::fragment-header"></head>
-
 <body>
         <!-- Navbar start -->
         <div th:replace="/fragment/navbar.html::fragment-navbar"></div>
@@ -36,10 +34,10 @@
                                 <h4 class="fw-bold mb-3" th:text="${newsletter.title}">소제목</h4>
                                 <h5 class="fw-bold mb-3" >유료 뉴스레터입니다. / 무료 뉴스레터입니다.</h5>
                                 <p class="mb-4"th:text="${newsletter.description}">작품 설명. 블라블라 블라블라 블라블라</p>
-                                <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i>보기</a>
-                                <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i>결제(유료이면)</a>
-                                <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i>구독</a>
-                                <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i>기부</a>
+                                <a th:href="'/newsletter/item/content/' + ${newsletter.newsLetterSeq}" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">보기</a>
+                                <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">결제</a>
+                                <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">구독</a>
+                                <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">기부</a>
                             </div>
                             <div class="col-lg-12">
                                 <nav>
@@ -165,14 +163,8 @@
                 </div>
             </div>
         </div>
-        <!-- Single Product End -->
 
-        <!-- Copyright Start -->
         <span th:replace="/fragment/footer.html :: fragment-footer"></span>
-        <!-- Copyright End -->
-
-        <!-- JavaScript Libraries -->
         <span th:replace="/fragment/commonJs.html :: fragment-commonJs"></span>
     </body>
-
 </html>

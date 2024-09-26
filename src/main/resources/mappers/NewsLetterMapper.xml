@@ -73,11 +73,19 @@
     </insert>
 
     <select id="selectNewsLetterListByHeaderSeq" parameterType="Integer" resultType="NewsLetter">
-        SELECT *
+        SELECT
+            n.news_letter_seq as newsLetterSeq
+          , n.title
+          , n.content
+          , n.cost
+          , n.freeYn
+          , n.description
+          , n.news_letter_header_seq AS newsLetterHeaderSeq
+          , n.view
         FROM
-            joo.news_letter
+            joo.news_letter n
         WHERE
-            news_letter_header_seq = #{param}
+            n.news_letter_header_seq = #{param}
     </select>
 
     <select id="selectNewsLetterHeaderBySeq" parameterType="Integer" resultType="NewsLetterHeader">
@@ -116,6 +124,10 @@
             news_letter_seq = #{param}
         AND n.news_letter_header_seq = nh.news_letter_header_seq
         AND nh.author_id = m.id
-
     </select>
+
+    <delete id="deleteNewsLetterBySeq" parameterType="Integer">
+        delete from joo.news_letter
+        where news_letter_seq = #{param}
+    </delete>
 </mapper>

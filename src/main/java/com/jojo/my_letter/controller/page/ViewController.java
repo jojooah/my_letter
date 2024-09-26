@@ -27,20 +27,20 @@ public class ViewController {
     }
 
     @GetMapping("/newsletter/list")
-    public String newsletterItem(Model model, @RequestParam(required = false) Integer seq){
+    public String newsletterItem(Model model, @RequestParam(required = false) Integer seq) {
         model.addAttribute("newsletterList", newsLetterService.selectNewsLetterList(seq));
         model.addAttribute("newsletterHeader", newsLetterService.selectNewsLetterHeader(seq));
         return "common/newsletter.list";
     }
 
     @GetMapping("/newsletter/item/{seq}")
-    public String newsletterItem1(Model model,@PathVariable("seq") int seq) {
+    public String newsletterItem1(Model model, @PathVariable("seq") int seq) {
         model.addAttribute("newsletter", newsLetterService.selectNewsLetter(seq));
         return "common/newsletter";
     }
 
     @GetMapping("/newsletter/item/content/{seq}")
-    public String newsletterContent(Model model,@PathVariable("seq") int seq) {
+    public String newsletterContent(Model model, @PathVariable("seq") int seq) {
         model.addAttribute("newsletter", newsLetterService.selectNewsLetter(seq));
         return "common/newsletter.content";
     }
@@ -66,13 +66,13 @@ public class ViewController {
     }
 
     @GetMapping("/write")
-    public String write(Model model, @RequestParam(required = false) Integer seq){
+    public String write(Model model, @RequestParam(required = false) Integer seq) {
         model.addAttribute("newsletterHeader", newsLetterService.selectNewsLetterHeader(seq));
         return "author/write";
     }
 
     @GetMapping("/author/newsletter/header/list")
-    public String newsLetterList(Model model){
+    public String newsLetterList(Model model) {
         model.addAttribute("newsletterHeaderList", newsLetterService.selectNewsLetterHeaderList());
         model.addAttribute("categoryList", categoryService.selectCategory());
         return "author/newsletter.header.list";

@@ -71,6 +71,26 @@ public class NewLetterController {
         }
     }
 
+    @PostMapping("/deleteNewsLetter")
+    public @ResponseBody RestResult deleteNewsLetter(@RequestBody Integer newsLetterSeq) {
+        Map<String, Object> data = new LinkedHashMap<>();
+
+        try {
+            newsLetterService.deleteNewsLetter(newsLetterSeq);
+            data.put("status", "SUCCESS");
+            data.put("message", "저장되었습니다");
+
+            return new RestResult(data);
+
+        } catch (Exception e) {
+            data.put("status", "FAIL");
+            data.put("message", "오류가 발생했습니다");
+            log.error(e.getMessage());
+
+            return new RestResult(data);
+        }
+    }
+
     @PostMapping(value = "/newsletter/image-upload")
     public @ResponseBody RestResult imageUpload(@RequestParam("file") MultipartFile file) throws IllegalStateException, IOException {
         Map<String, Object> data = new LinkedHashMap<>();

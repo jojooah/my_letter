@@ -29,6 +29,7 @@ const Newsletter = (function () {
             $("#newsletterModal").modal('show');
         });
 
+        //뉴스레터 저장
         $("button[data-progress=saveNewsLetterHeader]").click(function() {
             let objParams = $("#newsLetterForm").serializeObject();
             if(!validationCheck()) return;
@@ -45,6 +46,30 @@ const Newsletter = (function () {
                     } else {
                         alert(response.data.message);
                         window.location.href = "/author/newsletter/list";
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert(error);
+                }
+            });
+        });
+
+        //뉴스레터 삭제
+        $("button[data-progress=delete]").click(function() {
+            let newsLetterSeq = $("#contentNewsLetterSeq").val();
+            let newsLetterHeaderSeq = $("#contentNewsLetterHeaderSeq").val();
+            $.ajax({
+                url: "/deleteNewsLetter",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(newsLetterSeq),
+                success: function(response) {
+                    if (response.data.status === "SUCCESS") {
+                        alert(response.data.message);
+                        window.location.href = "/newsletter/list?seq="+newsLetterHeaderSeq;
+                    } else {
+                        alert(response.data.message);
+                        location.reload();
                     }
                 },
                 error: function(xhr, status, error) {

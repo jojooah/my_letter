@@ -83,4 +83,11 @@ public class NewsLetterService {
         return newsLetterMapper.selectNewsLetterBySeq(newsletterSeq);
     }
 
+    /**
+     * 뉴스레터 삭제
+     * @param newsLetterSeq
+     */
+    public void deleteNewsLetter(Integer newsLetterSeq){
+        newsLetterMapper.deleteNewsLetterBySeq(newsLetterSeq);
+    }
 }
