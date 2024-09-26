@@ -11,6 +11,7 @@ public class NewsLetterHeader extends CommonDTO {
     private String headerTitle;             //제목
     private int subscribers;                //구독자 수
     private String authorId;                //작가 아이디
+    private String authorName;
 
     private String cat1Code;
     private String cat2Code;

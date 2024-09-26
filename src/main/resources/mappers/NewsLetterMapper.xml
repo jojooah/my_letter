@@ -4,22 +4,23 @@
 <mapper namespace="com.jojo.my_letter.mapper.NewsLetterMapper">
 
     <insert id="insertNewsLetter" parameterType="NewsLetter">
-        INSERT INTO  /*insertNewsLetter*/
-            joo.news_letter (
-                news_letter_header_seq,
-                title,
-                content,
-                cost,
-                freeYn,
-                view
+        INSERT INTO joo.news_letter ( /*insertNewsLetter*/
+            news_letter_header_seq
+          , title
+          , description
+          , content
+          , cost
+          , freeYn
+          , view
             )
         VALUES (
-            #{param.newsLetterHeaderSeq},
-            #{param.title},
-            #{param.content},
-            #{param.cost},
-            #{param.freeYn},
-            0
+            #{param.newsLetterHeaderSeq}
+          , #{param.title}
+          , #{param.description}
+          , #{param.content}
+          , #{param.cost}
+          , #{param.freeYn}
+          , 0
         )
     </insert>
 
@@ -81,17 +82,40 @@
 
     <select id="selectNewsLetterHeaderBySeq" parameterType="Integer" resultType="NewsLetterHeader">
         SELECT
-            news_letter_header_seq AS newsLetterHeaderSeq
-          , category_combi_seq AS categoryCombiSeq
-          , header_title AS headerTitle
-          , subscribers
-          , author_id AS authorId
+            nh.news_letter_header_seq AS newsLetterHeaderSeq
+          , nh.category_combi_seq AS categoryCombiSeq
+          , nh.header_title AS headerTitle
+          , nh.subscribers
+          , nh.author_id AS authorId
+          , m.username AS authorName
         FROM
-            joo.news_letter_header
+            joo.news_letter_header nh,joo.Member m
         WHERE
-            news_letter_header_seq = #{param}
+            nh.news_letter_header_seq = #{param}
+        AND nh.author_id = m.id
         AND db_status = 'OK'
     </select>
 
+    <select id="selectNewsLetterBySeq" parameterType="Integer" resultType="NewsLetter">
+        SELECT
+            n.news_letter_seq as newsLetterSeq
+          , n.title
+          , n.content
+          , n.cost
+          , n.freeYn
+          , n.description
+          , n.news_letter_header_seq AS newsLetterHeaderSeq
+          , nh.category_combi_seq AS categoryCombiSeq
+          , nh.header_title AS headerTitle
+          , nh.subscribers
+          , nh.author_id AS authorId
+          , m.username AS authorName
+        FROM
+            joo.news_letter n ,news_letter_header nh, joo.Member m
+        WHERE
+            news_letter_seq = #{param}
+        AND n.news_letter_header_seq = nh.news_letter_header_seq
+        AND nh.author_id = m.id
 
+    </select>
 </mapper>

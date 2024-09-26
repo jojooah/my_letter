@@ -67,11 +67,20 @@ public class NewsLetterService {
     }
 
     /**
-     * 뉴스레터 조회
+     * 뉴스레터 리스트 조회
      * @return
      */
     public List<NewsLetter> selectNewsLetterList(Integer newsletterHeaderSeq){
         return newsLetterMapper.selectNewsLetterListByHeaderSeq(newsletterHeaderSeq);
+    }
+
+    /**
+     * 뉴스레터 조회
+     * @param newsletterSeq
+     * @return
+     */
+    public NewsLetter selectNewsLetter(Integer newsletterSeq) {
+        return newsLetterMapper.selectNewsLetterBySeq(newsletterSeq);
     }
 
 }

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="/fragment/head.html::fragment-header"></head>
+
+<body>
+<!-- Navbar start -->
+<div th:replace="/fragment/navbar.html::fragment-navbar"></div>
+<!-- Navbar End -->
+
+<!-- Single Page Header start -->
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6" th:text="${newsletter.title}">뉴스레터 제목</h1>
+    <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item" th:text="${newsletter.number}">1화</li>
+        <li class="breadcrumb-item" th:text="${newsletter.description}">소제목</li>
+        <li class="breadcrumb-item" th:text="${newsletter.authorName}">작가이름</li>
+    </ol>
+</div>
+<!-- Single Page Header End -->
+
+<!-- Single Product Start -->
+<div class="container-fluid py-5 mt-5">
+    <div class="container py-5">
+        <div class="row g-4 mb-5">
+            <div class="col-lg-8 col-xl-9">
+                <div class="row g-4">
+                    <div class="col-lg-12">
+                        <h4 class="fw-bold mb-3" th:text="${newsletter.title}">뉴스레터 제목</h4>
+                        <p class="mb-4" th:utext="${newsletter.content}">여기에 뉴스레터 본문이 표시됩니다.</p>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <nav>
+                            <div class="nav nav-tabs mb-3">
+                                <button class="nav-link border-white border-bottom-0" type="button" role="tab"
+                                        id="nav-mission-tab" data-bs-toggle="tab"
+                                        aria-controls="nav-mission" aria-selected="false">댓글</button>
+                            </div>
+                        </nav>
+                        <div class="tab-content mb-5">
+                            <div class="tab-pane active" id="nav-mission" role="tabpanel" aria-labelledby="nav-mission-tab">
+                                <div class="d-flex">
+                                    <img src="/img/avatar.jpg" class="img-fluid rounded-circle p-3" style="width: 100px; height: 100px;" alt="">
+                                    <div class="">
+                                        <p class="mb-2" style="font-size: 14px;">April 12, 2024</p>
+                                        <div class="d-flex justify-content-between">
+                                            <h5>Jason Smith</h5>
+                                        </div>
+                                        <p>댓글 내용이 여기에 표시됩니다.</p>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <img src="/img/avatar.jpg" class="img-fluid rounded-circle p-3" style="width: 100px; height: 100px;" alt="">
+                                    <div class="">
+                                        <p class="mb-2" style="font-size: 14px;">April 12, 2024</p>
+                                        <div class="d-flex justify-content-between">
+                                            <h5>Sam Peters</h5>
+                                        </div>
+                                        <p>또 다른 댓글 내용이 여기에 표시됩니다.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="pagination d-flex justify-content-center mt-5">
+                                    <a href="#" class="rounded">&laquo;</a>
+                                    <a href="#" class="active rounded">1</a>
+                                    <a href="#" class="rounded">2</a>
+                                    <a href="#" class="rounded">3</a>
+                                    <a href="#" class="rounded">4</a>
+                                    <a href="#" class="rounded">5</a>
+                                    <a href="#" class="rounded">6</a>
+                                    <a href="#" class="rounded">&raquo;</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form action="#">
+                        <h4 class="mb-5 fw-bold">댓글 남기기</h4>
+                        <div class="row g-4">
+                            <div class="col-lg-6">
+                                <div class="border-bottom rounded">
+                                    <input type="text" class="form-control border-0 me-4" placeholder="이름 *">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="border-bottom rounded">
+                                    <input type="email" class="form-control border-0" placeholder="이메일 *">
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="border-bottom rounded my-4">
+                                    <textarea name="" id="" class="form-control border-0" cols="30" rows="8" placeholder="댓글 내용 *" spellcheck="false"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="d-flex justify-content-between py-3 mb-5">
+                                    <div class="d-flex align-items-center">
+                                    </div>
+                                    <a href="#" class="btn border border-secondary text-primary rounded-pill px-4 py-3">댓글 쓰기</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-4 col-xl-3">
+                <div class="row g-4 fruite">
+                    <div class="col-lg-12">
+                        <div class="input-group w-100 mx-auto d-flex mb-4">
+                            <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
+                            <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
+                        </div>
+                        <div class="mb-4">
+                            <h4>여기는 해당 뉴스레터 다른 회차들 목록 보여주면됨</h4>
+                            <ul class="list-unstyled fruite-categorie">
+                                <li>
+                                    <div class="d-flex justify-content-between fruite-name">
+                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Apples</a>
+                                        <span>(3)</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="d-flex justify-content-between fruite-name">
+                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Oranges</a>
+                                        <span>(5)</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="d-flex justify-content-between fruite-name">
+                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Strawbery</a>
+                                        <span>(2)</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="d-flex justify-content-between fruite-name">
+                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Banana</a>
+                                        <span>(8)</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="d-flex justify-content-between fruite-name">
+                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Pumpkin</a>
+                                        <span>(5)</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Single Product End -->
+
+<!-- Copyright Start -->
+<span th:replace="/fragment/footer.html :: fragment-footer"></span>
+<!-- Copyright End -->
+
+<!-- JavaScript Libraries -->
+<span th:replace="/fragment/commonJs.html :: fragment-commonJs"></span>
+</body>
+
+</html>

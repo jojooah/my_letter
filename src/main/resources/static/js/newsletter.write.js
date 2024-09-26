@@ -41,6 +41,7 @@ const Write = (function () {
                 newsLetterHeaderSeq: $("input[name=newsLetterHeaderSeq]").val(),
                 freeYn: $("select[name=freeYn]").val(),
                 cost: $("input[name=cost]").val(),
+                description :  $("input[name=description]").val(),
             }
 
             if (objParams.title === null || objParams.title.trim() === "") {
@@ -89,13 +90,9 @@ const Write = (function () {
             processData : false,
             enctype : 'multipart/form-data',
             success : function(data) {
-                $(el).summernote('insertImage', "/resources/images/upload/"
-                +data.data.data, function($image) {
+                $(el).summernote('insertImage', data.data.data, function($image) {
                     $image.css('width', "100%");
                 });
-
-                console.log(data.data);
-                console.log(data.data.data);
             }
         });
     }

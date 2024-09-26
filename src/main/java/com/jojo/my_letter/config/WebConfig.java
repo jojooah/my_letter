@@ -31,13 +31,17 @@ public class WebConfig implements WebMvcConfigurer {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry
-			.addResourceHandler("/resources/**")
-			.addResourceLocations("/resources/");
+				.addResourceHandler("/resources/**")
+				.addResourceLocations("/resources/");
+
+		// 외부 디렉토리 경로 추가
+		registry
+				.addResourceHandler("/resources/images/upload/**")
+				.addResourceLocations("file:///C:/newsletterProject_images/upload/");
 	}
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**").allowedOrigins("*");
 	}
-
 }

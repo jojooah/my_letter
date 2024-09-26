@@ -34,8 +34,15 @@ public class ViewController {
     }
 
     @GetMapping("/newsletter/item/{seq}")
-    public String newsletterItem1(@PathVariable("seq") int seq) {
+    public String newsletterItem1(Model model,@PathVariable("seq") int seq) {
+        model.addAttribute("newsletter", newsLetterService.selectNewsLetter(seq));
         return "common/newsletter";
+    }
+
+    @GetMapping("/newsletter/item/content/{seq}")
+    public String newsletterContent(Model model,@PathVariable("seq") int seq) {
+        model.addAttribute("newsletter", newsLetterService.selectNewsLetter(seq));
+        return "common/newsletter.content";
     }
 
     @GetMapping("/weeks/monday")

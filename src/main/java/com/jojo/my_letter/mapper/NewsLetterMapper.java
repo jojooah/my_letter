@@ -38,9 +38,16 @@ public interface NewsLetterMapper {
     void insertNewsLetterHeader(@Param("param") NewsLetterHeader newsLetterHeader);
 
     /**
-     * 뉴스레터조회
+     * 뉴스레터리스트 조회
      * @param newsLetterHeaderSeq
      * @return
      */
     List<NewsLetter> selectNewsLetterListByHeaderSeq(@Param("param") Integer newsLetterHeaderSeq);
+
+    /**
+     * 뉴스레터 조회
+     * @param newsLetterSeq
+     * @return
+     */
+    NewsLetter selectNewsLetterBySeq(@Param("param") Integer newsLetterSeq);
 }

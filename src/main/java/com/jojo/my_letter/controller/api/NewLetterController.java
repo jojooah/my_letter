@@ -6,6 +6,7 @@ import com.jojo.my_letter.model.result.RestResult;
 import com.jojo.my_letter.service.NewsLetterService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +27,9 @@ import java.util.UUID;
 public class NewLetterController {
     private final NewsLetterService newsLetterService;
     private final WebApplicationContext context;
+
+    @Value("${file.upload-dir}")
+    String uploadDirectory;
 
     @PostMapping("/saveNewsLetter")
     public @ResponseBody RestResult write(@RequestBody NewsLetter newsLetter) {
@@ -70,9 +74,10 @@ public class NewLetterController {
     @PostMapping(value = "/newsletter/image-upload")
     public @ResponseBody RestResult imageUpload(@RequestParam("file") MultipartFile file) throws IllegalStateException, IOException {
         Map<String, Object> data = new LinkedHashMap<>();
+
         try {
             // 서버에 저장할 경로
-           String uploadDirectory = "C:\\newsletterProject_images\\upload";
+          String uploadDirectory = "C:\\newsletterProject_images\\upload";
             // 업로드 된 파일의 이름
             String originalFileName = file.getOriginalFilename();
 
@@ -85,10 +90,10 @@ public class NewLetterController {
             // 위에서 설정한 서버 경로에 이미지 저장
             file.transferTo(new File(uploadDirectory, uuidFileName));
 
-            System.out.println("************************ 업로드 컨트롤러 실행 ************************");
-            System.out.println(uploadDirectory);
+            // 웹에서 접근할 수 있는 경로로 변환
+            String imageUrl = "/resources/images/upload/" + uuidFileName;
 
-            data.put("data",uuidFileName);
+            data.put("data",imageUrl);
             data.put("status", "SUCCESS");
             data.put("message", "저장되었습니다");
 
