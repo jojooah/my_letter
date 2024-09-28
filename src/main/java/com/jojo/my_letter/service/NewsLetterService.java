@@ -20,8 +20,12 @@ public class NewsLetterService {
     private final LoginService loginService;
 
     public void saveNewsLetter(NewsLetter newsLetter){
-        NewsLetter n = newsLetter;
-        newsLetterMapper.insertNewsLetter(newsLetter);
+        if(ObjectUtils.isEmpty(newsLetter.getNewsLetterSeq())){
+            newsLetterMapper.insertNewsLetter(newsLetter);
+        }
+       else{
+           newsLetterMapper.updateNewsLetter(newsLetter);
+        }
     }
 
     /**

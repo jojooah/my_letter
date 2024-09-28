@@ -56,4 +56,10 @@ public interface NewsLetterMapper {
      * @param newsLetterSeq
      */
     void deleteNewsLetterBySeq(@Param("param") Integer newsLetterSeq);
+
+    /**
+     * 뉴스레터 수정
+     * @param newsLetter
+     */
+    void updateNewsLetter(@Param("param") NewsLetter newsLetter);
 }

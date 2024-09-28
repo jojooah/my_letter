@@ -130,4 +130,17 @@
         delete from joo.news_letter
         where news_letter_seq = #{param}
     </delete>
+
+    <update id="updateNewsLetter" parameterType="NewsLetter">
+        UPDATE  joo.news_letter
+        SET
+            title = #{param.title}
+          , description = #{param.description}
+          , content = #{param.content}
+          , cost = #{param.cost}
+          , freeYn = #{param.freeYn}
+          , upd_date = NOW()
+        WHERE news_letter_seq = #{param.newsLetterSeq}
+    </update>
+
 </mapper>

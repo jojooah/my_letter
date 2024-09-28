@@ -39,6 +39,7 @@ const Write = (function () {
                 content: $("#summernote").summernote("code") === '<p><br></p>' ? '' : $("#summernote").summernote("code"),
                 title: $("input[name=title]").val(),
                 newsLetterHeaderSeq: $("input[name=newsLetterHeaderSeq]").val(),
+                newsLetterSeq:$("input[name=newsLetterSeq]").val(),
                 freeYn: $("select[name=freeYn]").val(),
                 cost: $("input[name=cost]").val(),
                 description :  $("input[name=description]").val(),

@@ -9,7 +9,7 @@
     <h1 class="text-center text-white display-6" th:text="${newsletter.title}">뉴스레터 제목</h1>
     <ol class="breadcrumb justify-content-center mb-0">
         <li class="breadcrumb-item" th:text="${newsletter.number}">1화</li>
-        <li class="breadcrumb-item" th:text="${newsletter.description}">소제목</li>
+        <li class="breadcrumb-item" id="description" th:text="${newsletter.description}">소제목</li>
         <li class="breadcrumb-item" th:text="${newsletter.authorName}">작가이름</li>
     </ol>
 </div>
@@ -22,10 +22,25 @@
             <div class="col-lg-8 col-xl-9">
                 <div class="row g-4">
                     <div class="col-lg-12">
-                        <h4 class="fw-bold mb-3" th:text="${newsletter.title}">뉴스레터 제목</h4>
-                        <p class="mb-4" th:utext="${newsletter.content}">여기에 뉴스레터 본문이 표시됩니다.</p>
+                        <h4 class="fw-bold mb-3" id="title" th:text="${newsletter.title}">뉴스레터 제목</h4>
+                        <p class="mb-4" id="content" th:utext="${newsletter.content}">여기에 뉴스레터 본문이 표시됩니다.</p>
                     </div>
-                    <!-- 삭제, 수정 버튼 영역 -->
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <!-- 무료연재 여부 -->
+                        <div class="mb-3 me-3" style="flex: 1;">
+                            <label for="freeYn" class="form-label">무료연재 여부</label>
+                            <select class="form-select" id="freeYn" name="freeYn">
+                                <option value="Y" th:selected="${newsletter.freeYn == 'Y'}">무료</option>
+                                <option value="N" th:selected="${newsletter.freeYn == 'N'}">유료</option>
+                            </select>
+                        </div>
+                        <!-- 가격  -->
+                        <div id="costDiv" class="mb-3" style="flex: 1;">
+                            <label for="cost" class="form-label">가격</label>
+                            <input type="text" class="form-control" id="cost" name="cost" placeholder="가격을 입력하세요." th:value="${newsletter.cost}">
+                        </div>
+                    </div>
                     <div class="d-flex justify-content-end mt-3">
                         <button data-progress="delete" class="btn btn-danger" style="background-color: #f8d7da; border-color: #f5c6cb; color: #721c24;">삭제</button>
                         <button data-progress="update" class="btn btn-primary">수정</button>
@@ -149,15 +164,12 @@
         </div>
     </div>
 </div>
-
 <span th:replace="/fragment/footer.html :: fragment-footer"></span>
 <span th:replace="/fragment/commonJs.html :: fragment-commonJs"></span>
-
 <script type="text/javascript">
     $(function () {
         Newsletter.start();
     });
 </script>
 </body>
-
 </html>

@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-
 
 @Controller
 @RequiredArgsConstructor
@@ -66,8 +64,11 @@ public class ViewController {
     }
 
     @GetMapping("/write")
-    public String write(Model model, @RequestParam(required = false) Integer seq) {
-        model.addAttribute("newsletterHeader", newsLetterService.selectNewsLetterHeader(seq));
+    public String write(Model model, @RequestParam(required = false) Integer headerSeq, @RequestParam(required = false) Integer seq) {
+        model.addAttribute("newsletterHeader", newsLetterService.selectNewsLetterHeader(headerSeq));
+        if(seq != null){
+            model.addAttribute("newsletter", newsLetterService.selectNewsLetter(seq));
+        }
         return "author/write";
     }
 

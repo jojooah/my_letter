@@ -34,48 +34,69 @@ const Newsletter = (function () {
             let objParams = $("#newsLetterForm").serializeObject();
             if(!validationCheck()) return;
 
-            $.ajax({
-                url: "/saveNewsLetterHeader",
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify(objParams),
-                success: function(response) {
-                    if (response.data.status === "SUCCESS") {
-                        alert(response.data.message);
-                        window.location.href = "/author/newsletter/list";
-                    } else {
-                        alert(response.data.message);
-                        window.location.href = "/author/newsletter/list";
+            if (confirm("저장하시겠습니까?")) {
+                $.ajax({
+                    url: "/saveNewsLetterHeader",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(objParams),
+                    success: function(response) {
+                        if (response.data.status === "SUCCESS") {
+                            alert(response.data.message);
+                            window.location.href = "/author/newsletter/list";
+                        } else {
+                            alert(response.data.message);
+                            window.location.href = "/author/newsletter/list";
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert(error);
                     }
-                },
-                error: function(xhr, status, error) {
-                    alert(error);
-                }
-            });
+                });
+            }
         });
 
         //뉴스레터 삭제
         $("button[data-progress=delete]").click(function() {
             let newsLetterSeq = $("#contentNewsLetterSeq").val();
             let newsLetterHeaderSeq = $("#contentNewsLetterHeaderSeq").val();
-            $.ajax({
-                url: "/deleteNewsLetter",
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify(newsLetterSeq),
-                success: function(response) {
-                    if (response.data.status === "SUCCESS") {
-                        alert(response.data.message);
-                        window.location.href = "/newsletter/list?seq="+newsLetterHeaderSeq;
-                    } else {
-                        alert(response.data.message);
-                        location.reload();
+
+            if (confirm("삭제하시겠습니까?")) {
+                $.ajax({
+                    url: "/deleteNewsLetter",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(newsLetterSeq),
+                    success: function(response) {
+                        if (response.data.status === "SUCCESS") {
+                            alert(response.data.message);
+                            window.location.href = "/newsletter/list?seq="+newsLetterHeaderSeq;
+                        } else {
+                            alert(response.data.message);
+                            location.reload();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert(error);
                     }
-                },
-                error: function(xhr, status, error) {
-                    alert(error);
-                }
-            });
+                });
+            }
+        });
+
+        //뉴스레터 수정
+        $("button[data-progress=update]").click(function() {
+            let objParams = {
+                newsLetterHeaderSeq: $("#contentNewsLetterHeaderSeq").val(),
+                newsLetterSeq:$("#contentNewsLetterSeq").val(),
+                title:$("#title").text(),
+                content:$("#content").next("p").html(),
+                freeYn:$("#freeYn").val(),
+                cost:$("#cost").val(),
+                description:$("#description").text(),
+            }
+
+           window.location.href = "/write?headerSeq="+objParams.newsLetterHeaderSeq+"&seq="+objParams.newsLetterSeq;
+
         });
 
         $("select[data-progress=filter]").on("change", function() {
