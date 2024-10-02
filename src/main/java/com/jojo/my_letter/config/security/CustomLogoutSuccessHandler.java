@@ -43,7 +43,7 @@ public class CustomLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler im
     }
 
     private String getClientIp(HttpServletRequest request) {
-        return request.getRemoteAddr();
+        return request.getRemoteAddr(); // -Djava.net.preferIPv4Stack=true 옵션을 주지 않으면 IPv6로 나옴
     }
 
 }

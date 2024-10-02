@@ -78,7 +78,7 @@ public class AccessLogFilter implements Filter {
         accessLog.setResponseAt(LocalDateTime.now());
         accessLog.setStatus(String.valueOf(httpServletResponse.getStatus()));
 
-        accessLogService.saveAceessLog(accessLog);
+        accessLogService.saveAccessLog(accessLog);
 
         log.info("AccessLog ==> {}", toJson(accessLog));
     }

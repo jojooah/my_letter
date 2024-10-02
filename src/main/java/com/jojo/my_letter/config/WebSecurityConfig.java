@@ -1,6 +1,5 @@
 package com.jojo.my_letter.config;
 
-import com.jojo.my_letter.config.security.CustomAuthenticationProvider;
 import com.jojo.my_letter.config.security.CustomLogoutSuccessHandler;
 import com.jojo.my_letter.config.security.LoginFailHandler;
 import com.jojo.my_letter.config.security.LoginSuccessHandler;
@@ -29,7 +28,7 @@ public class WebSecurityConfig {
     // private final CustomAuthenticationProvider customAuthenticationProvider; // 여기다가 넣으니까 순환참조남...ㅜㅜ
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, CustomAuthenticationProvider customAuthenticationProvider) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(request -> request
                         .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
@@ -55,7 +54,6 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configure(http));
 
-        http.authenticationProvider(customAuthenticationProvider);
         return http.build();
     }
 

@@ -31,10 +31,12 @@
 
     <logger name="com.jojo" additivity="false" level="INFO">
         <appender-ref ref="dailyRollingFileAppender"/>
+        <appender-ref ref="console" />
     </logger>
 
     <logger name="com.jojo.my_letter.filter.AccessLogFilter" additivity="false" level="INFO">
         <appender-ref ref="dailyRollingAccessLogFileAppender"/>
+        <appender-ref ref="console" />
     </logger>
 
     <root level="INFO">

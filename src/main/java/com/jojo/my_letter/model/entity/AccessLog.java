@@ -21,6 +21,8 @@ public class AccessLog extends CommonDTO {
     private String agentName;
     private String agentClass;
     private String clientIp;
+    private String country;
+    private String city;
     private long elapsed;
     private String request;
     private String response;
