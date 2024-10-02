@@ -23,6 +23,12 @@
                     <div class="mb-3">
                         <input type="text" class="form-control" name="description" th:value="${newsletter} != null ? ${newsletter.description} : ''" placeholder="소제목 및 간단한 설명을 작성할 수 있습니다.">
                     </div>
+                    <div class="mb-3">
+                        <label for="thumbnail" class="form-label">썸네일 이미지</label>
+                        <input type="file" class="form-control" id="thumbnail" name="thumbnail" accept="image/*" onchange="previewThumbnail(event)">
+                        <!-- 썸네일 미리보기 -->
+                        <img id="thumbnail-preview" class="img-fluid mt-3" style="max-width: 200px; display: none;">
+                    </div>
                     <div id="summernote" th:utext="${newsletter} != null ? ${newsletter.content} : ''" >
                     </div><br/>
                     <div class="d-flex justify-content-between">

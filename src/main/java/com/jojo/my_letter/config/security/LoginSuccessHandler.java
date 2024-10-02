@@ -16,7 +16,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
-    @Override
+   /* @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
         log.info("LoginSuccessHandler !! ");
 //        log.error(httpServletRequest.getSession().getAttribute("FROM_JOIN_PAGE").toString());
@@ -27,6 +27,6 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
         } else {
             super.onAuthenticationSuccess(httpServletRequest, httpServletResponse, authentication);
         }
-    }
+    }*/
 
 }

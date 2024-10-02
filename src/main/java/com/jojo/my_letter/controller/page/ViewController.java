@@ -1,5 +1,7 @@
 package com.jojo.my_letter.controller.page;
 
+import com.jojo.my_letter.controller.service.LoginService;
+import com.jojo.my_letter.model.entity.Member;
 import com.jojo.my_letter.model.entity.NewsLetter;
 import com.jojo.my_letter.model.entity.NewsLetterHeader;
 import com.jojo.my_letter.service.CategoryService;
@@ -18,6 +20,7 @@ public class ViewController {
 
     private final NewsLetterService newsLetterService;
     private final CategoryService categoryService;
+    private final LoginService loginService;
 
     @GetMapping("/index")
     public String index() {
@@ -54,8 +57,9 @@ public class ViewController {
     }
 
     @GetMapping("/mypage")
-    public String mypage() {
-        return "myPage";
+    public String mypage(Model model) {
+        model.addAttribute("member", loginService.getMember());
+        return "user/myPage";
     }
 
     @GetMapping("/scrap")

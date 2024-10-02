@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="/fragment/head.html :: fragment-header"></head>
+<body>
+<div th:replace="/fragment/user_navbar.html :: fragment-navbar"></div>
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">내 정보 관리</h1>
+</div>
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <h1 class="mb-4">내 정보 관리</h1>
+        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary mb-4">
+            <i class="fa fa-key me-2 text-primary"></i>비밀번호 변경
+        </a>
+        <form action="#" method="post">
+            <div class="row g-5">
+                <div class="col-md-6">
+                    <label for="id" class="form-label my-3">아이디<sup>*</sup></label>
+                    <input type="text" id="id" name="id" class="form-control" th:value="${member.id} ?: ''" disabled>
+                </div>
+                <div class="col-md-6">
+                    <label for="nickname" class="form-label my-3">닉네임<sup>*</sup></label>
+                    <input type="text" id="nickname" name="nickname" class="form-control" th:value="${member.nickname} ?: ''" disabled>
+                </div>
+                <div class="col-md-6">
+                    <label for="username" class="form-label my-3">이름<sup>*</sup></label>
+                    <input type="text" id="username" name="username" class="form-control" th:value="${member.username} ?: ''" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="email" class="form-label my-3">이메일<sup>*</sup></label>
+                    <input type="email" id="email" name="email" class="form-control" th:value="${member.email} ?: ''" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="birthDate" class="form-label my-3">생년월일<sup>*</sup></label>
+                    <input type="text" id="birthDate" name="birthDate" class="form-control" placeholder="YYYY-MM-DD" th:value="${member.birthDate} ?: ''" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="regDate" class="form-label my-3">가입일자<sup>*</sup></label>
+                    <input type="text" id="regDate" name="regDate" class="form-control" th:value="${member.regDate} ?: ''" disabled>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary rounded-pill px-4">저장</button>
+            </div>
+        </form>
+    </div>
+</div>
+<span th:replace="/fragment/footer.html :: fragment-footer"></span>
+<span th:replace="/fragment/commonJs.html :: fragment-commonJs"></span>
+</body>
+</html>

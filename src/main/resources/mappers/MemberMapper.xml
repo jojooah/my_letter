@@ -4,9 +4,21 @@
 <mapper namespace="com.jojo.my_letter.mapper.MemberMapper">
 
     <select id="findMember" parameterType="String" resultType="Member">
-        select *
+        select
+            member_seq as memberSeq
+          , id
+          , username
+          , password
+          , nickname
+          , email
+          , birth_date as birthDate
+          , type
+          , profileImageUrl
+          , reg_date as regDate
+          , upd_date as updDate
         from Member
         where id = #{id}
+        and status = 'active'
     </select>
 
     <update id="updatePassword">
@@ -24,7 +36,7 @@
               , email
               , username
               , status
-              , created_at
+              , reg_date
               )
         VALUES (
             #{id}

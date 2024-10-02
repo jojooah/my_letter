@@ -76,16 +76,8 @@ public class LoginController {
             return "/join";
         }
         try {
-            String unEncodedPwd = member.getPassword(); // 나중에 인코딩되어서 비교
             final Member joined = loginService.join(member);
-
-            // 자동 로그인 처리
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(joined.getId(), unEncodedPwd);
-            Authentication authentication = authenticationManager.authenticate(authToken);
-            session.setAttribute("FROM_JOIN_PAGE", true);
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
+            redirectAttributes.addFlashAttribute("errorMessage", "회원가입이 완료되었습니다.");
             log.info("회원가입 성공 : {}, redirect:/", toJson(joined));
             return "redirect:/";
         }

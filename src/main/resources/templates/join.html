@@ -23,14 +23,14 @@
                 <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
 
                 <div class="input-group mb-3">
-                    <input type="text" name="name" class="form-control" placeholder="이름을 입력해주세요" th:field="*{name}">
+                    <input type="text" name="name" class="form-control" placeholder="이름을 입력해주세요" th:field="*{username}">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-user"></span>
                         </div>
                     </div>
                     <div class="details">
-                        <h4 th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></h4>
+                        <h4 th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></h4>
                     </div>
                 </div>
                 <div class="input-group mb-3">
@@ -78,14 +78,14 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="text" name="username" class="form-control" placeholder="닉네임을 입력해주세요" th:field="*{username}">
+                    <input type="text" name="nickname" class="form-control" placeholder="닉네임을 입력해주세요" th:field="*{nickname}">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-user"></span>
                         </div>
                     </div>
                     <div class="details">
-                        <h4 th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></h4>
+                        <h4 th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}"></h4>
                     </div>
                 </div>
                 <div class="input-group mb-3">

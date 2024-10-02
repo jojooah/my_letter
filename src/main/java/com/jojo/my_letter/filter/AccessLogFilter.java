@@ -80,8 +80,6 @@ public class AccessLogFilter implements Filter {
 
         accessLogService.saveAceessLog(accessLog);
 
-        // todo 1: 꼭 필요한 정보만 남기도록 해주세요. (모든 URL을 남길필요는 없겠지요?)
-        // todo 2: DB에 저장하도록 해주세요.
         log.info("AccessLog ==> {}", toJson(accessLog));
     }
 }

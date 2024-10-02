@@ -23,13 +23,13 @@ public class LoginService {
 
     @Transactional
     public Member join(Member member) {
-        if (isBlank(member.getName())) throw new RestErrorException(UNKNOWN_ERROR);
+        if (isBlank(member.getNickname())) throw new RestErrorException(NOT_EXIST_NICKNAME);
         if (isBlank(member.getEmail())) throw new RestErrorException(NEED_EMAIL);
         if (isBlank(member.getId())) throw new RestErrorException(NEED_USER_ID);
         if (isBlank(member.getPassword())) throw new RestErrorException(NEED_PWD);
         if (isBlank(member.getPasswordCheck())) throw new RestErrorException(NEED_NEW_PWD_FOR_CHECK);
         if (!member.getPassword().equals(member.getPasswordCheck())) throw new RestErrorException(WRONG_PWD);
-        if (isBlank(member.getUsername())) throw new RestErrorException(NEED_NICK_NAME);
+        if (isBlank(member.getUsername())) throw new RestErrorException(NOT_EXIST_NAME);
         if (member.getPassword().length() < 4) throw new RestErrorException(UNKNOWN_ERROR);
         if (memberMapper.findMember(member.getId()) != null) throw new RestErrorException(USER_ID_ALREADY_EXIST);
 
@@ -45,9 +45,17 @@ public class LoginService {
     }
 
     public String getCurrentUserId() {
+        Member member = this.getMember();
+
+        return member.getId();
+    }
+
+    public Member getMember() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Member member = (Member)authentication.getPrincipal();
-        return  member.getId();
+        Member member = (Member) authentication.getPrincipal();
+        if (member == null) throw new RestErrorException(PLEASE_LOGIN);
+
+        return (Member) authentication.getPrincipal();
     }
 
 }

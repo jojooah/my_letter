@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -19,6 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 public class Member implements UserDetails {
+    private static final long serialVersionUID = 7190497382173827447L; // 질문..
     private int memberSeq;
     @NotBlank(message = "아이디를 입력하세요.")
     private String id;
@@ -31,16 +33,16 @@ public class Member implements UserDetails {
     @Size(min=8, message = "비밀번호는 8글자 이상이어야 합니다.")
     private String passwordCheck;
 
-    @NotBlank(message = "이름을 입력하세요.")
-    private String name;
+    //@NotBlank(message = "닉네임 입력하세요.")
+    private String nickname;
 
     //@NotNull(message = "생년월일을 선택하세요.")
-    //private Date birthDate;
+    private String birthDate;
 
-    @NotBlank(message = "닉네임을 입력하세요.")
-    private String username; //닉네임
+    //@NotBlank(message = "이름을 입력하세요.")
+    private String username; //이름
 
-    @NotBlank(message = "이메일을 입력하세요.")
+    //@NotBlank(message = "이메일을 입력하세요.")
     private String email;
 
     //@NotBlank(message = "성별을 입력하세요.")
@@ -56,6 +58,8 @@ public class Member implements UserDetails {
     private LocalDateTime lastLoginTime;
     private String ipAddress;
     private ActivityType activityType;
+    private Date regDate;
+    private Date updDate;
 
     //해당 유저의 권한을 리턴한다
     @Override

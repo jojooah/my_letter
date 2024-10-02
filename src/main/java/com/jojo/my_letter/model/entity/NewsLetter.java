@@ -15,6 +15,7 @@ public class NewsLetter extends NewsLetterHeader {
     private Date regDate;                   //등록일
     private Date updDate;                   //수정일
     private String authorName;              // 작가 이름
+    private String thumbnail;
     private int view;
 }
 

@@ -30,6 +30,7 @@ public enum RestErrorCode {
     NO_PATHVARIABLE("1020", "path variable이 없습니다"),
     NOT_WITTER("1021","게시물 작성자가 아닙니다."),
     NOT_EXIST_NICKNAME("1022","닉네임을 입력하세요."),
+    NOT_EXIST_NAME("1023","이름을 입력하세요."),
 
     ERROR_ETC("9999", "기타 오류"),
 
