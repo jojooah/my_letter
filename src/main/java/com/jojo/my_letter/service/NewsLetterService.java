@@ -4,6 +4,7 @@ import com.jojo.my_letter.controller.service.LoginService;
 import com.jojo.my_letter.mapper.CategoryCombiMapper;
 import com.jojo.my_letter.mapper.NewsLetterMapper;
 import com.jojo.my_letter.model.entity.CategoryCombi;
+import com.jojo.my_letter.model.entity.ImagePath;
 import com.jojo.my_letter.model.entity.NewsLetter;
 import com.jojo.my_letter.model.entity.NewsLetterHeader;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,13 @@ public class NewsLetterService {
     public void saveNewsLetter(NewsLetter newsLetter){
         if(ObjectUtils.isEmpty(newsLetter.getNewsLetterSeq())){
             newsLetterMapper.insertNewsLetter(newsLetter);
+
+            if(!ObjectUtils.isEmpty(newsLetter.getImagePath())){
+                ImagePath imagePath= newsLetter.getImagePath();
+                imagePath.setNewsLetterSeq(newsLetter.getNewsLetterSeq());
+
+                saveImg(imagePath);
+            }
         }
        else{
            newsLetterMapper.updateNewsLetter(newsLetter);
@@ -93,5 +101,9 @@ public class NewsLetterService {
      */
     public void deleteNewsLetter(Integer newsLetterSeq){
         newsLetterMapper.deleteNewsLetterBySeq(newsLetterSeq);
+    }
+
+    public void saveImg(ImagePath imagePath){
+        newsLetterMapper.insertImagePath(imagePath);
     }
 }

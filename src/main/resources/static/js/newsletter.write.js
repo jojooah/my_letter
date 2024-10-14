@@ -1,4 +1,5 @@
 const Write = (function () {
+    let formDataArray = [];  // 업로드된 이미지들을 담는 배열
     function start() {
 
         $('#summernote').summernote({
@@ -9,7 +10,13 @@ const Write = (function () {
                 onImageUpload: function (files) {
                     for (let i = 0; i < files.length; i++) {
                         imageUploader(files[i], this);
+                      //  addToFormDataArray(files[i],this);
                     }
+                },
+                onMediaDelete : function(files) {
+                    let imageSrc = target[0].src;
+                    deleteImageFromArray(imageSrc);  // 삭제된 이미지를 formData 배열에서 제거
+
                 }
             }
         });
@@ -34,6 +41,7 @@ const Write = (function () {
         });
 
         $("button[name=saveNewsLetter]").click(function () {
+            let formData = new FormData();
 
             let objParams = {
                 content: $("#summernote").summernote("code") === '<p><br></p>' ? '' : $("#summernote").summernote("code"),
@@ -55,12 +63,20 @@ const Write = (function () {
                 return;
             }
 
+            formData.append("newsLetter", new Blob([JSON.stringify(objParams)], { type: "application/json" }));
+
+            let thumbnail = $('input[name=thumbnail]')[0].files[0];
+            if (thumbnail) {
+                formData.append("thumbnail", thumbnail);
+            }
+
             if (confirm("저장하시겠습니까?")) {
                 $.ajax({
                     url: "/saveNewsLetter",
                     type: "POST",
-                    contentType: "application/json",
-                    data: JSON.stringify(objParams),
+                    processData: false,
+                    contentType: false,
+                    data: formData,
                     success: function (response) {
                         if (response.data.status === "SUCCESS") {
                             alert(response.data.message);
@@ -90,8 +106,8 @@ const Write = (function () {
             contentType : false,
             processData : false,
             enctype : 'multipart/form-data',
-            success : function(data) {
-                $(el).summernote('insertImage', data.data.data, function($image) {
+            success : function(result) {
+                $(el).summernote('insertImage', result.data.data.imageUrl, function($image) {
                     $image.css('width', "100%");
                 });
             }

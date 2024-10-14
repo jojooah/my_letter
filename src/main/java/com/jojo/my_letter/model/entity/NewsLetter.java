@@ -17,5 +17,6 @@ public class NewsLetter extends NewsLetterHeader {
     private String authorName;              // 작가 이름
     private String thumbnail;
     private int view;
+    private ImagePath imagePath;            //썸네일 이미지
 }
 

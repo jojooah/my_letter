@@ -1,5 +1,6 @@
 package com.jojo.my_letter.mapper;
 
+import com.jojo.my_letter.model.entity.ImagePath;
 import com.jojo.my_letter.model.entity.NewsLetter;
 import com.jojo.my_letter.model.entity.NewsLetterHeader;
 import org.apache.ibatis.annotations.Mapper;
@@ -62,4 +63,10 @@ public interface NewsLetterMapper {
      * @param newsLetter
      */
     void updateNewsLetter(@Param("param") NewsLetter newsLetter);
+
+    /**
+     * 이미지 저장
+     * @param imagePath
+     */
+    void insertImagePath(@Param("param") ImagePath imagePath);
 }

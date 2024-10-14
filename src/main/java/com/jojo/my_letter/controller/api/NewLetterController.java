@@ -1,5 +1,6 @@
 package com.jojo.my_letter.controller.api;
 
+import com.jojo.my_letter.model.entity.ImagePath;
 import com.jojo.my_letter.model.entity.NewsLetter;
 import com.jojo.my_letter.model.entity.NewsLetterHeader;
 import com.jojo.my_letter.model.result.RestResult;
@@ -8,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,10 +30,17 @@ public class NewLetterController {
     String uploadDirectory;
 
     @PostMapping("/saveNewsLetter")
-    public @ResponseBody RestResult write(@RequestBody NewsLetter newsLetter) {
+    public @ResponseBody
+    RestResult write(@RequestParam("thumbnail") MultipartFile thumbnail,
+                     @RequestPart("newsLetter") NewsLetter newsLetter) {
         Map<String, Object> data = new LinkedHashMap<>();
 
         try {
+            if (!thumbnail.isEmpty()) {
+                ImagePath imagePath = (ImagePath) imageUpload(thumbnail).getData().get("data");
+                newsLetter.setImagePath(imagePath);
+            }
+
             newsLetterService.saveNewsLetter(newsLetter);
             data.put("status", "SUCCESS");
             data.put("message", "저장되었습니다");
@@ -52,7 +57,8 @@ public class NewLetterController {
     }
 
     @PostMapping("/saveNewsLetterHeader")
-    public @ResponseBody RestResult saveNewsLetterHeader(@RequestBody NewsLetterHeader newsLetterHeader) {
+    public @ResponseBody
+    RestResult saveNewsLetterHeader(@RequestBody NewsLetterHeader newsLetterHeader) {
         Map<String, Object> data = new LinkedHashMap<>();
 
         try {
@@ -72,7 +78,8 @@ public class NewLetterController {
     }
 
     @PostMapping("/deleteNewsLetter")
-    public @ResponseBody RestResult deleteNewsLetter(@RequestBody Integer newsLetterSeq) {
+    public @ResponseBody
+    RestResult deleteNewsLetter(@RequestBody Integer newsLetterSeq) {
         Map<String, Object> data = new LinkedHashMap<>();
 
         try {
@@ -92,12 +99,11 @@ public class NewLetterController {
     }
 
     @PostMapping(value = "/newsletter/image-upload")
-    public @ResponseBody RestResult imageUpload(@RequestParam("file") MultipartFile file) throws IllegalStateException, IOException {
+    public @ResponseBody
+    RestResult imageUpload(@RequestParam("file") MultipartFile file) throws IllegalStateException, IOException {
         Map<String, Object> data = new LinkedHashMap<>();
 
         try {
-            // 서버에 저장할 경로
-          String uploadDirectory = "C:\\newsletterProject_images\\upload";
             // 업로드 된 파일의 이름
             String originalFileName = file.getOriginalFilename();
 
@@ -113,7 +119,13 @@ public class NewLetterController {
             // 웹에서 접근할 수 있는 경로로 변환
             String imageUrl = "/resources/images/upload/" + uuidFileName;
 
-            data.put("data",imageUrl);
+            ImagePath imagePath = new ImagePath();
+            imagePath.setOriginName(originalFileName);
+            imagePath.setSavedName(uuidFileName);
+            imagePath.setImagePath(uploadDirectory + File.separator + uuidFileName);
+            imagePath.setImageUrl(imageUrl);
+
+            data.put("data", imagePath);
             data.put("status", "SUCCESS");
             data.put("message", "저장되었습니다");
 
@@ -121,11 +133,39 @@ public class NewLetterController {
 
         } catch (Exception e) {
             data.put("status", "FAIL");
-            data.put("message", "오류가 발생했습니다");
+            data.put("message", "이미지 저장에 오류가 발생했습니다");
             log.error(e.getMessage());
 
             return new RestResult(data);
         }
 
+    }
+
+    @PostMapping("/deleteImage")
+    @ResponseBody
+    public RestResult deleteImage(@RequestParam("imageSrc") String imageSrc) {
+        Map<String, Object> data = new LinkedHashMap<>();
+        try {
+            int lastSlashIndex = imageSrc.lastIndexOf("/");
+            String fileName = imageSrc.substring(lastSlashIndex + 1);// 마지막 슬래시 이후의 문자열 추출
+
+            File file = new File(uploadDirectory + fileName);
+
+            if (file.exists()) {
+                file.delete();
+                data.put("status", "SUCCESS");
+                data.put("message", "삭제되었습니다.");
+                return new RestResult(data);
+            } else {
+                data.put("status", "FAIL");
+                data.put("message", "파일을 찾을 수 없습니다.");
+                return new RestResult(data);
+            }
+        } catch (Exception e) {
+            data.put("status", "FAIL");
+            data.put("message", "이미지 삭제에 오류가 발생했습니다");
+            return new RestResult(data);
+
+        }
     }
 }

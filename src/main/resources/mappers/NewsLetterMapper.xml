@@ -3,7 +3,7 @@
 
 <mapper namespace="com.jojo.my_letter.mapper.NewsLetterMapper">
 
-    <insert id="insertNewsLetter" parameterType="NewsLetter">
+    <insert id="insertNewsLetter" parameterType="NewsLetter" useGeneratedKeys="true" keyProperty="newsLetterSeq" keyColumn="news_letter_seq">
         INSERT INTO joo.news_letter ( /*insertNewsLetter*/
             news_letter_header_seq
           , title
@@ -143,4 +143,23 @@
         WHERE news_letter_seq = #{param.newsLetterSeq}
     </update>
 
+    <insert id="insertImagePath" parameterType="ImagePath">
+        INSERT INTO  /*insertImagePath*/
+            joo.image_path (
+                                     news_letter_seq
+                                   , news_letter_header_seq
+                                   , image_path
+                                   , origin_name
+                                   , saved_name
+                                   , reg_date
+        )
+        VALUES (
+                   #{param.newsLetterSeq}
+               , #{param.newsLetterHeaderSeq}
+               , #{param.imagePath}
+               , #{param.originName}
+               , #{param.savedName}
+               , NOW()
+               )
+    </insert>
 </mapper>
