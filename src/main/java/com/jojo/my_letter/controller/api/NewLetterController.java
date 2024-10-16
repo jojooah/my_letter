@@ -1,5 +1,6 @@
 package com.jojo.my_letter.controller.api;
 
+import com.jojo.my_letter.exception.MyLetterRuntimeException;
 import com.jojo.my_letter.model.entity.ImagePath;
 import com.jojo.my_letter.model.entity.NewsLetter;
 import com.jojo.my_letter.model.entity.NewsLetterHeader;
@@ -15,6 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -149,23 +153,19 @@ public class NewLetterController {
             int lastSlashIndex = imageSrc.lastIndexOf("/");
             String fileName = imageSrc.substring(lastSlashIndex + 1);// 마지막 슬래시 이후의 문자열 추출
 
-            File file = new File(uploadDirectory + fileName);
+            Path filePath = Paths.get(uploadDirectory, fileName);
 
-            if (file.exists()) {
-                file.delete();
+            if (Files.deleteIfExists(filePath)) {
                 data.put("status", "SUCCESS");
                 data.put("message", "삭제되었습니다.");
-                return new RestResult(data);
             } else {
                 data.put("status", "FAIL");
                 data.put("message", "파일을 찾을 수 없습니다.");
-                return new RestResult(data);
             }
-        } catch (Exception e) {
-            data.put("status", "FAIL");
-            data.put("message", "이미지 삭제에 오류가 발생했습니다");
             return new RestResult(data);
-
+        } catch (IOException e) {
+            log.error("이미지 삭제에 오류가 발생했습니다 ! {}", e.getMessage(), e);
+            throw new MyLetterRuntimeException("FAIL", "이미지 삭제에 오류가 발생했습니다");
         }
     }
 }

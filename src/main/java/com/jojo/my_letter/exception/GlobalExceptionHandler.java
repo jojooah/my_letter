@@ -24,6 +24,14 @@ public class GlobalExceptionHandler  {
     private final TelegramService telegramService;
 
     // 클라이언트 오류.
+    @ExceptionHandler({MyLetterRuntimeException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected RestError handleMyLetterRuntimeException(MyLetterRuntimeException e) {
+        log.error(e.getMessage());
+        return new RestError(e.getMessage(), e.getMessage());
+    }
+
+    // 클라이언트 오류.
     @ExceptionHandler({RestErrorException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected RestError handleResultCodeException(RestErrorException re) {
