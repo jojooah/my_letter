@@ -2,6 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.jojo.my_letter.mapper.NewsLetterMapper">
+    <resultMap id="newsLetterResultMap" type="NewsLetter">
+        <!-- NewsLetter -->
+        <id property="newsLetterSeq" column="newsLetterSeq" />
+        <result property="title" column="title" />
+        <result property="content" column="content" />
+        <result property="cost" column="cost" />
+        <result property="freeYn" column="freeYn" />
+        <result property="description" column="description" />
+        <result property="newsLetterHeaderSeq" column="newsLetterHeaderSeq" />
+        <result property="authorName" column="authorName" />
+
+        <!-- NewsLetterHeader -->
+        <result property="categoryCombiSeq" column="categoryCombiSeq" />
+        <result property="headerTitle" column="headerTitle" />
+        <result property="subscribers" column="subscribers" />
+        <result property="authorId" column="authorId" />
+
+        <!-- ImagePath -->
+        <association property="imagePath" javaType="ImagePath">
+            <result property="originName" column="originName" />
+            <result property="savedName" column="savedName" />
+            <result property="imagePath" column="imagePath" />
+        </association>
+    </resultMap>
 
     <insert id="insertNewsLetter" parameterType="NewsLetter" useGeneratedKeys="true" keyProperty="newsLetterSeq" keyColumn="news_letter_seq">
         INSERT INTO joo.news_letter ( /*insertNewsLetter*/
@@ -40,8 +64,8 @@
               , MAX(CASE WHEN b.cat3_code = c.cat_code THEN c.cat_name END) AS cat3Name
         FROM
             joo.news_letter_header a
-                INNER JOIN joo.category_combi b ON a.category_combi_seq = b.category_combi_seq
-                INNER JOIN joo.category c ON c.cat_code IN (b.cat1_code, b.cat2_code, b.cat3_code)
+            INNER JOIN joo.category_combi b ON a.category_combi_seq = b.category_combi_seq
+            INNER JOIN joo.category c ON c.cat_code IN (b.cat1_code, b.cat2_code, b.cat3_code)
         WHERE
             a.author_id = #{param}
         GROUP BY
@@ -101,10 +125,9 @@
         WHERE
             nh.news_letter_header_seq = #{param}
         AND nh.author_id = m.id
-        AND db_status = 'OK'
     </select>
 
-    <select id="selectNewsLetterBySeq" parameterType="Integer" resultType="NewsLetter">
+    <select id="selectNewsLetterBySeq" parameterType="Integer" resultMap="newsLetterResultMap">
         SELECT
             n.news_letter_seq as newsLetterSeq
           , n.title
@@ -118,12 +141,17 @@
           , nh.subscribers
           , nh.author_id AS authorId
           , m.username AS authorName
+          , ip.origin_name AS originName
+          , ip.saved_name AS savedName
+         , ip.image_path AS imagePath
         FROM
-            joo.news_letter n ,news_letter_header nh, joo.Member m
+            joo.news_letter n
+            INNER JOIN news_letter_header nh ON n.news_letter_header_seq = nh.news_letter_header_seq
+            INNER JOIN joo.Member m ON nh.author_id = m.id
+            LEFT OUTER JOIN joo.image_path ip ON n.news_letter_seq = ip.news_letter_seq
         WHERE
-            news_letter_seq = #{param}
-        AND n.news_letter_header_seq = nh.news_letter_header_seq
-        AND nh.author_id = m.id
+            n.news_letter_seq = #{param}
+
     </select>
 
     <delete id="deleteNewsLetterBySeq" parameterType="Integer">

@@ -26,7 +26,8 @@
                             <div class="col-lg-6">
                                 <div class="border rounded">
                                     <a href="#">
-                                        <img src="/img/single-item.jpg" class="img-fluid rounded" alt="Image">
+                                        <img th:src="${newsletter.imagePath != null && newsletter.imagePath.imageUrl != null ? newsletter.imagePath.imageUrl : '/img/single-item.jpg'}"
+                                             class="img-fluid rounded" alt="Image">
                                     </a>
                                 </div>
                             </div>

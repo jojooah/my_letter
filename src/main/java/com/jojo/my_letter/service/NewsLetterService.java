@@ -1,5 +1,6 @@
 package com.jojo.my_letter.service;
 
+import com.jojo.my_letter.config.properties.FileProperties;
 import com.jojo.my_letter.controller.service.LoginService;
 import com.jojo.my_letter.mapper.CategoryCombiMapper;
 import com.jojo.my_letter.mapper.NewsLetterMapper;
@@ -19,6 +20,7 @@ public class NewsLetterService {
     private final NewsLetterMapper newsLetterMapper;
     private final CategoryCombiMapper categoryCombiMapper;
     private final LoginService loginService;
+    private final FileProperties fileProperties;
 
     public void saveNewsLetter(NewsLetter newsLetter){
         if(ObjectUtils.isEmpty(newsLetter.getNewsLetterSeq())){
@@ -92,7 +94,11 @@ public class NewsLetterService {
      * @return
      */
     public NewsLetter selectNewsLetter(Integer newsletterSeq) {
-        return newsLetterMapper.selectNewsLetterBySeq(newsletterSeq);
+        NewsLetter newsLetter = newsLetterMapper.selectNewsLetterBySeq(newsletterSeq);
+        if(newsLetter.getImagePath() != null){
+            newsLetter.getImagePath().setFileProperties(fileProperties);
+        }
+        return newsLetter;
     }
 
     /**
