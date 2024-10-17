@@ -1,11 +1,9 @@
 package com.jojo.my_letter.controller.page;
 
 import com.jojo.my_letter.controller.service.LoginService;
-import com.jojo.my_letter.model.entity.Member;
-import com.jojo.my_letter.model.entity.NewsLetter;
-import com.jojo.my_letter.model.entity.NewsLetterHeader;
 import com.jojo.my_letter.service.CategoryService;
 import com.jojo.my_letter.service.NewsLetterService;
+import com.jojo.my_letter.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +19,7 @@ public class ViewController {
     private final NewsLetterService newsLetterService;
     private final CategoryService categoryService;
     private final LoginService loginService;
+    private final ReplyService replyService;
 
     @GetMapping("/index")
     public String index() {
@@ -36,7 +35,9 @@ public class ViewController {
 
     @GetMapping("/newsletter/item/{seq}")
     public String newsletterItem1(Model model, @PathVariable("seq") int seq) {
+        model.addAttribute("loginUser", loginService.getMember());
         model.addAttribute("newsletter", newsLetterService.selectNewsLetter(seq));
+        model.addAttribute("replyList", replyService.selectReplyListByNewsLetterSeq(seq));
         return "common/newsletter";
     }
 

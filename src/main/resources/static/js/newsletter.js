@@ -147,3 +147,74 @@ const Newsletter = (function () {
     }
 
 })();
+
+const Reply = (function () {
+    const SaveStatus = {
+        INSERT: { code: 'I', label: '입력' },
+        DELETE: { code: 'D', label: '삭제' },
+        UPDATE: { code: 'U', label: '수정' }
+    };
+    function start() {
+        $("button[data-progress=saveReply], button[data-progress=deleteReply]").click(function() {
+            let objParams = {
+                newsLetterSeq: $("#newsLetterSeq").val(),
+                replyContent:$("#replyContent").val(),
+                saveStatus:$(this).data('code'),
+                replySeq:$(this).data('seq'),
+            }
+
+            saveComment(objParams);
+        });
+    }
+
+    // 수정 버튼 클릭 이벤트
+    $("button[data-progress=updateReply]").click(function() {
+        let replyContent = $(this).closest('div').prev('p').text();
+        $("#replyContent").val(replyContent);
+        $("button[data-progress=saveReply]").data('code', 'U');
+        $("button[data-progress=saveReply]").data('seq', $(this).data('seq'));
+
+        // 스크롤 이동을 위한 요소의 위치 계산
+        let elementOffset = $('#replyContent').offset().top;
+        let windowHeight = $(window).height();
+        let scrollToPosition = elementOffset - (windowHeight / 2);
+
+        $('html, body').animate({
+            scrollTop: scrollToPosition
+        }, 200);
+
+    });
+
+    function saveComment(objParams) {
+        if ((objParams.saveStatus === SaveStatus.INSERT.code || objParams.saveStatus === SaveStatus.UPDATE.code) && objParams.replyContent === "") {
+            alert("댓글 내용을 입력해주세요.");
+            return;
+        }
+        let status = Object.values(SaveStatus).find(status => status.code === objParams.saveStatus)?.label;
+        let confirmMessage = "댓글을" + status + "하시겠습니까?"
+
+        if (confirm(confirmMessage)) {
+            $.ajax({
+                url: "/saveReply",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(objParams),
+                success: function (response) {
+                    if (response.data.status === "SUCCESS") {
+                        alert(response.data.message);
+                        location.reload();
+                    } else {
+                        alert(response.data.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert(error);
+                }
+            });
+        }
+    }
+
+    return {
+        start:start
+    }
+})()

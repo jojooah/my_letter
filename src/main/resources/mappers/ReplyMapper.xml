@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jojo.my_letter.mapper.ReplyMapper">
+    <update id="updateReply" parameterType="Reply">
+        UPDATE reply
+        SET reply_content = #{param.replyContent}
+        WHERE reply_seq = #{param.replySeq}
+    </update>
+
+    <insert id="insertReply" parameterType="Reply">
+        INSERT INTO
+            reply (
+                news_letter_seq
+              , member_seq
+              , reply_content
+              , reg_date
+              , db_status
+              )
+        VALUES (
+            #{param.newsLetterSeq}
+          , #{param.memberSeq}
+          , #{param.replyContent}
+          , NOW()
+          , 'OK'
+        );
+    </insert>
+
+    <select id="selectReplyListByNewsLetterSeq" parameterType="Reply">
+        SELECT
+            r.reply_seq AS replySeq
+          , r.news_letter_seq AS newsLetterSeq
+          , r.member_seq AS memberSeq
+          , r.reply_content AS replyContent
+          , r.reg_date AS regDate
+          , m.id
+          , m.username
+          , m.profileImageUrl
+          , m.member_seq AS memberSeq
+        FROM reply r
+        INNER JOIN Member m ON r.member_seq = m.member_seq
+        WHERE news_letter_seq = #{param.newsLetterSeq}
+        AND db_status = 'OK'
+    </select>
+
+    <update id="deleteReply" parameterType="Reply">
+        UPDATE reply
+        SET db_status = 'DEL'
+        WHERE reply_seq = #{param.replySeq}
+    </update>
+
+</mapper>

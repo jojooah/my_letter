@@ -15,6 +15,7 @@ public class ImagePath extends CommonDTO {
     private int imagePathsSeq;
     private int newsLetterSeq;
     private int newsLetterHeaderSeq;
+    private int memberSeq;
     private String imagePath;
     private String imageUrl;
     private String originName;

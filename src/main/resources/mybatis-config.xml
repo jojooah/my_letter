@@ -15,6 +15,7 @@
         <typeAlias type="com.jojo.my_letter.model.entity.CategoryCombi" alias="CategoryCombi"/>
         <typeAlias type="com.jojo.my_letter.model.entity.AccessLog" alias="AccessLog"/>
         <typeAlias type="com.jojo.my_letter.model.entity.ImagePath" alias="ImagePath"/>
+        <typeAlias type="com.jojo.my_letter.model.entity.Reply" alias="Reply"/>
     </typeAliases>
 
 </configuration>
