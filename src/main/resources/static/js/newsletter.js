@@ -25,7 +25,10 @@ const Newsletter = (function () {
             });
         })
 
+        //뉴스레터 헤더 팝업창
         $("button[data-progress=createNewsLetterHeader]").click(function() {
+            $("#newsLetterForm")[0].reset();
+            $("#newsLetterForm select").prop('selectedIndex', 0);
             $("#newsletterModal").modal('show');
         });
 
@@ -43,10 +46,9 @@ const Newsletter = (function () {
                     success: function(response) {
                         if (response.data.status === "SUCCESS") {
                             alert(response.data.message);
-                            window.location.href = "/author/newsletter/list";
+                            location.reload();
                         } else {
                             alert(response.data.message);
-                            window.location.href = "/author/newsletter/list";
                         }
                     },
                     error: function(xhr, status, error) {

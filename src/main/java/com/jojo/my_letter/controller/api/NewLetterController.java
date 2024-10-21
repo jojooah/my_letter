@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,12 +39,12 @@ public class NewLetterController {
 
     @PostMapping("/saveNewsLetter")
     public @ResponseBody
-    RestResult write(@RequestParam("thumbnail") MultipartFile thumbnail,
+    RestResult write(@RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail,
                      @RequestPart("newsLetter") NewsLetter newsLetter) {
         Map<String, Object> data = new LinkedHashMap<>();
 
         try {
-            if (!thumbnail.isEmpty()) {
+            if (ObjectUtils.isEmpty(thumbnail)) {
                 ImagePath imagePath = (ImagePath) imageUpload(thumbnail).getData().get("data");
                 newsLetter.setImagePath(imagePath);
             }
@@ -105,7 +106,7 @@ public class NewLetterController {
         }
     }
 
-    //todo.1.뉴스레터별로 폴더 만들어서 해당 이미지 저장
+    //todo.1.날짜(monthly) 폴더 만들어서 해당 이미지 저장
     //todo.2.임시 폴더에 저장해두고, 최종적으로 뉴스레터가 저장되면 임시폴더->본폴더로 저장
     //todo. ㄴ 최종적으로 뉴스레터 저장되지 않으면, 임시 폴더에 있는 이미지 삭제로직 추가
     @PostMapping(value = "/newsletter/image-upload")

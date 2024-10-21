@@ -4,10 +4,7 @@ import com.jojo.my_letter.config.properties.FileProperties;
 import com.jojo.my_letter.controller.service.LoginService;
 import com.jojo.my_letter.mapper.CategoryCombiMapper;
 import com.jojo.my_letter.mapper.NewsLetterMapper;
-import com.jojo.my_letter.model.entity.CategoryCombi;
-import com.jojo.my_letter.model.entity.ImagePath;
-import com.jojo.my_letter.model.entity.NewsLetter;
-import com.jojo.my_letter.model.entity.NewsLetterHeader;
+import com.jojo.my_letter.model.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -111,5 +108,9 @@ public class NewsLetterService {
 
     public void saveImg(ImagePath imagePath){
         newsLetterMapper.insertImagePath(imagePath);
+    }
+
+    public List<NewsLetter> selectNewsLetterListByWeekDay(WeekDay weekDay){
+        return newsLetterMapper.selectNewsLetterListByWeekDay(weekDay);
     }
 }

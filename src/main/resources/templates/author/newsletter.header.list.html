@@ -107,6 +107,17 @@
                                 </option>
                             </select>
                         </div>
+                        <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
+                            <label>요일</label>
+                            <select name="weekDay" class="border-0 form-select-sm bg-light me-3" style="width:360px;"
+                                    data-validation="required" data-name="요일">
+                                <option value="">전체</option>
+                                <option th:each="day : ${weekDays}"
+                                        th:value="${day.code}"
+                                        th:text="${day.name}">
+                                </option>
+                            </select>
+                        </div>
                     </div>
                     <button type="button" data-progress="saveNewsLetterHeader" class="btn btn-primary">저장</button>
                 </form>

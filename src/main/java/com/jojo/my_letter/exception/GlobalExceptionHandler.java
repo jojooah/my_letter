@@ -46,7 +46,7 @@ public class GlobalExceptionHandler  {
         //텔레그램으로 메시지 보내기
         log.error(ex.getMessage());
       //  telegramService.sendTelegram("ServerError! " + ex.getMessage());
-        return new RestError(RestErrorCode.ERROR_ETC.getCode(), RestErrorCode.ERROR_ETC.getMessage());
+        return new RestError(RestErrorCode.ERROR_ETC.getCode(), ex.getMessage());
     }
 
 

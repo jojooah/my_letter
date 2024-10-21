@@ -34,8 +34,9 @@
           , description
           , content
           , cost
-          , freeYn
+          , free_yn
           , view
+          , reg_date
             )
         VALUES (
             #{param.newsLetterHeaderSeq}
@@ -45,6 +46,7 @@
           , #{param.cost}
           , #{param.freeYn}
           , 0
+          , NOW()
         )
     </insert>
 
@@ -83,6 +85,7 @@
             joo.news_letter_header (
                 header_title
               , category_combi_seq
+              , week_day
               , author_id
               , reg_date
               , db_status
@@ -90,6 +93,7 @@
         VALUES (
             #{param.headerTitle}
           , #{param.categoryCombiSeq}
+          , #{param.weekDay}
           , #{param.authorId}
           , NOW()
           , 'OK'
@@ -98,11 +102,11 @@
 
     <select id="selectNewsLetterListByHeaderSeq" parameterType="Integer" resultType="NewsLetter">
         SELECT
-            n.news_letter_seq as newsLetterSeq
+            n.news_letter_seq AS newsLetterSeq
           , n.title
           , n.content
           , n.cost
-          , n.freeYn
+          , n.free_yn AS freeYn
           , n.description
           , n.news_letter_header_seq AS newsLetterHeaderSeq
           , n.view
@@ -133,7 +137,7 @@
           , n.title
           , n.content
           , n.cost
-          , n.freeYn
+          , n.free_yn AS freeYn
           , n.description
           , n.news_letter_header_seq AS newsLetterHeaderSeq
           , nh.category_combi_seq AS categoryCombiSeq
@@ -174,12 +178,12 @@
     <insert id="insertImagePath" parameterType="ImagePath">
         INSERT INTO  /*insertImagePath*/
             joo.image_path (
-                                     news_letter_seq
-                                   , news_letter_header_seq
-                                   , image_path
-                                   , origin_name
-                                   , saved_name
-                                   , reg_date
+                news_letter_seq
+              , news_letter_header_seq
+              , image_path
+              , origin_name
+              , saved_name
+              , reg_date
         )
         VALUES (
                    #{param.newsLetterSeq}

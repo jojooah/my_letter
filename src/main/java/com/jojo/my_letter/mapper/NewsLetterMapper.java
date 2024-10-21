@@ -3,6 +3,7 @@ package com.jojo.my_letter.mapper;
 import com.jojo.my_letter.model.entity.ImagePath;
 import com.jojo.my_letter.model.entity.NewsLetter;
 import com.jojo.my_letter.model.entity.NewsLetterHeader;
+import com.jojo.my_letter.model.entity.WeekDay;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -69,4 +70,11 @@ public interface NewsLetterMapper {
      * @param imagePath
      */
     void insertImagePath(@Param("param") ImagePath imagePath);
+
+    /**
+     * 요일별 뉴스레터 조회
+     * @param weekDay
+     * @return
+     */
+    List<NewsLetter> selectNewsLetterListByWeekDay(@Param("param") WeekDay weekDay);
 }

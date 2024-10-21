@@ -66,9 +66,12 @@ const Write = (function () {
             formData.append("newsLetter", new Blob([JSON.stringify(objParams)], { type: "application/json" }));
 
             let thumbnail = $('input[name=thumbnail]')[0].files[0];
-            if (thumbnail) {
-                formData.append("thumbnail", thumbnail);
+            if(!thumbnail){
+                alert("썸네일을 입력하세요.");
+                return;
             }
+
+            formData.append("thumbnail", thumbnail);
 
             if (confirm("저장하시겠습니까?")) {
                 $.ajax({
@@ -86,8 +89,12 @@ const Write = (function () {
                             location.reload();
                         }
                     },
-                    error: function (xhr, status, error) {
-                        alert(error);
+                    error: function(xhr, status, error) {
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            alert("오류 발생: " + xhr.responseJSON.message);
+                        } else {
+                            alert("예상치 못한 오류가 발생했습니다.");
+                        }
                     }
                 });
 
@@ -96,7 +103,7 @@ const Write = (function () {
     }
 
     function imageUploader(file, el) {
-        var formData = new FormData();
+        let formData = new FormData();
         formData.append('file', file);
 
         $.ajax({
