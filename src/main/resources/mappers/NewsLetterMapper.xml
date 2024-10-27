@@ -234,8 +234,10 @@
         SELECT
             DISTINCT
             a.author_id AS authorId
+          , m.username AS authorName
           , a.news_letter_header_seq AS newsLetterHeaderSeq
           , a.header_title AS headerTitle
+          , a.description
           , a.subscribers
           , a.week_day AS weekDay
           , a.reg_date AS regDate
@@ -252,7 +254,8 @@
             joo.news_letter_header a
                 INNER JOIN joo.category_combi b ON a.category_combi_seq = b.category_combi_seq
                 INNER JOIN joo.category c ON c.cat_code IN (b.cat1_code, b.cat2_code, b.cat3_code)
-                INNER JOIN joo.image_path ON im.news_letter_header_seq = a.news_letter_header_seq
+                INNER JOIN joo.image_path im ON im.news_letter_header_seq = a.news_letter_header_seq
+                INNER JOIN joo.Member m ON a.author_id = m.id
         WHERE
             a.week_day = #{param}
         AND a.db_status = 'OK'

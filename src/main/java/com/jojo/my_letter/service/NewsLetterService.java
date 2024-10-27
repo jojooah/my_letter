@@ -43,7 +43,7 @@ public class NewsLetterService {
         String userId = loginService.getCurrentUserId();
         List<NewsLetterHeader> newsLetterHeaderList = newsLetterMapper.selectNewsLetterHeaderListByAuthorId(userId);
         for(NewsLetterHeader newsLetterHeader : newsLetterHeaderList){
-            newsLetterHeader.getImagePath().setFileProperties(fileProperties);
+            if(!ObjectUtils.isEmpty(newsLetterHeader.getImagePath())) newsLetterHeader.getImagePath().setFileProperties(fileProperties);
         }
        return newsLetterHeaderList;
     }
@@ -122,6 +122,10 @@ public class NewsLetterService {
     }
 
     public List<NewsLetterHeader> selectNewsLetterHeaderListByWeekDay(WeekDay weekDay){
-        return newsLetterMapper.selectNewsLetterHeaderListByWeekDay(weekDay);
+        List<NewsLetterHeader> list = newsLetterMapper.selectNewsLetterHeaderListByWeekDay(weekDay);
+        for(NewsLetterHeader newsLetterHeader : list){
+           if(!ObjectUtils.isEmpty(newsLetterHeader.getImagePath())) newsLetterHeader.getImagePath().setFileProperties(fileProperties);
+        }
+        return list;
     }
 }

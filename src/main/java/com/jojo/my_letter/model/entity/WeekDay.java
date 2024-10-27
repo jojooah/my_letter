@@ -1,13 +1,16 @@
 package com.jojo.my_letter.model.entity;
 
+import java.time.DayOfWeek;
+import java.util.Arrays;
+
 public enum WeekDay {
-    Mon("Mon", "월요일"),
-    Tue("Tue", "화요일"),
-    Wed("Wed", "수요일"),
-    Thu("Thu", "목요일"),
-    Fri("Fri", "금요일"),
-    Sat("Sat", "토요일"),
-    Sun("Sun", "일요일");
+    MON("MON", "월요일"),
+    TUE("TUE", "화요일"),
+    WED("WED", "수요일"),
+    THU("THU", "목요일"),
+    FRI("FRI", "금요일"),
+    SAT("SAT", "토요일"),
+    SUN("SUN", "일요일");
 
     private String code;
     private String name;
@@ -17,12 +20,18 @@ public enum WeekDay {
         this.name = name;
     }
 
-    // Getter methods for code and name
     public String getCode() {
         return code;
     }
 
     public String getName() {
         return name;
+    }
+
+    public static WeekDay fromDayOfWeek(DayOfWeek dayOfWeek) {
+        return Arrays.stream(WeekDay.values())
+                .filter(weekDay -> weekDay.getCode().equals(dayOfWeek.name().substring(0,3)))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Invalid DayOfWeek: " + dayOfWeek));
     }
 }

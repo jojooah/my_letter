@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,7 +32,9 @@ public class ViewController {
 
     @GetMapping({"/index","/"})
     public String index(Model model) {
-        model.addAttribute("newsLetterHeaderList", newsLetterService.selectNewsLetterHeaderListByWeekDay(WeekDay.Mon));
+        DayOfWeek today = LocalDate.now().getDayOfWeek();
+        WeekDay weekDay = WeekDay.fromDayOfWeek(today);
+        model.addAttribute("newsLetterHeaderList", newsLetterService.selectNewsLetterHeaderListByWeekDay(weekDay));
         return "common/index";
     }
 
