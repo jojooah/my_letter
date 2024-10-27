@@ -32,27 +32,36 @@ const Newsletter = (function () {
             $("#newsletterModal").modal('show');
         });
 
-        //뉴스레터 저장
+        //뉴스레터헤더 저장
         $("button[data-progress=saveNewsLetterHeader]").click(function() {
+            let formData = new FormData();
             let objParams = $("#newsLetterForm").serializeObject();
             if(!validationCheck()) return;
+            let thumbnail = $('input[name=thumbnail]')[0].files[0];
+
+            formData.append("newsLetterHeader", new Blob([JSON.stringify(objParams)], { type: "application/json" }));
+            formData.append("thumbnail", thumbnail);
 
             if (confirm("저장하시겠습니까?")) {
                 $.ajax({
                     url: "/saveNewsLetterHeader",
                     type: "POST",
-                    contentType: "application/json",
-                    data: JSON.stringify(objParams),
-                    success: function(response) {
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    success: function (response) {
                         if (response.data.status === "SUCCESS") {
                             alert(response.data.message);
-                            location.reload();
                         } else {
                             alert(response.data.message);
                         }
                     },
                     error: function(xhr, status, error) {
-                        alert(error);
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            alert("오류 발생: " + xhr.responseJSON.message);
+                        } else {
+                            alert("예상치 못한 오류가 발생했습니다.");
+                        }
                     }
                 });
             }

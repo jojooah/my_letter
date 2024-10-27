@@ -1,6 +1,9 @@
 package com.jojo.my_letter.controller.page;
 
 import com.jojo.my_letter.controller.service.LoginService;
+import com.jojo.my_letter.model.entity.Category;
+import com.jojo.my_letter.model.entity.NewsLetter;
+import com.jojo.my_letter.model.entity.NewsLetterHeader;
 import com.jojo.my_letter.model.entity.WeekDay;
 import com.jojo.my_letter.service.CategoryService;
 import com.jojo.my_letter.service.NewsLetterService;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
+import java.util.List;
 
 
 @Controller
@@ -24,10 +28,9 @@ public class ViewController {
     private final LoginService loginService;
     private final ReplyService replyService;
 
-    @GetMapping("/index")
+    @GetMapping({"/index","/"})
     public String index(Model model) {
-     //   List<NewsLetter> list = newsLetterService.selectNewsLetterListByWeekDay(WeekDay.Mon);
-      //  model.addAttribute("newsLetterList", newsLetterService.selectNewsLetterListByWeekDay(WeekDay.Mon));
+        model.addAttribute("newsLetterHeaderList", newsLetterService.selectNewsLetterHeaderListByWeekDay(WeekDay.Mon));
         return "common/index";
     }
 

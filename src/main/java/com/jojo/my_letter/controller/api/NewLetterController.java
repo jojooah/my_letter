@@ -44,7 +44,7 @@ public class NewLetterController {
         Map<String, Object> data = new LinkedHashMap<>();
 
         try {
-            if (ObjectUtils.isEmpty(thumbnail)) {
+            if (!ObjectUtils.isEmpty(thumbnail)) {
                 ImagePath imagePath = (ImagePath) imageUpload(thumbnail).getData().get("data");
                 newsLetter.setImagePath(imagePath);
             }
@@ -66,10 +66,15 @@ public class NewLetterController {
 
     @PostMapping("/saveNewsLetterHeader")
     public @ResponseBody
-    RestResult saveNewsLetterHeader(@RequestBody NewsLetterHeader newsLetterHeader) {
+    RestResult saveNewsLetterHeader(@RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail,
+                                    @RequestPart("newsLetterHeader") NewsLetterHeader newsLetterHeader) {
         Map<String, Object> data = new LinkedHashMap<>();
 
         try {
+            if (!ObjectUtils.isEmpty(thumbnail)) {
+                ImagePath imagePath = (ImagePath) imageUpload(thumbnail).getData().get("data");
+                newsLetterHeader.setImagePath(imagePath);
+            }
             newsLetterService.saveNewsLetterHeader(newsLetterHeader);
             data.put("status", "SUCCESS");
             data.put("message", "저장되었습니다");

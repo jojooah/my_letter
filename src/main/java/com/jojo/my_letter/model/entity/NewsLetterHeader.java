@@ -20,4 +20,5 @@ public class NewsLetterHeader extends CommonDTO {
     private String cat2Name;
     private String cat3Name;
     private WeekDay weekDay;
+    private ImagePath imagePath;
 }

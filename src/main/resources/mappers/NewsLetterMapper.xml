@@ -27,6 +27,35 @@
         </association>
     </resultMap>
 
+    <resultMap id="newsLetterHeaderResultMap" type="NewsLetterHeader">
+        <!-- NewsLetterHeader -->
+        <id property="newsLetterHeaderSeq" column="newsLetterHeaderSeq" />
+        <result property="categoryCombiSeq" column="categoryCombiSeq" />
+        <result property="headerTitle" column="headerTitle" />
+        <result property="subscribers" column="subscribers" />
+        <result property="authorId" column="authorId" />
+        <result property="authorName" column="authorName" />
+        <result property="cat1Code" column="cat1Code" />
+        <result property="cat2Code" column="cat2Code" />
+        <result property="cat3Code" column="cat3Code" />
+        <result property="cat1Name" column="cat1Name" />
+        <result property="cat2Name" column="cat2Name" />
+        <result property="cat3Name" column="cat3Name" />
+        <result property="weekDay" column="weekDay" />
+        <result property="regDate" column="regDate" />
+
+        <!-- ImagePath -->
+        <association property="imagePath" javaType="ImagePath">
+            <result property="originName" column="originName" />
+            <result property="savedName" column="savedName" />
+            <result property="imagePath" column="imagePath" />
+        </association>
+
+
+    </resultMap>
+
+
+
     <insert id="insertNewsLetter" parameterType="NewsLetter" useGeneratedKeys="true" keyProperty="newsLetterSeq" keyColumn="news_letter_seq">
         INSERT INTO joo.news_letter ( /*insertNewsLetter*/
             news_letter_header_seq
@@ -50,13 +79,14 @@
         )
     </insert>
 
-    <select id="selectNewsLetterListByAuthorId" parameterType="String" resultType="NewsLetterHeader">
+    <select id="selectNewsLetterHeaderListByAuthorId" parameterType="String" resultMap="newsLetterHeaderResultMap">
         SELECT
             DISTINCT
                 a.author_id AS authorId
               , a.news_letter_header_seq AS newsLetterHeaderSeq
               , a.header_title AS headerTitle
               , a.subscribers
+              , a.week_day AS weekDay
               , a.reg_date AS regDate
               , b.cat1_code AS cat1Code
               , b.cat2_code AS cat2Code
@@ -64,12 +94,17 @@
               , MAX(CASE WHEN b.cat1_code = c.cat_code THEN c.cat_name END) AS cat1Name
               , MAX(CASE WHEN b.cat2_code = c.cat_code THEN c.cat_name END) AS cat2Name
               , MAX(CASE WHEN b.cat3_code = c.cat_code THEN c.cat_name END) AS cat3Name
+              , ip.image_path AS imagePath
+              , ip.saved_name AS savedName
+              , ip.origin_name AS originName
         FROM
             joo.news_letter_header a
             INNER JOIN joo.category_combi b ON a.category_combi_seq = b.category_combi_seq
             INNER JOIN joo.category c ON c.cat_code IN (b.cat1_code, b.cat2_code, b.cat3_code)
+            LEFT OUTER JOIN joo.image_path ip on a.news_letter_header_seq = ip.news_letter_header_seq
         WHERE
             a.author_id = #{param}
+        AND a.db_status = 'OK'
         GROUP BY
             a.author_id,
             a.header_title,
@@ -80,7 +115,7 @@
             b.cat3_code;
     </select>
 
-    <insert id="insertNewsLetterHeader" parameterType="NewsLetterHeader">
+    <insert id="insertNewsLetterHeader" parameterType="NewsLetterHeader" useGeneratedKeys="true" keyProperty="newsLetterHeaderSeq" keyColumn="news_letter_header_seq">
         INSERT INTO  /*insertNewsLetterHeader*/
             joo.news_letter_header (
                 header_title
@@ -194,4 +229,42 @@
                , NOW()
                )
     </insert>
+
+    <select id="selectNewsLetterHeaderListByWeekDay" parameterType="WeekDay" resultType="NewsLetterHeader">
+        SELECT
+            DISTINCT
+            a.author_id AS authorId
+          , a.news_letter_header_seq AS newsLetterHeaderSeq
+          , a.header_title AS headerTitle
+          , a.subscribers
+          , a.week_day AS weekDay
+          , a.reg_date AS regDate
+          , b.cat1_code AS cat1Code
+          , b.cat2_code AS cat2Code
+          , b.cat3_code AS cat3Code
+          , MAX(CASE WHEN b.cat1_code = c.cat_code THEN c.cat_name END) AS cat1Name
+          , MAX(CASE WHEN b.cat2_code = c.cat_code THEN c.cat_name END) AS cat2Name
+          , MAX(CASE WHEN b.cat3_code = c.cat_code THEN c.cat_name END) AS cat3Name
+          , im.image_path as imagePath
+          , im.origin_name as originName
+          , im.saved_name as savedName
+        FROM
+            joo.news_letter_header a
+                INNER JOIN joo.category_combi b ON a.category_combi_seq = b.category_combi_seq
+                INNER JOIN joo.category c ON c.cat_code IN (b.cat1_code, b.cat2_code, b.cat3_code)
+                INNER JOIN joo.image_path ON im.news_letter_header_seq = a.news_letter_header_seq
+        WHERE
+            a.week_day = #{param}
+        AND a.db_status = 'OK'
+        GROUP BY
+            a.author_id,
+            a.header_title,
+            a.subscribers,
+            a.reg_date,
+            b.cat1_code,
+            b.cat2_code,
+            b.cat3_code
+        ORDER BY subscribers desc
+            LIMIT 8;
+    </select>
 </mapper>

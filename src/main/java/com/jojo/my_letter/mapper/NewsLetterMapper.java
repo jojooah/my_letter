@@ -24,7 +24,7 @@ public interface NewsLetterMapper {
      * @param authorId
      * @return
      */
-    List<NewsLetterHeader> selectNewsLetterListByAuthorId(@Param("param") String authorId);
+    List<NewsLetterHeader> selectNewsLetterHeaderListByAuthorId(@Param("param") String authorId);
 
     /**
      * 뉴스레터 헤더 조회
@@ -76,5 +76,5 @@ public interface NewsLetterMapper {
      * @param weekDay
      * @return
      */
-    List<NewsLetter> selectNewsLetterListByWeekDay(@Param("param") WeekDay weekDay);
+    List<NewsLetterHeader> selectNewsLetterHeaderListByWeekDay(@Param("param") WeekDay weekDay);
 }

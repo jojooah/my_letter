@@ -41,7 +41,11 @@ public class NewsLetterService {
      */
     public List<NewsLetterHeader> selectNewsLetterHeaderList(){
         String userId = loginService.getCurrentUserId();
-        return newsLetterMapper.selectNewsLetterListByAuthorId(userId);
+        List<NewsLetterHeader> newsLetterHeaderList = newsLetterMapper.selectNewsLetterHeaderListByAuthorId(userId);
+        for(NewsLetterHeader newsLetterHeader : newsLetterHeaderList){
+            newsLetterHeader.getImagePath().setFileProperties(fileProperties);
+        }
+       return newsLetterHeaderList;
     }
 
     /**
@@ -75,6 +79,13 @@ public class NewsLetterService {
 
         newsLetterHeader.setCategoryCombiSeq(categoryCombiSeq);
         newsLetterMapper.insertNewsLetterHeader(newsLetterHeader);
+
+        if(!ObjectUtils.isEmpty(newsLetterHeader.getImagePath())){
+            ImagePath imagePath= newsLetterHeader.getImagePath();
+            imagePath.setNewsLetterHeaderSeq(newsLetterHeader.getNewsLetterHeaderSeq());
+
+            saveImg(imagePath);
+        }
     }
 
     /**
@@ -110,7 +121,7 @@ public class NewsLetterService {
         newsLetterMapper.insertImagePath(imagePath);
     }
 
-    public List<NewsLetter> selectNewsLetterListByWeekDay(WeekDay weekDay){
-        return newsLetterMapper.selectNewsLetterListByWeekDay(weekDay);
+    public List<NewsLetterHeader> selectNewsLetterHeaderListByWeekDay(WeekDay weekDay){
+        return newsLetterMapper.selectNewsLetterHeaderListByWeekDay(weekDay);
     }
 }
