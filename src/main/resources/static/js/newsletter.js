@@ -229,3 +229,61 @@ const Reply = (function () {
         start:start
     }
 })()
+
+const Index = (function () {
+    function start() {
+        $("span[data-name=weekDay]").click(function() {
+            let code = $(this).data("progress");
+
+            $.ajax({
+                url: "/newsLetterHeader/week",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ code: code }),
+                success: function(response) {
+                    if (response.data.status === "SUCCESS") {
+                        const html = generateNewsletterHTML(response.data.data);
+                        $("#newsLetterContainer").html(html);
+                    } else {
+                        alert(response.data.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert(error);
+                }
+            });
+        });
+
+    }
+    function generateNewsletterHTML(newsLetterHeaderList) {
+        let html = "";
+        newsLetterHeaderList.forEach(item => {
+            html += `
+                <div class="col-md-6 col-lg-4 col-xl-3">
+                    <a href="/newsletter/list?seq=${item.newsLetterHeaderSeq}">
+                        <div class="rounded position-relative fruite-item">
+                            <div class="fruite-img">
+                                <img src="${item.imagePath && item.imagePath.imageUrl ? item.imagePath.imageUrl : '/img/single-item.jpg'}" class="img-fluid w-100 rounded-top">
+                            </div>
+                            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">${item.regDate}</div>
+                            <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                <h4>${item.headerTitle}</h4>
+                                <p>${item.description}</p>
+                                <div class="d-flex justify-content-between flex-lg-wrap">
+                                    <p class="text-dark fs-5 fw-bold mb-0">${item.cat1Name} > ${item.cat2Name} > ${item.cat3Name}</p>
+                                    <a href="/author/${item.authorId}" class="btn border border-secondary rounded-pill px-3 text-primary">
+                                        <i class="fa fa-shopping-bag me-2 text-primary"></i>${item.authorName}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            `;
+        });
+        return html;
+    }
+    return {
+        start:start
+    }
+})()

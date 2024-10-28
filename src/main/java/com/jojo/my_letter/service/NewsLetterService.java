@@ -124,7 +124,8 @@ public class NewsLetterService {
     public List<NewsLetterHeader> selectNewsLetterHeaderListByWeekDay(WeekDay weekDay){
         List<NewsLetterHeader> list = newsLetterMapper.selectNewsLetterHeaderListByWeekDay(weekDay);
         for(NewsLetterHeader newsLetterHeader : list){
-           if(!ObjectUtils.isEmpty(newsLetterHeader.getImagePath())) newsLetterHeader.getImagePath().setFileProperties(fileProperties);
+           if(!ObjectUtils.isEmpty(newsLetterHeader.getImagePath()))
+               newsLetterHeader.getImagePath().setFileProperties(fileProperties);
         }
         return list;
     }

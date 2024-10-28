@@ -33,8 +33,10 @@ public class ViewController {
     @GetMapping({"/index","/"})
     public String index(Model model) {
         DayOfWeek today = LocalDate.now().getDayOfWeek();
-        WeekDay weekDay = WeekDay.fromDayOfWeek(today);
+        WeekDay weekDay = WeekDay.fromCode(today.toString().substring(0,3));
         model.addAttribute("newsLetterHeaderList", newsLetterService.selectNewsLetterHeaderListByWeekDay(weekDay));
+        model.addAttribute("weekDays", WeekDay.values());
+        model.addAttribute("today",weekDay);
         return "common/index";
     }
 

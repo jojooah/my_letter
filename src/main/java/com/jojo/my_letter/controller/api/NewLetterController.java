@@ -1,10 +1,7 @@
 package com.jojo.my_letter.controller.api;
 
 import com.jojo.my_letter.exception.MyLetterRuntimeException;
-import com.jojo.my_letter.model.entity.ImagePath;
-import com.jojo.my_letter.model.entity.NewsLetter;
-import com.jojo.my_letter.model.entity.NewsLetterHeader;
-import com.jojo.my_letter.model.entity.Reply;
+import com.jojo.my_letter.model.entity.*;
 import com.jojo.my_letter.model.result.RestResult;
 import com.jojo.my_letter.service.NewsLetterService;
 import com.jojo.my_letter.service.ReplyService;
@@ -201,4 +198,24 @@ public class NewLetterController {
         }
     }
 
+    @PostMapping("/newsLetterHeader/week")
+    public @ResponseBody
+    RestResult getNewsLetterHeaderByWeekDay(@RequestBody Map<String, String> map) {
+        Map<String, Object> data = new LinkedHashMap<>();
+
+        try {
+            data.put("data", newsLetterService.selectNewsLetterHeaderListByWeekDay(WeekDay.fromCode(map.get("code"))));
+            data.put("status", "SUCCESS");
+            data.put("message", "요일별 뉴스레터를 가져오는데 성공했습니다");
+
+            return new RestResult(data);
+
+        } catch (Exception e) {
+            data.put("status", "FAIL");
+            data.put("message", "오류가 발생했습니다");
+            log.error(e.getMessage());
+
+            return new RestResult(data);
+        }
+    }
 }

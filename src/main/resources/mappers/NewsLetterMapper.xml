@@ -230,7 +230,7 @@
                )
     </insert>
 
-    <select id="selectNewsLetterHeaderListByWeekDay" parameterType="WeekDay" resultType="NewsLetterHeader">
+    <select id="selectNewsLetterHeaderListByWeekDay" parameterType="WeekDay" resultMap="newsLetterHeaderResultMap">
         SELECT
             DISTINCT
             a.author_id AS authorId
@@ -254,7 +254,7 @@
             joo.news_letter_header a
                 INNER JOIN joo.category_combi b ON a.category_combi_seq = b.category_combi_seq
                 INNER JOIN joo.category c ON c.cat_code IN (b.cat1_code, b.cat2_code, b.cat3_code)
-                INNER JOIN joo.image_path im ON im.news_letter_header_seq = a.news_letter_header_seq
+                left outer JOIN joo.image_path im ON im.news_letter_header_seq = a.news_letter_header_seq
                 INNER JOIN joo.Member m ON a.author_id = m.id
         WHERE
             a.week_day = #{param}

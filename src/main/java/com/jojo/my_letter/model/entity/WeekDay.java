@@ -28,10 +28,10 @@ public enum WeekDay {
         return name;
     }
 
-    public static WeekDay fromDayOfWeek(DayOfWeek dayOfWeek) {
+    public static WeekDay fromCode(String code) {
         return Arrays.stream(WeekDay.values())
-                .filter(weekDay -> weekDay.getCode().equals(dayOfWeek.name().substring(0,3)))
+                .filter(weekDay -> weekDay.getCode().equalsIgnoreCase(code))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Invalid DayOfWeek: " + dayOfWeek));
+                .orElseThrow(() -> new IllegalArgumentException("Invalid code: " + code));
     }
 }
