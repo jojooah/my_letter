@@ -61,8 +61,11 @@ public class ViewController {
         return "common/newsletter.content";
     }
 
-    @GetMapping("/weeks/monday")
-    public String monday() {
+    @GetMapping("/weeks/{weekDay}")
+    public String monday(Model model,@PathVariable("weekDay") String weekDay) {
+        model.addAttribute("newsLetterHeaderList", newsLetterService.selectNewsLetterHeaderListByWeekDay(WeekDay.fromCode(weekDay)));
+        model.addAttribute("weekDays", WeekDay.values());
+        model.addAttribute("today", WeekDay.fromCode(weekDay));
         return "weeks";
     }
 
