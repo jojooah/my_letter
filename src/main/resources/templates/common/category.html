@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="/fragment/head.html::fragment-header"></head>
+    <body>
+        <!-- Navbar start -->
+        <div th:replace="/fragment/navbar.html::fragment-navbar"></div>
+        <!-- Navbar End -->
+
+        <!-- Single Page Header start -->
+        <div class="container-fluid page-header py-5">
+            <h1 class="text-center text-white display-6" ></h1>
+              <ol class="breadcrumb justify-content-center mb-0">
+              </ol>
+          </div>
+          <!-- Single Page Header End -->
+
+        <!-- Bestsaler Product Start -->ㅊ
+        <div class="container-fluid py-5">
+            <div class="container py-5">
+                <div class="text-center mx-auto mb-5" style="max-width: 700px;">
+                    <h1 class="display-4" th:text="'[카테고리] > '+${category.catName}">월요일, 한 주의 시작!</h1>
+                </div>
+                <div class="row g-4">
+                    <div class="col-xl-3">
+                        <div class="input-group w-100 mx-auto d-flex">
+                            <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
+                            <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-6"></div>
+                    <div class="col-xl-3">
+                        <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
+                            <label for="fruits">정렬</label>
+                            <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3" form="fruitform">
+                                <option value="volvo">최신순</option>
+                                <option value="saab">인기순</option>
+                                <option value="opel">1화부터</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-4">
+                    <th:block th:each="item : ${newsLetterHeaderList}">
+                    <div class="col-lg-6 col-xl-4">
+                        <div class="p-4 rounded bg-light">
+                            <div class="row align-items-center">
+                                <div class="col-6">
+                                    <img th:src="${item.imagePath != null && item.imagePath.imageUrl != null ? item.imagePath.imageUrl : '/img/single-item.jpg'}" class="img-fluid rounded-circle w-100" alt="">
+                                </div>
+                                <div class="col-6">
+                                    <a  th:href="'/newsletter/list?seq=' + ${item.newsLetterHeaderSeq}" class="h5" th:text="${item.headerTitle}">커피 한 잔</a>
+                                    <div class="d-flex my-3">
+                                    </div>
+                                    <h5 class="mb-3">3.12 $</h5>
+                                    <a href="#" th:text="${item.regDate}" class="btn border border-secondary rounded-pill px-3 text-primary" ><i class="fa fa-shopping-bag me-2 text-primary"></i>2024/05/31 </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </th:block>
+                    <div class="col-12">
+                        <div class="pagination d-flex justify-content-center mt-5">
+                            <a href="#" class="rounded">&laquo;</a>
+                            <a href="#" class="active rounded">1</a>
+                            <a href="#" class="rounded">2</a>
+                            <a href="#" class="rounded">3</a>
+                            <a href="#" class="rounded">4</a>
+                            <a href="#" class="rounded">5</a>
+                            <a href="#" class="rounded">6</a>
+                            <a href="#" class="rounded">&raquo;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bestsaler Product End -->
+
+
+        <span th:replace="/fragment/footer.html :: fragment-footer"></span>
+        <!-- Copyright End -->
+
+        <!-- JavaScript Libraries -->
+        <span th:replace="/fragment/commonJs.html :: fragment-commonJs"></span>
+    </body>
+</html>

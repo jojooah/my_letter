@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -117,15 +118,42 @@ public class NewsLetterService {
         newsLetterMapper.deleteNewsLetterBySeq(newsLetterSeq);
     }
 
+    /**
+     * 이미지 저장
+     * @param imagePath
+     */
     public void saveImg(ImagePath imagePath){
         newsLetterMapper.insertImagePath(imagePath);
     }
 
+    /**
+     * 요일별 뉴스레터 조회
+     * @param weekDay
+     * @return
+     */
     public List<NewsLetterHeader> selectNewsLetterHeaderListByWeekDay(WeekDay weekDay){
         List<NewsLetterHeader> list = newsLetterMapper.selectNewsLetterHeaderListByWeekDay(weekDay);
         for(NewsLetterHeader newsLetterHeader : list){
            if(!ObjectUtils.isEmpty(newsLetterHeader.getImagePath()))
                newsLetterHeader.getImagePath().setFileProperties(fileProperties);
+        }
+        return list;
+    }
+
+    /**
+     * 카테고리별 뉴스레터 조회
+     * @param category
+     * @return
+     */
+    public List<NewsLetterHeader> selectNewsLetterHeaderListByCategory(String category){
+        CategoryCombi cc = new CategoryCombi();
+        cc.setCat1Code(category);
+        List<NewsLetterHeader> list = newsLetterMapper.selectNewsLetterHeaderListByCategory(cc);
+        if (ObjectUtils.isEmpty(list)) return new ArrayList<>();
+
+        for(NewsLetterHeader newsLetterHeader : list){
+            if(!ObjectUtils.isEmpty(newsLetterHeader.getImagePath()))
+                newsLetterHeader.getImagePath().setFileProperties(fileProperties);
         }
         return list;
     }

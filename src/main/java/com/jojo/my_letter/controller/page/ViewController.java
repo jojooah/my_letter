@@ -2,8 +2,6 @@ package com.jojo.my_letter.controller.page;
 
 import com.jojo.my_letter.controller.service.LoginService;
 import com.jojo.my_letter.model.entity.Category;
-import com.jojo.my_letter.model.entity.NewsLetter;
-import com.jojo.my_letter.model.entity.NewsLetterHeader;
 import com.jojo.my_letter.model.entity.WeekDay;
 import com.jojo.my_letter.service.CategoryService;
 import com.jojo.my_letter.service.NewsLetterService;
@@ -36,6 +34,7 @@ public class ViewController {
         WeekDay weekDay = WeekDay.fromCode(today.toString().substring(0,3));
         model.addAttribute("newsLetterHeaderList", newsLetterService.selectNewsLetterHeaderListByWeekDay(weekDay));
         model.addAttribute("weekDays", WeekDay.values());
+        model.addAttribute("categoryList", categoryService.selectCategory());
         model.addAttribute("today",weekDay);
         return "common/index";
     }
@@ -62,11 +61,21 @@ public class ViewController {
     }
 
     @GetMapping("/weeks/{weekDay}")
-    public String monday(Model model,@PathVariable("weekDay") String weekDay) {
+    public String newsLetterHeaderByWeek(Model model,@PathVariable("weekDay") String weekDay) {
         model.addAttribute("newsLetterHeaderList", newsLetterService.selectNewsLetterHeaderListByWeekDay(WeekDay.fromCode(weekDay)));
         model.addAttribute("weekDays", WeekDay.values());
         model.addAttribute("today", WeekDay.fromCode(weekDay));
-        return "weeks";
+        model.addAttribute("categoryList", categoryService.selectCategory());
+        return "common/weeks";
+    }
+
+    @GetMapping("/category/{cat1Code}")
+    public String newsLetterHeaderByCategory(Model model,@PathVariable("cat1Code") String cat1Code) {
+        List<Category> categories = categoryService.selectCategory();
+        model.addAttribute("newsLetterHeaderList", newsLetterService.selectNewsLetterHeaderListByCategory(cat1Code));
+        model.addAttribute("categoryList", categoryService.selectCategory());
+        model.addAttribute("category",categories.stream().filter(x->x.getCatCode().equals(cat1Code)).findAny().get());
+        return "common/category";
     }
 
     @GetMapping("/checkout")

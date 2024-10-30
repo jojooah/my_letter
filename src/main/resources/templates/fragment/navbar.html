@@ -29,16 +29,16 @@
                                     <a th:href="@{/weeks/{code}(code=${item.code})}" th:text="${item.name}" class="dropdown-item">월</a>
                                 </th:block>
                             </div>
-
                         </div>
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">카테고리별</a>
-                            <div class="dropdown-menu m-0 bg-secondary rounded-0" th:each="item:${items}">
-                              <a href="../cart.html" class="dropdown-item" th:text="${item.name}" ${item.id}>취미</a>
-                              <a href="../chackout.html" class="dropdown-item">기술</a>
-                              <a href="../testimonial.html" class="dropdown-item">요리</a>
-                              <a href="../404.html" class="dropdown-item">건강</a>
-                            </div>
+                       <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">카테고리별</a>
+                        <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                            <th:block th:each="item : ${categoryList}">
+                                <a th:href="@{/category/{catCode}(catCode=${item.catCode})}"
+                                   th:text="${item.catName}"
+                                   class="dropdown-item"
+                                   th:if="${item.catLevel == 1}">월</a>
+                            </th:block>
                         </div>
                     </div>
                     <div class="d-flex m-3 me-0">
