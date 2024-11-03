@@ -80,5 +80,12 @@ public interface NewsLetterMapper {
      * @param category
      * @return
      */
-    List<NewsLetterHeader> selectNewsLetterHeaderListByCategory(@Param("param") CategoryCombi category);
+    List<NewsLetterHeader> selectNewsLetterHeaderListByCategory(@Param("param") CategoryCombi category,int limit, int offset);
+
+    /**
+     * 카테고리별 뉴스레터 조회(카운트)
+     * @param category
+     * @return
+     */
+    int countNewsLetterHeaderListByCategory(@Param("param") CategoryCombi category);
 }

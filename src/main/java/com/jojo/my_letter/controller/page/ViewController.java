@@ -70,11 +70,19 @@ public class ViewController {
     }
 
     @GetMapping("/category/{cat1Code}")
-    public String newsLetterHeaderByCategory(Model model,@PathVariable("cat1Code") String cat1Code) {
+    public String newsLetterHeaderByCategory(Model model, @PathVariable("cat1Code") String cat1Code
+                                                        , @RequestParam(defaultValue = "0") int page
+                                                        , @RequestParam(defaultValue = "9") int size) {
         List<Category> categories = categoryService.selectCategory();
-        model.addAttribute("newsLetterHeaderList", newsLetterService.selectNewsLetterHeaderListByCategory(cat1Code));
+        int totalItems = newsLetterService.countNewsLetterByCategory(cat1Code);
+        int totalPages = (int) Math.ceil((double) totalItems / size);
+
+        model.addAttribute("newsLetterHeaderList", newsLetterService.selectNewsLetterHeaderListByCategory(cat1Code,page,size));
         model.addAttribute("categoryList", categoryService.selectCategory());
         model.addAttribute("category",categories.stream().filter(x->x.getCatCode().equals(cat1Code)).findAny().get());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("pageSize", size);
         return "common/category";
     }
 

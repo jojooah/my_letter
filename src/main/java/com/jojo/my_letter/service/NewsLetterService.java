@@ -145,10 +145,13 @@ public class NewsLetterService {
      * @param category
      * @return
      */
-    public List<NewsLetterHeader> selectNewsLetterHeaderListByCategory(String category){
+    public List<NewsLetterHeader> selectNewsLetterHeaderListByCategory(String category,int page,int size){
+        int offset = page * size;
+        int limit = size;
+
         CategoryCombi cc = new CategoryCombi();
         cc.setCat1Code(category);
-        List<NewsLetterHeader> list = newsLetterMapper.selectNewsLetterHeaderListByCategory(cc);
+        List<NewsLetterHeader> list = newsLetterMapper.selectNewsLetterHeaderListByCategory(cc,limit, offset);
         if (ObjectUtils.isEmpty(list)) return new ArrayList<>();
 
         for(NewsLetterHeader newsLetterHeader : list){
@@ -156,5 +159,11 @@ public class NewsLetterService {
                 newsLetterHeader.getImagePath().setFileProperties(fileProperties);
         }
         return list;
+    }
+
+    public int countNewsLetterByCategory(String cat1Code){
+        CategoryCombi cc = new CategoryCombi();
+        cc.setCat1Code(cat1Code);
+        return newsLetterMapper.countNewsLetterHeaderListByCategory(cc);
     }
 }

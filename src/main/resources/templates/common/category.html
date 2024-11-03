@@ -60,14 +60,22 @@
                     </th:block>
                     <div class="col-12">
                         <div class="pagination d-flex justify-content-center mt-5">
-                            <a href="#" class="rounded">&laquo;</a>
-                            <a href="#" class="active rounded">1</a>
-                            <a href="#" class="rounded">2</a>
-                            <a href="#" class="rounded">3</a>
-                            <a href="#" class="rounded">4</a>
-                            <a href="#" class="rounded">5</a>
-                            <a href="#" class="rounded">6</a>
-                            <a href="#" class="rounded">&raquo;</a>
+                            <!-- 이전 페이지 버튼 -->
+                            <a th:href="${currentPage-1 == 0} ? '':@{/category/{cat1Code}(cat1Code=${category.catCode}, page=${currentPage - 1}, size=${pageSize})}"
+                               th:classprepend="${currentPage-1 == 0} ? ' disabled'"
+                               class="rounded">&laquo;</a>
+
+                            <!-- 페이지 버튼  -->
+                            <th:block th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                                <a th:href="@{/category/{cat1Code}(cat1Code=${category.catCode}, page=${i}, size=${pageSize})}"
+                                   th:classappend="${currentPage == i} ? ' active'"
+                                   class="rounded" th:text="${i + 1}">1</a>
+                            </th:block>
+
+                            <!-- 다음 페이지 버튼 -->
+                            <a th:href="${currentPage == totalPages} ? '':@{/category/{cat1Code}(cat1Code=${category.catCode}, page=${currentPage + 1}, size=${pageSize})}"
+                               th:classappend="${currentPage == totalPages} ? ' disabled'"
+                               class="rounded">&raquo;</a>
                         </div>
                     </div>
                 </div>

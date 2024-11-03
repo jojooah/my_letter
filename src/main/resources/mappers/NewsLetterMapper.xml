@@ -316,4 +316,48 @@
        ORDER BY subscribers desc
            LIMIT 8;
    </select>
+
+    <select id="countNewsLetterHeaderListByCategory" parameterType="CategoryCombi" resultType="Integer">
+        SELECT count(1)
+        from (
+                 SELECT DISTINCT
+                     a.author_id AS authorId
+                   , m.username AS authorName
+                   , a.news_letter_header_seq  AS newsLetterHeaderSeq
+                   , a.header_title AS headerTitle
+                   , a.description
+                   , a.subscribers
+                   , a.week_day AS weekDay
+                   , a.reg_date AS regDate
+                   , b.cat1_code AS cat1Code
+                   , b.cat2_code AS cat2Code
+                   , b.cat3_code AS cat3Code
+                   , MAX(CASE WHEN b.cat1_code = c.cat_code THEN c.cat_name END) AS cat1Name
+                   , MAX(CASE WHEN b.cat2_code = c.cat_code THEN c.cat_name END) AS cat2Name
+                   , MAX(CASE WHEN b.cat3_code = c.cat_code THEN c.cat_name END) AS cat3Name
+                   , im.image_path AS imagePath
+                   , im.origin_name AS originName
+                   , im.saved_name AS savedName
+                 FROM joo.news_letter_header a
+                  INNER JOIN joo.category_combi b ON a.category_combi_seq = b.category_combi_seq
+                  INNER JOIN joo.category c ON c.cat_code IN (b.cat1_code, b.cat2_code, b.cat3_code)
+                  LEFT OUTER JOIN joo.image_path im ON im.news_letter_header_seq = a.news_letter_header_seq
+                  INNER JOIN joo.Member m ON a.author_id = m.id
+                 WHERE a.category_combi_seq IN
+                       (
+                           SELECT category_combi_seq
+                           FROM category_combi
+                           WHERE cat1_code = #{param.cat1Code}
+                       )
+                   AND a.db_status = 'OK'
+                 GROUP BY
+                     a.author_id
+                    , a.header_title
+                    , a.subscribers
+                    , a.reg_date
+                    , b.cat1_code
+                    , b.cat2_code
+                    , b.cat3_code
+             )v
+    </select>
 </mapper>
