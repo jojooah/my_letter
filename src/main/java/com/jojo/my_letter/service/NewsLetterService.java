@@ -131,8 +131,15 @@ public class NewsLetterService {
      * @param weekDay
      * @return
      */
-    public List<NewsLetterHeader> selectNewsLetterHeaderListByWeekDay(WeekDay weekDay){
-        List<NewsLetterHeader> list = newsLetterMapper.selectNewsLetterHeaderListByWeekDay(weekDay);
+    public List<NewsLetterHeader> selectNewsLetterHeaderListByWeekDay(WeekDay weekDay,int page,int size){
+        int offset = (page-1) * size;
+        int limit = size;
+
+        List<NewsLetterHeader> list = newsLetterMapper.selectNewsLetterHeaderListByWeekDay(weekDay,limit,offset);
+        if(ObjectUtils.isEmpty(list)) {
+            return null;
+        }
+
         for(NewsLetterHeader newsLetterHeader : list){
            if(!ObjectUtils.isEmpty(newsLetterHeader.getImagePath()))
                newsLetterHeader.getImagePath().setFileProperties(fileProperties);
@@ -141,12 +148,21 @@ public class NewsLetterService {
     }
 
     /**
+     * 요일별 뉴스레터 조회(카운트)
+     * @param weekDay
+     * @return
+     */
+    public int countNewsLetterHeaderListByWeekDay(WeekDay weekDay){
+        return newsLetterMapper.countNewsLetterHeaderListByWeekDay(weekDay);
+    }
+
+    /**
      * 카테고리별 뉴스레터 조회
      * @param category
      * @return
      */
     public List<NewsLetterHeader> selectNewsLetterHeaderListByCategory(String category,int page,int size){
-        int offset = page * size;
+        int offset = (page-1) * size;
         int limit = size;
 
         CategoryCombi cc = new CategoryCombi();
@@ -161,9 +177,16 @@ public class NewsLetterService {
         return list;
     }
 
+    /**
+     * 카테고리별 뉴스레터 조회(카운트)
+     * @param cat1Code
+     * @return
+     */
     public int countNewsLetterByCategory(String cat1Code){
         CategoryCombi cc = new CategoryCombi();
         cc.setCat1Code(cat1Code);
         return newsLetterMapper.countNewsLetterHeaderListByCategory(cc);
     }
+
+
 }

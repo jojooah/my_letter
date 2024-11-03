@@ -34,7 +34,7 @@
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">카테고리별</a>
                         <div class="dropdown-menu m-0 bg-secondary rounded-0">
                             <th:block th:each="item : ${categoryList}">
-                             <a th:href="@{/category/{catCode}(catCode=${item.catCode}, page=1, size=9)}"
+                             <a th:href="@{/category/{catCode}(catCode=${item.catCode})}"
                                 th:text="${item.catName}"
                                 class="dropdown-item"
                                 th:if="${item.catLevel == 1}">월</a>

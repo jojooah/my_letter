@@ -73,7 +73,14 @@ public interface NewsLetterMapper {
      * @param weekDay
      * @return
      */
-    List<NewsLetterHeader> selectNewsLetterHeaderListByWeekDay(@Param("param") WeekDay weekDay);
+    List<NewsLetterHeader> selectNewsLetterHeaderListByWeekDay(@Param("param") WeekDay weekDay,int limit, int offset);
+
+    /**
+     * 요일별 뉴스레터 조회(카운트)
+     * @param weekDay
+     * @return
+     */
+    int countNewsLetterHeaderListByWeekDay(@Param("param") WeekDay weekDay);
 
     /**
      * 카테고리별 뉴스레터 조회
@@ -88,4 +95,5 @@ public interface NewsLetterMapper {
      * @return
      */
     int countNewsLetterHeaderListByCategory(@Param("param") CategoryCombi category);
+
 }

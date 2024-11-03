@@ -10,7 +10,7 @@
 
         <!-- Single Page Header start -->
         <div class="container-fluid page-header py-5">
-            <h1 class="text-center text-white display-6" th:text="${today.name + '의 뉴스레터'}">월요일의 뉴스레터</h1>
+            <h1 class="text-center text-white display-6" th:text="${weekDay.name + '의 뉴스레터'}">월요일의 뉴스레터</h1>
             <ol class="breadcrumb justify-content-center mb-0">
             </ol>
         </div>
@@ -20,7 +20,7 @@
         <div class="container-fluid py-5">
             <div class="container py-5">
                 <div class="text-center mx-auto mb-5" style="max-width: 700px;">
-                    <h1 class="display-4" th:text="${today.msg}">월요일, 한 주의 시작!</h1>
+                    <h1 class="display-4" th:text="${weekDay.msg}">월요일, 한 주의 시작!</h1>
                 </div>
                 <div class="row g-4">
                     <div class="col-xl-3">
@@ -59,20 +59,26 @@
                                 </div>
                             </div>
                         </div>
-
                     </th:block>
-
 
                     <div class="col-12">
                         <div class="pagination d-flex justify-content-center mt-5">
-                            <a href="#" class="rounded">&laquo;</a>
-                            <a href="#" class="active rounded">1</a>
-                            <a href="#" class="rounded">2</a>
-                            <a href="#" class="rounded">3</a>
-                            <a href="#" class="rounded">4</a>
-                            <a href="#" class="rounded">5</a>
-                            <a href="#" class="rounded">6</a>
-                            <a href="#" class="rounded">&raquo;</a>
+                            <!-- 이전 페이지 버튼 -->
+                            <a th:href="${currentPage-1 == 0} ? '':@{/weeks/{weekDay}(weekDay=${weekDay.code}, page=${currentPage - 1}, size=${pageSize})}"
+                               th:classprepend="${currentPage-1 == 0} ? ' disabled'"
+                               class="rounded">&laquo;</a>
+
+                            <!-- 페이지 버튼  -->
+                            <th:block th:each="i : ${#numbers.sequence(1, totalPages)}">
+                                <a th:href="@{/weeks/{weekDay}(weekDay=${weekDay.code}, page=${i}, size=${pageSize})}"
+                                   th:classappend="${currentPage == i} ? ' active'"
+                                   class="rounded" th:text="${i}">1</a>
+                            </th:block>
+
+                            <!-- 다음 페이지 버튼 -->
+                            <a th:href="${currentPage == totalPages} ? '':@{/weeks/{weekDay}(weekDay=${weekDay.code}, page=${currentPage + 1}, size=${pageSize})}"
+                               th:classappend="${currentPage == totalPages} ? ' disabled'"
+                               class="rounded">&raquo;</a>
                         </div>
                     </div>
                 </div>

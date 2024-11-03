@@ -32,7 +32,7 @@ public class ViewController {
     public String index(Model model) {
         DayOfWeek today = LocalDate.now().getDayOfWeek();
         WeekDay weekDay = WeekDay.fromCode(today.toString().substring(0,3));
-        model.addAttribute("newsLetterHeaderList", newsLetterService.selectNewsLetterHeaderListByWeekDay(weekDay));
+        model.addAttribute("newsLetterHeaderList", newsLetterService.selectNewsLetterHeaderListByWeekDay(weekDay,1,8));
         model.addAttribute("weekDays", WeekDay.values());
         model.addAttribute("categoryList", categoryService.selectCategory());
         model.addAttribute("today",weekDay);
@@ -61,22 +61,32 @@ public class ViewController {
     }
 
     @GetMapping("/weeks/{weekDay}")
-    public String newsLetterHeaderByWeek(Model model,@PathVariable("weekDay") String weekDay) {
-        model.addAttribute("newsLetterHeaderList", newsLetterService.selectNewsLetterHeaderListByWeekDay(WeekDay.fromCode(weekDay)));
+    public String newsLetterHeaderByWeek(Model model,@PathVariable("weekDay") String weekDay
+                                        , @RequestParam(defaultValue = "1") int page
+                                        , @RequestParam(defaultValue = "9") int size) {
+
+        int total = newsLetterService.countNewsLetterHeaderListByWeekDay(WeekDay.fromCode(weekDay));
+        int totalPages = (int) Math.ceil((double) total / size);
+
+        model.addAttribute("newsLetterHeaderList", newsLetterService.selectNewsLetterHeaderListByWeekDay(WeekDay.fromCode(weekDay),page,size));
         model.addAttribute("weekDays", WeekDay.values());
-        model.addAttribute("today", WeekDay.fromCode(weekDay));
+        model.addAttribute("weekDay", WeekDay.fromCode(weekDay));
         model.addAttribute("categoryList", categoryService.selectCategory());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("pageSize", size);
         return "common/weeks";
     }
 
     @GetMapping("/category/{cat1Code}")
     public String newsLetterHeaderByCategory(Model model, @PathVariable("cat1Code") String cat1Code
-                                                        , @RequestParam(defaultValue = "0") int page
+                                                        , @RequestParam(defaultValue = "1") int page
                                                         , @RequestParam(defaultValue = "9") int size) {
         List<Category> categories = categoryService.selectCategory();
-        int totalItems = newsLetterService.countNewsLetterByCategory(cat1Code);
-        int totalPages = (int) Math.ceil((double) totalItems / size);
+        int total = newsLetterService.countNewsLetterByCategory(cat1Code);
+        int totalPages = (int) Math.ceil((double) total / size);
 
+        model.addAttribute("weekDays", WeekDay.values());
         model.addAttribute("newsLetterHeaderList", newsLetterService.selectNewsLetterHeaderListByCategory(cat1Code,page,size));
         model.addAttribute("categoryList", categoryService.selectCategory());
         model.addAttribute("category",categories.stream().filter(x->x.getCatCode().equals(cat1Code)).findAny().get());

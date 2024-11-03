@@ -204,7 +204,7 @@ public class NewLetterController {
         Map<String, Object> data = new LinkedHashMap<>();
 
         try {
-            data.put("data", newsLetterService.selectNewsLetterHeaderListByWeekDay(WeekDay.fromCode(map.get("code"))));
+            data.put("data", newsLetterService.selectNewsLetterHeaderListByWeekDay(WeekDay.fromCode(map.get("code")),1,8));
             data.put("status", "SUCCESS");
             data.put("message", "요일별 뉴스레터를 가져오는데 성공했습니다");
 
