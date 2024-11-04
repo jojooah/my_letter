@@ -32,6 +32,9 @@ public enum RestErrorCode {
     NOT_EXIST_NICKNAME("1022","닉네임을 입력하세요."),
     NOT_EXIST_NAME("1023","이름을 입력하세요."),
 
+    NOT_EXIST_SCRAP_TYPE("3000","구독 or 스크랩 타입이 없습니다."),
+    ALREADY_SCRAP("3001","이미 스크랩한 뉴스레터입니다."),
+
     ERROR_ETC("9999", "기타 오류"),
 
     UNKNOWN_ERROR("1000", "알수 없는 오류");

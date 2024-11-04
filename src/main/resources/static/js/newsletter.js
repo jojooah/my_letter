@@ -287,3 +287,39 @@ const Index = (function () {
         start:start
     }
 })()
+
+const User = (function () {
+    Reply.start();
+
+    function start() {
+        // 스크랩버튼 클릭
+        $("button[data-progress=scrap]").click(function () {
+            let objParams = {
+                newsLetterSeq: $("#newsLetterSeq").val(),
+                scrapType: "SCRAP"
+            }
+
+            $.ajax({
+                url: "/saveScrapOrDescription",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(objParams),
+                success: function (response) {
+                    if (response.data.status === "SUCCESS") {
+                        alert(response.data.message);
+                    } else {
+                        alert(response.data.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert(error);
+                }
+            });
+        });
+    }
+
+    return {
+        start:start
+    }
+})()
+

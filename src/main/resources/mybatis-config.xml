@@ -17,6 +17,7 @@
         <typeAlias type="com.jojo.my_letter.model.entity.ImagePath" alias="ImagePath"/>
         <typeAlias type="com.jojo.my_letter.model.entity.Reply" alias="Reply"/>
         <typeAlias type="com.jojo.my_letter.model.entity.WeekDay" alias="WeekDay"/>
+        <typeAlias type="com.jojo.my_letter.model.entity.Scrap" alias="Scrap"/>
     </typeAliases>
 
 </configuration>

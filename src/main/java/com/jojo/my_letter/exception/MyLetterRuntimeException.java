@@ -1,14 +1,15 @@
 package com.jojo.my_letter.exception;
 
-import lombok.Data;
+import com.jojo.my_letter.model.result.RestErrorCode;
 
-@Data
+
 public class MyLetterRuntimeException extends RuntimeException {
 
     private String code;
+    private String message;
 
-    public MyLetterRuntimeException(String code, String message) {
-        super(message);
-        this.code = code;
+    public MyLetterRuntimeException(RestErrorCode errorCode) {
+        super(errorCode.getMessage());
+        this.code = errorCode.getCode();
     }
 }

@@ -96,4 +96,30 @@ public interface NewsLetterMapper {
      */
     int countNewsLetterHeaderListByCategory(@Param("param") CategoryCombi category);
 
+    /**
+     * 구독 or 스크랩
+     * @param scrap
+     */
+    void insertScrapOrSubscription(@Param("param") Scrap scrap);
+
+    /**
+     * 구독목록
+     * @param scrap
+     * @return
+     */
+    List<NewsLetterHeader> selectSubscription(@Param("param") Scrap scrap);
+
+    /**
+     * 스크랩목록
+     * @param scrap
+     * @return
+     */
+    List<NewsLetter> selectScrap(@Param("param") Scrap scrap);
+
+    /**
+     * 스크랩여부 체크
+     * @param scrap
+     * @return
+     */
+    int countScrap(@Param("param") Scrap scrap);
 }

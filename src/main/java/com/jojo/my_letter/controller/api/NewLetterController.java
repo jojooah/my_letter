@@ -2,16 +2,17 @@ package com.jojo.my_letter.controller.api;
 
 import com.jojo.my_letter.exception.MyLetterRuntimeException;
 import com.jojo.my_letter.model.entity.*;
+import com.jojo.my_letter.model.result.RestErrorCode;
 import com.jojo.my_letter.model.result.RestResult;
 import com.jojo.my_letter.service.NewsLetterService;
 import com.jojo.my_letter.service.ReplyService;
+import com.jojo.my_letter.service.ScrapService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -28,8 +29,8 @@ import java.util.UUID;
 @Slf4j
 public class NewLetterController {
     private final NewsLetterService newsLetterService;
-    private final WebApplicationContext context;
     private final ReplyService replyService;
+    private final ScrapService scrapService;
 
     @Value("${file.upload-dir}")
     String uploadDirectory;
@@ -174,7 +175,7 @@ public class NewLetterController {
             return new RestResult(data);
         } catch (IOException e) {
             log.error("이미지 삭제에 오류가 발생했습니다 ! {}", e.getMessage(), e);
-            throw new MyLetterRuntimeException("FAIL", "이미지 삭제에 오류가 발생했습니다");
+            throw new MyLetterRuntimeException(RestErrorCode.ERROR_ETC);
         }
     }
 
@@ -204,12 +205,117 @@ public class NewLetterController {
         Map<String, Object> data = new LinkedHashMap<>();
 
         try {
-            data.put("data", newsLetterService.selectNewsLetterHeaderListByWeekDay(WeekDay.fromCode(map.get("code")),1,8));
+            data.put("data", newsLetterService.selectNewsLetterHeaderListByWeekDay(WeekDay.fromCode(map.get("code")), 1, 8));
             data.put("status", "SUCCESS");
             data.put("message", "요일별 뉴스레터를 가져오는데 성공했습니다");
 
             return new RestResult(data);
 
+        } catch (Exception e) {
+            data.put("status", "FAIL");
+            data.put("message", "오류가 발생했습니다");
+            log.error(e.getMessage());
+
+            return new RestResult(data);
+        }
+    }
+
+    @PostMapping("/saveScrapOrDescription")
+    public @ResponseBody
+    RestResult saveScrapOrDescription(@RequestBody Scrap scrap) {
+        Map<String, Object> data = new LinkedHashMap<>();
+        try {
+            scrapService.saveScrapOrDescription(scrap);
+            data.put("status", "SUCCESS");
+            data.put("message", "저장되었습니다");
+
+            return new RestResult(data);
+
+        } catch (MyLetterRuntimeException e) {
+            data.put("status", "FAIL");
+            data.put("message", e.getMessage());
+            log.error(e.getMessage());
+
+            return new RestResult(data);
+        } catch (Exception e) {
+            data.put("status", "FAIL");
+            data.put("message", "오류가 발생했습니다");
+            log.error(e.getMessage());
+
+            return new RestResult(data);
+        }
+    }
+
+    @PostMapping("/newsLetterHeader/subscription")
+    public @ResponseBody
+    RestResult getNewsLetterHeaderSubscription(@RequestBody Scrap scrap) {
+        Map<String, Object> data = new LinkedHashMap<>();
+        try {
+            data.put("data", scrapService.selectSubscription(scrap));
+            data.put("status", "SUCCESS");
+            data.put("message", "구독목록을 가져오는데 성공했습니다.");
+
+            return new RestResult(data);
+
+        } catch (MyLetterRuntimeException e) {
+            data.put("status", "FAIL");
+            data.put("message", e.getMessage());
+            log.error(e.getMessage());
+
+            return new RestResult(data);
+        } catch (Exception e) {
+            data.put("status", "FAIL");
+            data.put("message", "오류가 발생했습니다");
+            log.error(e.getMessage());
+
+            return new RestResult(data);
+        }
+    }
+
+    @PostMapping("/newsLetterHeader/scrap")
+    public @ResponseBody
+    RestResult getNewsLetterHeaderScrap(@RequestBody Scrap scrap) {
+        Map<String, Object> data = new LinkedHashMap<>();
+        try {
+            data.put("data", scrapService.selectScrap(scrap));
+            data.put("status", "SUCCESS");
+            data.put("message", "스크랩 목록을 가져오는데 성공했습니다.");
+
+            return new RestResult(data);
+
+        } catch (MyLetterRuntimeException e) {
+            data.put("status", "FAIL");
+            data.put("message", e.getMessage());
+            log.error(e.getMessage());
+
+            return new RestResult(data);
+        } catch (Exception e) {
+            data.put("status", "FAIL");
+            data.put("message", "오류가 발생했습니다");
+            log.error(e.getMessage());
+
+            return new RestResult(data);
+        }
+    }
+
+    @PostMapping("/saveSubscriptionOrScrap")
+    public @ResponseBody
+    RestResult saveSubscriptionOrScrap(@RequestBody Scrap scrap) {
+        Map<String, Object> data = new LinkedHashMap<>();
+        try {
+            scrapService.saveScrapOrDescription(scrap);
+            data.put("status", "SUCCESS");
+            String type = scrap.getScrapType().equals(ScrapType.SCRAP) ? "스크랩" : "구독";
+
+            data.put("message", type + "되었습니다.");
+            return new RestResult(data);
+
+        } catch (MyLetterRuntimeException e) {
+            data.put("status", "FAIL");
+            data.put("message", e.getMessage());
+            log.error(e.getMessage());
+
+            return new RestResult(data);
         } catch (Exception e) {
             data.put("status", "FAIL");
             data.put("message", "오류가 발생했습니다");
