@@ -316,6 +316,33 @@ const User = (function () {
                 }
             });
         });
+
+        // 스크랩취소버튼 클릭
+        $("button[data-progress=cancel]").click(function () {
+            let objParams = {
+                newsLetterSeq: $("#newsLetterSeq").val(),
+                scrapType: "SCRAP"
+            }
+
+            $.ajax({
+                url: "/cancelScrapOrDescription",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(objParams),
+                success: function (response) {
+                    if (response.data.status === "SUCCESS") {
+                        alert(response.data.message);
+                        location.reload();
+                    } else {
+                        alert(response.data.message);
+                        location.reload();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert(error);
+                }
+            });
+        });
     }
 
     return {

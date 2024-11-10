@@ -324,4 +324,31 @@ public class NewLetterController {
             return new RestResult(data);
         }
     }
+
+    @PostMapping("/cancelScrapOrDescription")
+    public @ResponseBody
+    RestResult cancelScrapOrDescription(@RequestBody Scrap scrap) {
+        Map<String, Object> data = new LinkedHashMap<>();
+        try {
+            scrapService.cancelScrapOrDescription(scrap);
+            data.put("status", "SUCCESS");
+            String type = scrap.getScrapType().equals(ScrapType.SCRAP) ? "스크랩" : "구독";
+
+            data.put("message", type + "취소되었습니다.");
+            return new RestResult(data);
+
+        } catch (MyLetterRuntimeException e) {
+            data.put("status", "FAIL");
+            data.put("message", e.getMessage());
+            log.error(e.getMessage());
+
+            return new RestResult(data);
+        } catch (Exception e) {
+            data.put("status", "FAIL");
+            data.put("message", "오류가 발생했습니다");
+            log.error(e.getMessage());
+
+            return new RestResult(data);
+        }
+    }
 }

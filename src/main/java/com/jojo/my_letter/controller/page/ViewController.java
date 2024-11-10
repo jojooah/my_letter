@@ -1,10 +1,7 @@
 package com.jojo.my_letter.controller.page;
 
 import com.jojo.my_letter.controller.service.LoginService;
-import com.jojo.my_letter.model.entity.Category;
-import com.jojo.my_letter.model.entity.Scrap;
-import com.jojo.my_letter.model.entity.ScrapType;
-import com.jojo.my_letter.model.entity.WeekDay;
+import com.jojo.my_letter.model.entity.*;
 import com.jojo.my_letter.service.CategoryService;
 import com.jojo.my_letter.service.NewsLetterService;
 import com.jojo.my_letter.service.ReplyService;
@@ -53,6 +50,7 @@ public class ViewController {
     @GetMapping("/newsletter/item/{seq}")
     public String newsletterItem1(Model model, @PathVariable("seq") int seq) {
         model.addAttribute("loginUser", loginService.getMember());
+        NewsLetter newsLetter = newsLetterService.selectNewsLetter(seq);
         model.addAttribute("newsletter", newsLetterService.selectNewsLetter(seq));
         model.addAttribute("replyList", replyService.selectReplyListByNewsLetterSeq(seq));
         return "common/newsletter";

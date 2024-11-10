@@ -122,4 +122,10 @@ public interface NewsLetterMapper {
      * @return
      */
     int countScrap(@Param("param") Scrap scrap);
+
+    /**
+     * 스크랩 취소
+     * @param scrap
+     */
+    void cancelScrapOrSubscription(@Param("param") Scrap scrap);
 }

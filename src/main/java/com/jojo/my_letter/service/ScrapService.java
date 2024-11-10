@@ -61,4 +61,16 @@ public class ScrapService {
         return newsLetterMapper.selectScrap(scrap);
     }
 
+    /**
+     * 스크랩 취소
+     * @param scrap
+     */
+    public void cancelScrapOrDescription(Scrap scrap) {
+        scrap.setUserId(loginService.getCurrentUserId());
+        if(scrap.getScrapType() == null) throw new MyLetterRuntimeException(RestErrorCode.NOT_EXIST_SCRAP_TYPE);
+        if(newsLetterMapper.countScrap(scrap)==0) throw new MyLetterRuntimeException(RestErrorCode.ALREADY_DEL);
+
+        newsLetterMapper.cancelScrapOrSubscription(scrap);
+    }
+
 }

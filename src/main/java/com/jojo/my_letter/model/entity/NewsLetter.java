@@ -18,5 +18,6 @@ public class NewsLetter extends NewsLetterHeader {
     private String thumbnail;
     private int view;
     private ImagePath imagePath;            //썸네일 이미지
+    private YN scrapYn;
 }
 

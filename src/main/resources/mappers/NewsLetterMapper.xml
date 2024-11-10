@@ -12,6 +12,7 @@
         <result property="description" column="description" />
         <result property="newsLetterHeaderSeq" column="newsLetterHeaderSeq" />
         <result property="authorName" column="authorName" />
+        <result property="scrapYn" column="scrapYn" />
 
         <!-- NewsLetterHeader -->
         <result property="categoryCombiSeq" column="categoryCombiSeq" />
@@ -180,7 +181,15 @@
           , m.username AS authorName
           , ip.origin_name AS originName
           , ip.saved_name AS savedName
-         , ip.image_path AS imagePath
+          , ip.image_path AS imagePath
+          , CASE
+              WHEN EXISTS (
+                  SELECT 1
+                  FROM joo.scrap s
+                  WHERE s.news_letter_seq = n.news_letter_seq
+                  ) THEN 'Y'
+              ELSE 'N'
+            END AS scrapYn
         FROM
             joo.news_letter n
             INNER JOIN news_letter_header nh ON n.news_letter_header_seq = nh.news_letter_header_seq
@@ -503,7 +512,6 @@
 
     </select>
 
-
     <select id="countScrap" parameterType="Scrap" resultType="Integer">
         /*countScrap*/
         SELECT COUNT(1)
@@ -514,4 +522,11 @@
         AND member_id = #{param.userId}
     </select>
 
+    <delete id="cancelScrapOrSubscription" parameterType="Scrap">
+        DELETE
+        FROM joo.scrap
+        WHERE
+            news_letter_seq = #{param.newsLetterSeq}
+        AND member_id = #{param.userId}
+    </delete>
 </mapper>

@@ -34,7 +34,7 @@ public enum RestErrorCode {
 
     NOT_EXIST_SCRAP_TYPE("3000","구독 or 스크랩 타입이 없습니다."),
     ALREADY_SCRAP("3001","이미 스크랩한 뉴스레터입니다."),
-
+    ALREADY_DEL("3002","이미 삭제되었습니다."),
     ERROR_ETC("9999", "기타 오류"),
 
     UNKNOWN_ERROR("1000", "알수 없는 오류");
