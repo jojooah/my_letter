@@ -10,7 +10,7 @@ public class Scrap extends CommonDTO {
     private Integer newsLetterHeaderSeq;
     private Integer newsLetterSeq;
     private String userId;
-    private ScrapType scrapType;
+    private ScrapType scrapType; //스크랩 or 구독
     private Date regDate;
 }
 

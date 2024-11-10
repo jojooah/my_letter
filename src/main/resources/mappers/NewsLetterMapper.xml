@@ -472,27 +472,37 @@
         LIMIT #{limit} OFFSET #{offset}
     </select>
 
-    <select id="selectScrap" parameterType="Scrap" resultType="NewsLetter">
-         /*selectScrap 스크랩목록*/
-        SELECT
-            n.news_letter_seq AS newsLetterSeq
-          , n.title
-          , n.content
-          , n.cost
-          , n.free_yn AS freeYn
-          , n.description
-          , n.news_letter_header_seq AS newsLetterHeaderSeq
-          , n.view
+    <select id="selectScrap" parameterType="Scrap" resultMap="newsLetterResultMap">
+        SELECT /*selectScrap 스크랩목록*/
+            n.news_letter_seq as newsLetterSeq
+             , n.title
+             , n.content
+             , n.cost
+             , n.free_yn AS freeYn
+             , n.description
+             , n.news_letter_header_seq AS newsLetterHeaderSeq
+             , nh.category_combi_seq AS categoryCombiSeq
+             , nh.header_title AS headerTitle
+             , nh.subscribers
+             , nh.author_id AS authorId
+             , m.username AS authorName
+             , ip.origin_name AS originName
+             , ip.saved_name AS savedName
+             , ip.image_path AS imagePath
         FROM
             joo.news_letter n
-        WHERE joo.news_letter_seq IN
-        (
-            SELECT news_letter_seq
-            FROM scrap
-            WHERE member_id = #{param.userId}
-        )
-        order by reg_date desc
+                INNER JOIN news_letter_header nh ON n.news_letter_header_seq = nh.news_letter_header_seq
+                INNER JOIN joo.Member m ON nh.author_id = m.id
+                LEFT OUTER JOIN joo.image_path ip ON n.news_letter_seq = ip.news_letter_seq
+        WHERE n.news_letter_seq IN
+              (
+                  SELECT news_letter_seq
+                  FROM scrap
+                  WHERE member_id = #{param.userId}
+              )
+
     </select>
+
 
     <select id="countScrap" parameterType="Scrap" resultType="Integer">
         /*countScrap*/

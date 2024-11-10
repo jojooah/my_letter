@@ -2,10 +2,13 @@ package com.jojo.my_letter.controller.page;
 
 import com.jojo.my_letter.controller.service.LoginService;
 import com.jojo.my_letter.model.entity.Category;
+import com.jojo.my_letter.model.entity.Scrap;
+import com.jojo.my_letter.model.entity.ScrapType;
 import com.jojo.my_letter.model.entity.WeekDay;
 import com.jojo.my_letter.service.CategoryService;
 import com.jojo.my_letter.service.NewsLetterService;
 import com.jojo.my_letter.service.ReplyService;
+import com.jojo.my_letter.service.ScrapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +30,7 @@ public class ViewController {
     private final CategoryService categoryService;
     private final LoginService loginService;
     private final ReplyService replyService;
+    private final ScrapService scrapService;
 
     @GetMapping({"/index","/"})
     public String index(Model model) {
@@ -108,8 +112,11 @@ public class ViewController {
     }
 
     @GetMapping("/scrap")
-    public String scrap() {
-        return "scrap";
+    public String scrap(Model model) {
+        Scrap scrap = new Scrap();
+        scrap.setScrapType(ScrapType.SCRAP);
+        model.addAttribute("newsletterList", scrapService.selectScrap(scrap));
+        return "user/scrap";
     }
 
     @GetMapping("/write")
