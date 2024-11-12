@@ -121,7 +121,7 @@ public class ViewController {
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("pageSize", size);
         model.addAttribute("newsletterList", scrapService.selectScrap(scrap, page, size));
-        return "user/scrap";
+        return "user/scrap.list";
     }
 
     @GetMapping("/write")
@@ -139,6 +139,23 @@ public class ViewController {
         model.addAttribute("newsletterHeaderList", newsLetterService.selectNewsLetterHeaderList());
         model.addAttribute("categoryList", categoryService.selectCategory());
         return "author/newsletter.header.list";
+    }
+
+    @GetMapping("/subscription")
+    public String subscription(Model model
+            , @RequestParam(defaultValue = "1") int page
+            , @RequestParam(defaultValue = "10") int size) {
+        Scrap scrap = new Scrap();
+        scrap.setScrapType(ScrapType.SUBSCRIBE);
+        int total = scrapService.countScrap(scrap);
+        int totalPages = (int) Math.ceil((double) total / size);
+
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("pageSize", size);
+        List<NewsLetterHeader> list = scrapService.selectSubscription(scrap, page, size);
+        model.addAttribute("newsLetterHeaderList", scrapService.selectSubscription(scrap, page, size));
+        return "user/subscription.list";
     }
 
 }

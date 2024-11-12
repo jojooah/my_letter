@@ -485,7 +485,7 @@
           , b.cat1_code
           , b.cat2_code
           , b.cat3_code
-        ORDER BY reg_date desc
+        ORDER BY a.reg_date desc
         LIMIT #{limit} OFFSET #{offset}
     </select>
 
@@ -527,10 +527,12 @@
             joo.scrap
         WHERE member_id = #{param.userId}
         AND type = #{param.scrapType}
-        <if test="param.newsLetterSeq != null">
-         AND   news_letter_seq = #{param.newsLetterSeq}
+        <if test="param.newsLetterSeq != null and param.scrapType.toString() == 'SCRAP'">
+            AND news_letter_seq = #{param.newsLetterSeq}
         </if>
-
+        <if test="param.newsLetterHeaderSeq != null and param.scrapType.toString() == 'SUBSCRIBE'">
+            AND news_letter_header_seq = #{param.newsLetterHeaderSeq}
+        </if>
     </select>
 
     <delete id="cancelScrapOrSubscription" parameterType="Scrap">

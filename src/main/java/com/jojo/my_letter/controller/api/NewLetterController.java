@@ -220,7 +220,7 @@ public class NewLetterController {
         }
     }
 
-
+/*
     @PostMapping("/newsLetterHeader/subscription")
     public @ResponseBody
     RestResult getNewsLetterHeaderSubscription(@RequestBody Scrap scrap) {
@@ -246,7 +246,7 @@ public class NewLetterController {
             return new RestResult(data);
         }
     }
-
+*/
     @PostMapping("/saveSubscriptionOrScrap")
     public @ResponseBody
     RestResult saveSubscriptionOrScrap(@RequestBody Scrap scrap) {

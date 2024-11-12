@@ -40,11 +40,14 @@ public class ScrapService {
      * 구독목록 조회
      * @return
      */
-    public List<NewsLetterHeader> selectSubscription(Scrap scrap){
+    public List<NewsLetterHeader> selectSubscription(Scrap scrap,int page,int size){
+        int offset = (page-1) * size;
+        int limit = size;
+
         if(scrap.getScrapType() == null) throw new MyLetterRuntimeException(RestErrorCode.NOT_EXIST_SCRAP_TYPE);
         scrap.setUserId(loginService.getCurrentUserId());
 
-        List<NewsLetterHeader> newsLetterHeaderList = newsLetterMapper.selectSubscription(scrap);
+        List<NewsLetterHeader> newsLetterHeaderList = newsLetterMapper.selectSubscription(scrap,limit,offset);
         for(NewsLetterHeader newsLetterHeader : newsLetterHeaderList){
             if(!ObjectUtils.isEmpty(newsLetterHeader.getImagePath())) newsLetterHeader.getImagePath().setFileProperties(fileProperties);
         }

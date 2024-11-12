@@ -186,7 +186,6 @@ const Reply = (function () {
         $("button[data-progress=saveReply]").data('code', 'U');
         $("button[data-progress=saveReply]").data('seq', $(this).data('seq'));
 
-        // 스크롤 이동을 위한 요소의 위치 계산
         let elementOffset = $('#replyContent').offset().top;
         let windowHeight = $(window).height();
         let scrollToPosition = elementOffset - (windowHeight / 2);
