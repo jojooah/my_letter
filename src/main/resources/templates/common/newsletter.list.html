@@ -3,7 +3,7 @@
 
 <head th:replace="/fragment/head.html::fragment-header"></head>
     <body>
-        <div th:replace="/fragment/navbar.html::fragment-navbar"></div>
+        <div th:replace="/fragment/user_navbar.html::fragment-navbar"></div>
         <div class="container-fluid page-header py-5">
             <h1 class="text-center text-white display-6"  th:text="${newsletterHeader.headerTitle}">뉴스레터 제목</h1>
             <ol class="breadcrumb justify-content-center mb-0">
@@ -11,8 +11,15 @@
             </ol>
         </div>
         <div class="container-fluid fruite py-5">
+            <input type="hidden" id="newsLetterHeaderSeq" th:value="${newsletterHeader.newsLetterHeaderSeq}">
             <div class="container py-5">
                 <h1 class="mb-4" th:text="${newsletterHeader.subscribers} + '명이 구독 중이에요.'">00명이 구독중이에요.</h1>
+                <button class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"
+                        th:data-progress="${newsletterHeader.subYn.toString() == 'N' ? 'SUBSCRIBE' : 'CANCEL'}"
+                        th:text="${newsletterHeader.subYn.toString() == 'N' ? '구독하기' : '구독취소하기'}"
+                        data-type="SUBSCRIBE">
+                    스크랩
+                </button>
                 <div class="row g-4">
                     <div class="col-lg-12">
                         <div class="row g-4">
@@ -25,8 +32,9 @@
                             <div class="col-6"></div>
                             <div class="col-xl-3">
                                 <a th:href="@{/write(headerSeq=${newsletterHeader.newsLetterHeaderSeq})}" class="btn btn-primary me-3">뉴스레터 생성</a>
+
                                 <label for="fruits">정렬</label>
-                                <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3" form="fruitform">
+                                <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3">
                                     <option value="volvo">최신순</option>
                                     <option value="saab">인기순</option>
                                     <option value="opel">1화부터</option>
@@ -112,5 +120,10 @@
         </div>
         <span th:replace="/fragment/footer.html :: fragment-footer"></span>
         <span th:replace="/fragment/commonJs.html :: fragment-commonJs"></span>
+        <script type="text/javascript">
+            $(function () {
+                User.start();
+            });
+        </script>
     </body>
 </html>

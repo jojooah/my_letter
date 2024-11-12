@@ -50,7 +50,6 @@ public class ViewController {
     @GetMapping("/newsletter/item/{seq}")
     public String newsletterItem1(Model model, @PathVariable("seq") int seq) {
         model.addAttribute("loginUser", loginService.getMember());
-        NewsLetter newsLetter = newsLetterService.selectNewsLetter(seq);
         model.addAttribute("newsletter", newsLetterService.selectNewsLetter(seq));
         model.addAttribute("replyList", replyService.selectReplyListByNewsLetterSeq(seq));
         return "common/newsletter";
@@ -110,10 +109,18 @@ public class ViewController {
     }
 
     @GetMapping("/scrap")
-    public String scrap(Model model) {
+    public String scrap(Model model
+            , @RequestParam(defaultValue = "1") int page
+            , @RequestParam(defaultValue = "10") int size) {
         Scrap scrap = new Scrap();
         scrap.setScrapType(ScrapType.SCRAP);
-        model.addAttribute("newsletterList", scrapService.selectScrap(scrap));
+        int total = scrapService.countScrap(scrap);
+        int totalPages = (int) Math.ceil((double) total / size);
+
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("pageSize", size);
+        model.addAttribute("newsletterList", scrapService.selectScrap(scrap, page, size));
         return "user/scrap";
     }
 

@@ -114,7 +114,7 @@ public interface NewsLetterMapper {
      * @param scrap
      * @return
      */
-    List<NewsLetter> selectScrap(@Param("param") Scrap scrap);
+    List<NewsLetter> selectScrap(@Param("param") Scrap scrap,int limit, int offset);
 
     /**
      * 스크랩여부 체크

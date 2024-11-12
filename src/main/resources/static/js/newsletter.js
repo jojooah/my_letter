@@ -1,7 +1,7 @@
 const Newsletter = (function () {
     function start() {
 
-        $("input[name=saveNewsLetter]").click(function(){
+        $("input[name=saveNewsLetter]").click(function () {
             let objParams = $('#newsLetterForm').serializeObject();
 
             $.ajax({
@@ -9,8 +9,7 @@ const Newsletter = (function () {
                 type: "POST",
                 contentType: "application/json",
                 data: JSON.stringify(objParams),
-                success: function(response) {
-
+                success: function (response) {
                     if (response.data.status === "SUCCESS") {
                         alert(response.data.message);
                         window.location.href = "/write";
@@ -19,27 +18,27 @@ const Newsletter = (function () {
                         window.location.href = "/write";
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     alert(error);
                 }
             });
         })
 
         //뉴스레터 헤더 팝업창
-        $("button[data-progress=createNewsLetterHeader]").click(function() {
+        $("button[data-progress=createNewsLetterHeader]").click(function () {
             $("#newsLetterForm")[0].reset();
             $("#newsLetterForm select").prop('selectedIndex', 0);
             $("#newsletterModal").modal('show');
         });
 
         //뉴스레터헤더 저장
-        $("button[data-progress=saveNewsLetterHeader]").click(function() {
+        $("button[data-progress=saveNewsLetterHeader]").click(function () {
             let formData = new FormData();
             let objParams = $("#newsLetterForm").serializeObject();
-            if(!validationCheck()) return;
+            if (!validationCheck()) return;
             let thumbnail = $('input[name=thumbnail]')[0].files[0];
 
-            formData.append("newsLetterHeader", new Blob([JSON.stringify(objParams)], { type: "application/json" }));
+            formData.append("newsLetterHeader", new Blob([JSON.stringify(objParams)], {type: "application/json"}));
             formData.append("thumbnail", thumbnail);
 
             if (confirm("저장하시겠습니까?")) {
@@ -56,7 +55,7 @@ const Newsletter = (function () {
                             alert(response.data.message);
                         }
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         if (xhr.responseJSON && xhr.responseJSON.message) {
                             alert("오류 발생: " + xhr.responseJSON.message);
                         } else {
@@ -68,7 +67,7 @@ const Newsletter = (function () {
         });
 
         //뉴스레터 삭제
-        $("button[data-progress=delete]").click(function() {
+        $("button[data-progress=delete]").click(function () {
             let newsLetterSeq = $("#contentNewsLetterSeq").val();
             let newsLetterHeaderSeq = $("#contentNewsLetterHeaderSeq").val();
 
@@ -78,16 +77,16 @@ const Newsletter = (function () {
                     type: "POST",
                     contentType: "application/json",
                     data: JSON.stringify(newsLetterSeq),
-                    success: function(response) {
+                    success: function (response) {
                         if (response.data.status === "SUCCESS") {
                             alert(response.data.message);
-                            window.location.href = "/newsletter/list?seq="+newsLetterHeaderSeq;
+                            window.location.href = "/newsletter/list?seq=" + newsLetterHeaderSeq;
                         } else {
                             alert(response.data.message);
                             location.reload();
                         }
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         alert(error);
                     }
                 });
@@ -95,22 +94,22 @@ const Newsletter = (function () {
         });
 
         //뉴스레터 수정
-        $("button[data-progress=update]").click(function() {
+        $("button[data-progress=update]").click(function () {
             let objParams = {
                 newsLetterHeaderSeq: $("#contentNewsLetterHeaderSeq").val(),
-                newsLetterSeq:$("#contentNewsLetterSeq").val(),
-                title:$("#title").text(),
-                content:$("#content").next("p").html(),
-                freeYn:$("#freeYn").val(),
-                cost:$("#cost").val(),
-                description:$("#description").text(),
+                newsLetterSeq: $("#contentNewsLetterSeq").val(),
+                title: $("#title").text(),
+                content: $("#content").next("p").html(),
+                freeYn: $("#freeYn").val(),
+                cost: $("#cost").val(),
+                description: $("#description").text(),
             }
 
-           window.location.href = "/write?headerSeq="+objParams.newsLetterHeaderSeq+"&seq="+objParams.newsLetterSeq;
+            window.location.href = "/write?headerSeq=" + objParams.newsLetterHeaderSeq + "&seq=" + objParams.newsLetterSeq;
 
         });
 
-        $("select[data-progress=filter]").on("change", function() {
+        $("select[data-progress=filter]").on("change", function () {
             let selectedValue = $(this).val();
             let $nextSelect = $(this).closest("div").next("div").find("select[data-progress=filter]");
 
@@ -118,7 +117,7 @@ const Newsletter = (function () {
             $nextSelect.find("option").hide().prop("disabled", true);
             // upperCode와 일치하는 옵션만 활성화 및 표시
             if (selectedValue !== "") {
-                let matchingOptions = $nextSelect.find("option").filter(function() {
+                let matchingOptions = $nextSelect.find("option").filter(function () {
                     return $(this).data("progress") === selectedValue;
                 }).show().prop("disabled", false);
 
@@ -126,7 +125,8 @@ const Newsletter = (function () {
                 if (matchingOptions.length === 1) {
                     $nextSelect.val(matchingOptions.val());
                     return;
-                }else{}
+                } else {
+                }
 
             }
             $nextSelect.prepend('<option value="">전체</option>');
@@ -136,17 +136,17 @@ const Newsletter = (function () {
 
     }
 
-    function validationCheck(){
+    function validationCheck() {
         let isValid = true;
-        $("[data-validation]").each(function() {
+        $("[data-validation]").each(function () {
             let validationType = $(this).data("validation");
             let value = $(this).val().trim();
 
             if (validationType === "required") {
                 if (value === "") {
-                   alert($(this).data("name")+"은(는) 필수값입니다.");
-                   isValid = false;
-                   return false;
+                    alert($(this).data("name") + "은(는) 필수값입니다.");
+                    isValid = false;
+                    return false;
                 }
             }
         });
@@ -161,17 +161,18 @@ const Newsletter = (function () {
 
 const Reply = (function () {
     const SaveStatus = {
-        INSERT: { code: 'I', label: '입력' },
-        DELETE: { code: 'D', label: '삭제' },
-        UPDATE: { code: 'U', label: '수정' }
+        INSERT: {code: 'I', label: '입력'},
+        DELETE: {code: 'D', label: '삭제'},
+        UPDATE: {code: 'U', label: '수정'}
     };
+
     function start() {
-        $("button[data-progress=saveReply], button[data-progress=deleteReply]").click(function() {
+        $("button[data-progress=saveReply], button[data-progress=deleteReply]").click(function () {
             let objParams = {
                 newsLetterSeq: $("#newsLetterSeq").val(),
-                replyContent:$("#replyContent").val(),
-                saveStatus:$(this).data('code'),
-                replySeq:$(this).data('seq'),
+                replyContent: $("#replyContent").val(),
+                saveStatus: $(this).data('code'),
+                replySeq: $(this).data('seq'),
             }
 
             saveComment(objParams);
@@ -179,7 +180,7 @@ const Reply = (function () {
     }
 
     // 수정 버튼 클릭 이벤트
-    $("button[data-progress=updateReply]").click(function() {
+    $("button[data-progress=updateReply]").click(function () {
         let replyContent = $(this).closest('div').prev('p').text();
         $("#replyContent").val(replyContent);
         $("button[data-progress=saveReply]").data('code', 'U');
@@ -226,21 +227,21 @@ const Reply = (function () {
     }
 
     return {
-        start:start
+        start: start
     }
 })()
 
 const Index = (function () {
     function start() {
-        $("span[data-name=weekDay]").click(function() {
+        $("span[data-name=weekDay]").click(function () {
             let code = $(this).data("progress");
 
             $.ajax({
                 url: "/newsLetterHeader/week",
                 type: "POST",
                 contentType: "application/json",
-                data: JSON.stringify({ code: code }),
-                success: function(response) {
+                data: JSON.stringify({code: code}),
+                success: function (response) {
                     if (response.data.status === "SUCCESS") {
                         const html = generateNewsletterHTML(response.data.data);
                         $("#newsLetterContainer").html(html);
@@ -248,13 +249,14 @@ const Index = (function () {
                         alert(response.data.message);
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     alert(error);
                 }
             });
         });
 
     }
+
     function generateNewsletterHTML(newsLetterHeaderList) {
         let html = "";
         newsLetterHeaderList.forEach(item => {
@@ -283,8 +285,9 @@ const Index = (function () {
         });
         return html;
     }
+
     return {
-        start:start
+        start: start
     }
 })()
 
@@ -292,21 +295,23 @@ const User = (function () {
     Reply.start();
 
     function start() {
-        // 스크랩버튼 클릭
-        $("button[data-progress=scrap]").click(function () {
+        // 스크랩 or 구독버튼 클릭
+        $("button[data-progress=SCRAP], button[data-progress=SUBSCRIBE]").click(function () {
             let objParams = {
                 newsLetterSeq: $("#newsLetterSeq").val(),
-                scrapType: "SCRAP"
+                newsLetterHeaderSeq: $("#newsLetterHeaderSeq").val(),
+                scrapType: $(this).data("type")
             }
 
             $.ajax({
-                url: "/saveScrapOrDescription",
+                url: "/saveSubscriptionOrScrap",
                 type: "POST",
                 contentType: "application/json",
                 data: JSON.stringify(objParams),
                 success: function (response) {
                     if (response.data.status === "SUCCESS") {
                         alert(response.data.message);
+                        location.reload();
                     } else {
                         alert(response.data.message);
                     }
@@ -317,11 +322,12 @@ const User = (function () {
             });
         });
 
-        // 스크랩취소버튼 클릭
-        $("button[data-progress=cancel]").click(function () {
+        // 스크랩 or 구독취소버튼 클릭
+        $("button[data-progress=CANCEL]").click(function () {
             let objParams = {
                 newsLetterSeq: $("#newsLetterSeq").val(),
-                scrapType: "SCRAP"
+                newsLetterHeaderSeq: $("#newsLetterHeaderSeq").val(),
+                scrapType: $(this).data("type")
             }
 
             $.ajax({
@@ -346,7 +352,6 @@ const User = (function () {
     }
 
     return {
-        start:start
+        start: start
     }
 })()
-

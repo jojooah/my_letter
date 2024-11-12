@@ -220,31 +220,6 @@ public class NewLetterController {
         }
     }
 
-    @PostMapping("/saveScrapOrDescription")
-    public @ResponseBody
-    RestResult saveScrapOrDescription(@RequestBody Scrap scrap) {
-        Map<String, Object> data = new LinkedHashMap<>();
-        try {
-            scrapService.saveScrapOrDescription(scrap);
-            data.put("status", "SUCCESS");
-            data.put("message", "저장되었습니다");
-
-            return new RestResult(data);
-
-        } catch (MyLetterRuntimeException e) {
-            data.put("status", "FAIL");
-            data.put("message", e.getMessage());
-            log.error(e.getMessage());
-
-            return new RestResult(data);
-        } catch (Exception e) {
-            data.put("status", "FAIL");
-            data.put("message", "오류가 발생했습니다");
-            log.error(e.getMessage());
-
-            return new RestResult(data);
-        }
-    }
 
     @PostMapping("/newsLetterHeader/subscription")
     public @ResponseBody
@@ -272,38 +247,12 @@ public class NewLetterController {
         }
     }
 
-    @PostMapping("/newsLetterHeader/scrap")
-    public @ResponseBody
-    RestResult getNewsLetterHeaderScrap(@RequestBody Scrap scrap) {
-        Map<String, Object> data = new LinkedHashMap<>();
-        try {
-            data.put("data", scrapService.selectScrap(scrap));
-            data.put("status", "SUCCESS");
-            data.put("message", "스크랩 목록을 가져오는데 성공했습니다.");
-
-            return new RestResult(data);
-
-        } catch (MyLetterRuntimeException e) {
-            data.put("status", "FAIL");
-            data.put("message", e.getMessage());
-            log.error(e.getMessage());
-
-            return new RestResult(data);
-        } catch (Exception e) {
-            data.put("status", "FAIL");
-            data.put("message", "오류가 발생했습니다");
-            log.error(e.getMessage());
-
-            return new RestResult(data);
-        }
-    }
-
     @PostMapping("/saveSubscriptionOrScrap")
     public @ResponseBody
     RestResult saveSubscriptionOrScrap(@RequestBody Scrap scrap) {
         Map<String, Object> data = new LinkedHashMap<>();
         try {
-            scrapService.saveScrapOrDescription(scrap);
+            scrapService.saveScrapOrSubscription(scrap);
             data.put("status", "SUCCESS");
             String type = scrap.getScrapType().equals(ScrapType.SCRAP) ? "스크랩" : "구독";
 

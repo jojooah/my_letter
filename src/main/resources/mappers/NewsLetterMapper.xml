@@ -158,6 +158,14 @@
           , nh.subscribers
           , nh.author_id AS authorId
           , m.username AS authorName
+          , CASE
+                WHEN EXISTS (
+                        SELECT 1
+                        FROM joo.scrap s
+                        WHERE s.news_letter_header_seq = nh.news_letter_header_seq
+                    ) THEN 'Y'
+                ELSE 'N'
+            END AS subYn
         FROM
             joo.news_letter_header nh,joo.Member m
         WHERE
@@ -304,7 +312,7 @@
                     joo.news_letter_header a
                 INNER JOIN joo.category_combi b ON a.category_combi_seq = b.category_combi_seq
                 INNER JOIN joo.category c ON c.cat_code IN (b.cat1_code, b.cat2_code, b.cat3_code)
-                left outer JOIN joo.image_path im ON im.news_letter_header_seq = a.news_letter_header_seq
+                LEFT OUTER JOIN joo.image_path im ON im.news_letter_header_seq = a.news_letter_header_seq
                 INNER JOIN joo.Member m ON a.author_id = m.id
                 WHERE
                     a.week_day = #{param}
@@ -509,7 +517,7 @@
                   FROM scrap
                   WHERE member_id = #{param.userId}
               )
-
+            LIMIT #{limit} OFFSET #{offset}
     </select>
 
     <select id="countScrap" parameterType="Scrap" resultType="Integer">
@@ -517,16 +525,23 @@
         SELECT COUNT(1)
         FROM
             joo.scrap
-        WHERE
-            news_letter_seq = #{param.newsLetterSeq}
-        AND member_id = #{param.userId}
+        WHERE member_id = #{param.userId}
+        AND type = #{param.scrapType}
+        <if test="param.newsLetterSeq != null">
+         AND   news_letter_seq = #{param.newsLetterSeq}
+        </if>
+
     </select>
 
     <delete id="cancelScrapOrSubscription" parameterType="Scrap">
         DELETE
         FROM joo.scrap
-        WHERE
-            news_letter_seq = #{param.newsLetterSeq}
-        AND member_id = #{param.userId}
+        WHERE member_id = #{param.userId}
+        <if test="param.newsLetterSeq != null and param.scrapType.toString() == 'SCRAP'">
+            AND news_letter_seq = #{param.newsLetterSeq}
+        </if>
+        <if test="param.newsLetterHeaderSeq != null and param.scrapType.toString() == 'SUBSCRIBE'">
+            AND news_letter_header_seq = #{param.newsLetterHeaderSeq}
+        </if>
     </delete>
 </mapper>
